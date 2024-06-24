@@ -1,0 +1,659 @@
+@media all and (min-width: 1440px){
+  .banner-area-img {
+    max-width: 540px;
+    width: 100%;
+    height: auto;
+  }
+}
+
+
+
+@media all and (max-width: 1199px){
+  /* Home Page Start */
+  .nav-area ul {
+    column-gap: 30px;
+  }
+  .nav-wrap {
+    column-gap: 30px;
+  }
+  .language-dropdown .nice-select {
+    padding-right: 20px;
+  }
+  .language-dropdown .nice-select .list {
+    transform: translateX(-14%);
+  }
+  .nav-search .search-field:focus {
+    width: 180px;
+  }
+  .nav-btn-area .nav-search {
+    margin-right: 0px;
+  }
+  .nav-btn-area .language-dropdown::after{
+    display: none;
+  }
+  /* Home Page End */
+
+  /* Grid View Page */
+  .grid-list-pagination {
+    margin-left: 0px;
+  }
+  /* List View */
+  .list-course-details {
+    padding: 0px;
+  }
+
+  /* Login Logout Page */
+  .create-new-form-wrap {
+    margin-top: 40px;
+  }
+  .forget-form-wrap{
+    margin-top: 130px;
+  }
+  .verify-form-wrap {
+    margin-top: 85px;
+  }
+
+}
+
+
+
+@media all and (max-width: 991px){
+  /* Common Css */
+  .text-64 {
+    font-size: 50px;
+    line-height: 65px;
+  }
+  /* Home Page Start */
+  .nav-btn-area{
+    display: none !important;
+  }
+  .nav-area ul {
+    flex-direction: column;
+    align-items: baseline !important;
+  }
+  .nav-area ul li .menu-dropdown {
+    position: inherit;
+    transform: translateX(0);
+    visibility: visible;
+    opacity: 1;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+  .nav-area nav > ul > li {
+    position: inherit;
+  }
+  .nav-area ul li a {
+    display: flex;
+    align-items: center;
+    column-gap: 6px;
+    position: inherit;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    line-height: 24px; 
+    letter-spacing: -0.15px;
+    width: 291px;
+  }
+  .nav-area ul li a svg{
+    display: block;
+  }
+  .nav-area ul li a.active svg path, 
+  .nav-area ul li a:hover svg path,
+  .nav-area ul li a:focus svg path{
+    fill: var(--blueColor);
+  }
+  .menu-item-has-children.active-submenu a path{
+    fill: var(--blueColor);
+  }
+  .menu-item-has-children.active-submenu > a {
+    color: var(--blueColor);
+    background: var(--normalBlue);
+  }
+  .nav-area ul li.menu-item-has-children.active-submenu > a::before{
+    color: var(--blueColor);
+  }
+  .nav-area ul li a.active, 
+  .nav-area ul li a:hover,
+  .nav-area ul li a:focus{
+    background: var(--normalBlue);
+  }
+  .nav-area ul li.menu-item-has-children > a{
+    position: relative;
+  }
+  .nav-area ul li.menu-item-has-children > a::before {
+    content: "\f107";
+    font-family: "Font Awesome 6 Free";
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--grayColor);
+    display: inline-block;
+    position: absolute;
+    margin: 0 0 0 5px;
+    right: 12px;
+    transition: .3s;
+  }
+  .nav-area ul li.menu-item-has-children .menu-dropdown{
+    display: none;
+    transition: 0s;
+  }
+  .nav-area ul li.menu-item-has-children > a:hover::before{
+    color: var(--blueColor);
+  }
+
+  .edu-offcanvas .btn-close{
+    --bs-btn-close-bg: url(../images/menu-close.svg);
+    width: 24px;
+    height: 24px;
+  }
+  .edu-offcanvas .btn-close:focus{
+    box-shadow: none;
+  }
+  .edu-offcanvas .offcanvas-header{
+    padding: 37px 24px 32px 24px;
+  }
+  .edu-offcanvas .offcanvas-body{
+    padding: 0px 24px 24px 24px;
+  }
+  .edu-offcanvas.offcanvas-lg.offcanvas-end{
+    width: 339px;
+  }
+  .nav-area ul li .menu-dropdown::after{
+    display: none;
+  }
+  .nav-area nav > ul > li > a::after{
+    display: none;
+  }
+  .nav-area ul li .menu-dropdown a{
+    padding: 6px 12px 6px 42px;
+  }
+
+  .banner-area-img {
+    padding-top: 73px;
+  }
+  .about-img-wrap .about-bottom-img {
+    margin-top: 70px;
+  }
+  .footer-menu-area{
+    min-width: 105px;
+  }
+  /* Home Page End */
+
+  /* Grid View Page */
+  .top-link-path-area .right-shape-1{
+    display: none;
+  }
+  .top-link-path-area .left-shape-1{
+    display: none;
+  }
+  .top-link-path-area {
+    padding: 80px 0;
+  }
+  .top-link-path-inner .title {
+    font-size: 45px;
+    margin-bottom: 25px;
+  }
+  .grid-list-pagination .pagination-list{
+    justify-content: center;
+  }
+  /* Instructors Page */
+  .instructor-banner-content .title {
+    font-size: 44px;
+    line-height: 54px;
+  }
+  
+  /* Contact Page */
+  .contact-form-title .title {
+    font-size: 32px;
+    line-height: 45px;
+  }
+  .contact-details-area > .title {
+    font-size: 40px;
+    line-height: 52px;
+  }
+  .contact-map-wrap iframe {
+    height: 340px;
+  }
+
+  /* About Page */
+  .about-img-wrap-2 .about-banner-img{
+    margin-right: 0px;
+  }
+  .about-img-wrap-2{
+    justify-content: center !important;
+  }
+    
+  /* My Course Page */
+  .student-panel-cover {
+    height: 150px;
+  }
+
+  /* Login Logout Page */
+  .login-logout-title .title {
+    font-size: 32px;
+    line-height: 43px;
+  }
+  .create-new-form-wrap {
+    margin-top: 10px;
+  }
+  .forget-form-wrap{
+    margin-top: 60px;
+  }
+  .login-banner-area {
+    padding: 216px 0 100px 0;
+  }
+  .verify-form-wrap {
+    margin-top: 10px;
+  }
+
+
+}
+@media all and (max-width: 767px){
+  /* Common Css */
+  .text-64 {
+    font-size: 45px;
+  }
+  .text-40 {
+    font-size: 35px;
+  }
+  .padding-bottom-110 {
+    padding-bottom: 80px;
+  }
+  .text-36 {
+    font-size: 32px;
+    line-height: 43px;
+}
+  /* Home Page Start */
+  .edu-offcanvas .offcanvas-header {
+    padding: 24px 24px 32px 24px;
+  }
+  .header-wrap {
+    padding: 24px 0;
+  }
+  .banner-content {
+    padding-top: 30px;
+    padding-bottom: 80px;
+  }
+  .banner-content .text-64 span::after{
+    top: 0;
+  }
+  .banner-area-img {
+    padding-top: 30px;
+  }
+  .footer-middle-wrap {
+    column-gap: 50px;
+  }
+  .single-courses {
+    max-width: 400px;
+    width: 100%;
+    margin: auto;
+    display: block;
+  }
+  .single-courses .course-img {
+    /* height: 210px; */
+    height: auto;
+  }
+  .single-courses .course-img > img{
+    height: auto;
+  }
+  .single-blog {
+    max-width: 400px;
+    width: 100%;
+    margin: auto;
+    display: block;
+  }
+  .single-blog .blog-img {
+    height: auto;
+  }
+  .single-advantage {
+    max-width: 400px;
+    width: 100%;
+    margin: auto;
+  }
+  .banner-content {
+    text-align: center;
+  }
+  .about-details-top {
+    text-align: center;
+  }
+  .about-details-top .text_40 span:after {
+    width: 183px;
+  }
+  .single-category {
+    max-width: 400px;
+    width: 100%;
+    margin: auto;
+    margin-bottom: 30px;
+  }
+  .about-img-wrap .about-bottom-img {
+    margin-left: 15px;
+    margin-top: -128px;
+  }
+  /* Home Page End */
+
+  /* Course Details Page */
+  .feedback-rating-review {
+    min-width: 160px;
+  }
+  .feedback-rating-review .rating {
+    font-size: 55px;
+  }
+  .course-author-area .courser-author-cover{
+    height: 233px;
+  }
+  .course-author-area .courser-author-cover img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  /* Grid View Page */
+  .top-link-path-inner .title {
+    font-size: 42px;
+    margin-bottom: 20px;
+  }
+  .top-link-path a {
+    font-size: 18px;
+  }
+  .top-link-path-inner{
+    max-width: 100%;
+  }
+  .top-link-path-inner::after {
+    right: 0;
+  }
+  .top-link-path-inner::before {
+    left: 0;
+  }
+  .top-link-path-area {
+    padding: 70px 0;
+  }
+  .top-link-path {
+    column-gap: 20px;
+  }
+  .top-link-path a:first-child {
+    padding-right: 21px;
+  }
+  /* List View */
+  .single-list-course {
+    flex-direction: column;
+    row-gap: 20px;
+    max-width: 400px;
+    margin: auto;
+  }
+  .list-course-img {
+    max-width: 100%;
+    height: auto;
+  }
+  .list-course-img img{
+    height: auto;
+  }
+  .course-list-leason-stars{
+    max-width: 100%;
+  }
+
+  /* Instructors Page */
+  .single-tutor-area {
+    max-width: 400px;
+    margin: auto;
+  }
+  .single-tutor-area .tutor-img{
+    height: auto;
+  }
+  .instructor-banner-content .title {
+    font-size: 40px;
+    line-height: 50px;
+  }
+  .uiux-user-details {
+    padding: 15px;
+    left: 0px;
+    bottom: 55px;
+  }
+  .uiux-user-details .title {
+    margin-bottom: 20px;
+  }
+  .web-user-details {
+    right: 0;
+    bottom: 15px;
+  }
+  .instructor-banner-wrap .ui-ux {
+    right: 0;
+  }
+
+  /* Contact Page */
+  .contact-details-area {
+    max-width: 100%;
+  }
+  .contact-details-area > .title {
+    font-size: 35px;
+    line-height: 48px;
+  }
+  .contact-form-title .title {
+    font-size: 28px;
+    line-height: 40px;
+  }
+
+  /* Instructor Details */
+  .instructor-details-profile{
+    max-width: 360px;
+    width: 100%;
+    margin: 0 auto 30px auto;
+  }
+  .instructor-name-role .name {
+    font-size: 33px;
+    line-height: 43px;
+  }
+
+  /* Privacy Policy Page */
+  .privacy-title-info .title {
+    font-size: 32px;
+  }
+
+  /* Course Playing Page */
+  .course-playing-title .title {
+    font-size: 32px;
+  }
+
+  /* My Course Page */
+  .student-course-img {
+    height: auto;
+  }
+  .student-course-img img {
+    height: auto;
+  }
+  .student-single-course{
+    height: auto;
+    max-width: 400px;
+    width: 100%;
+    margin: auto;
+  }
+  .student-panel-cover {
+    height: 120px;
+  }
+
+  /* Login Logout Page */
+  .login-logout-title .title {
+    font-size: 30px;
+    line-height: 40px;
+  }
+
+
+}
+@media all and (max-width: 575px){
+  /* Common Css */
+  .text-64 {
+    font-size: 40px;
+    line-height: 55px;
+  }
+  .text-40 {
+    font-size: 30px;
+  }
+  .text-36 {
+    font-size: 30px;
+    line-height: 40px;
+  }
+  /* Home Page Start */
+  .about-img-wrap .about-bottom-img {
+    margin-top: 70px;
+    margin-left: 0px;
+  }
+  .about-img-wrap .d-flex{
+    justify-content: center !important;
+  }
+  .testimonial-title .text_40 {
+    line-height: 40px;
+  }
+  .about-details-top .text_40 span:after {
+    width: 158px;
+    height: 45px;
+  }
+  /* Home Page End */
+
+  /* Course Details Page */
+  .student-feedback-wrap {
+    flex-direction: column;
+    align-items: flex-start !important;
+    row-gap: 30px;
+  }
+  .course-overview-price {
+    font-size: 43px;
+  }
+
+  /* Grid View Page */
+  .top-link-path-inner .title {
+    font-size: 38px;
+    margin-bottom: 15px;
+  }
+  .top-link-path-area {
+    padding: 60px 0;
+  }
+  /* Instructors Page */
+  .instructor-banner-content .title {
+    font-size: 35px;
+    line-height: 45px;
+  }
+  .web-user-details {
+    bottom: 0px;
+  }
+  .instructor-banner-wrap .ui-ux img{
+    width: 25px;
+  }
+  .instructor-banner-wrap .ui-ux {
+    width: 60px;
+    height: 110px;
+    row-gap: 8px;
+  }
+  .instructor-banner-wrap .ui-ux .title {
+    font-size: 13px;
+  }
+  .uiux-user-details {
+    max-width: 145px;
+    padding: 10px;
+  }
+  .uiux-user-details .profile-name {
+    column-gap: 5px;
+  }
+  .uiux-user-details .title {
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 10px;
+  }
+
+  /* Contact Page */
+  .contact-details-area > .title {
+    font-size: 30px;
+    line-height: 43px;
+  }
+  .contact-details-list .title {
+    font-size: 21px;
+  }
+  .contact-form-title .title {
+    font-size: 26px;
+    line-height: 35px;
+  }
+  .contact-map-wrap iframe {
+    height: 300px;
+  }
+
+  /* Instructor Details */
+  .instructor-name-role .name {
+    font-size: 28px;
+    line-height: 35px;
+  }
+
+  /* Privacy Policy Page */
+  .privacy-title-info .title {
+    font-size: 28px;
+  }
+
+  /* Course Playing Page */
+  .course-playing-title .title {
+    font-size: 28px;
+  }
+
+  /* My Course Page */
+  .student-panel-cover {
+    height: 110px;
+  }
+
+  /* Login Logout Page */
+  .login-logout-title .title {
+    font-size: 25px;
+    line-height: 35px;
+  }
+  .verify-input-group {
+    column-gap: 25px;
+  }
+
+
+}
+
+@media all and (max-width: 450px){
+  /* Home Page Start */
+  /* Home Page End */
+
+  /* Course Details Page */
+  .instractor-img-details{
+    flex-direction: column;
+    row-gap: 16px;
+  }
+  .single-feedback-review {
+    flex-direction: column;
+    row-gap: 16px;
+  }
+  .single-leason-level {
+    column-gap: 10px;
+    padding: 0 15px;
+  }
+
+  /* Instructor Details */
+  .instructor-details-profile::after {
+    right: -35px;
+    bottom: -40px;
+    width: 130px;
+    height: 130px;
+  }
+  .instructor-details-profile::before {
+    left: -55px;
+    width: 145px;
+    height: 170px;
+  }
+  /* My Course Page */
+  .student-panel-cover {
+    height: 100px;
+  }
+
+  /* Login Logout Page */
+  .verify-input-group .form-control {
+    width: 54px;
+    height: 60px;
+    font-size: 35px;
+  }
+  .verify-input-group {
+    column-gap: 18px;
+  }
+
+}
+
+@media all and (max-width: 375px){
+	
+}
