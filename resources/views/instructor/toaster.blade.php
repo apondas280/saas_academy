@@ -1,10 +1,16 @@
+<style>
+    .toast-container {
+        z-index: 1100;
+    }
+</style>
 <div class="toast-container position-fixed top-0 end-0 p-3"></div>
 <script>
     "use strict";
 
     function toaster_message(type, icon, header, message) {
-        var toasterMessage = '<div class="toast ' + type + ' fade" role="alert" aria-live="assertive" aria-atomic="true"><div class="toast-header"> <i class="' + icon +
-            ' me-2 mt-2px text-20px"></i> <strong class="me-auto"> ' + header +
+        var toasterMessage = '<div class="toast ' + type +
+            ' fade" role="alert" aria-live="assertive" aria-atomic="true"><div class="toast-header"> <i class="' +
+            icon + ' me-2 mt-2px text-20px"></i> <strong class="me-auto"> ' + header +
             ' </strong><small>{{ get_phrase('Just Now') }}</small><button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button></div><div class="toast-body">' +
             message + '</div></div>';
         $('.toast-container').prepend(toasterMessage);
@@ -28,12 +34,14 @@
 @if ($message = Session::get('success'))
     <script>
         "use strict";
+
         success("{{ $message }}");
     </script>
     @php Session()->forget('success'); @endphp
 @elseif($message = Session::get('error'))
     <script>
         "use strict";
+
         error("{{ $message }}");
     </script>
     @php Session()->forget('error'); @endphp
@@ -47,6 +55,7 @@
     @endphp
     <script>
         "use strict";
+
         error("{!! $message !!}");
     </script>
 @endif

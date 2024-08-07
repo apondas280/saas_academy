@@ -19,7 +19,7 @@ class MyProfileController extends Controller
         return view($view_path, $page_data);
     }
 
-    public function update(Request $request, $user_id)
+    public function update(Request $request, $company, $user_id)
     {
         $rules = [
             'name'  => 'required',

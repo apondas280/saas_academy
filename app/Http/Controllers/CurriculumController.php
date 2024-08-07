@@ -59,7 +59,6 @@ class CurriculumController extends Controller
     public function lesson_store(Request $request)
     {
 
-
         $data['title']       = $request->title;
         $data['user_id']     = auth()->user()->id;
         $data['course_id']   = $request->course_id;
@@ -97,7 +96,7 @@ class CurriculumController extends Controller
                 $file_name = strtotime('now') . random(4) . '.' . $item->getClientOriginalExtension();
 
                 $path = public_path('assets/upload/lesson_file/attachment');
-                if (!File::isDirectory($path)) {
+                if (! File::isDirectory($path)) {
                     File::makeDirectory($path, 0777, true, true);
                 } else {
                     $item->move(public_path('assets/upload/lesson_file/attachment/'), $file_name);
@@ -115,7 +114,7 @@ class CurriculumController extends Controller
                 $file_name = strtotime('now') . random(4) . '.' . $item->getClientOriginalExtension();
 
                 $path = public_path('assets/upload/lesson_file/attachment');
-                if (!File::isDirectory($path)) {
+                if (! File::isDirectory($path)) {
                     File::makeDirectory($path, 0777, true, true);
                 } else {
                     $item->move(public_path('assets/upload/lesson_file/attachment/'), $file_name);
@@ -154,7 +153,7 @@ class CurriculumController extends Controller
                 $file_name = strtotime('now') . random(4) . '.' . $item->getClientOriginalExtension();
 
                 $path = public_path('assets/upload/lesson_file/videos');
-                if (!File::isDirectory($path)) {
+                if (! File::isDirectory($path)) {
                     File::makeDirectory($path, 0777, true, true);
                 } else {
                     $item->move(public_path('assets/upload/lesson_file/videos/'), $file_name);
@@ -217,7 +216,7 @@ class CurriculumController extends Controller
                 $file_name = strtotime('now') . random(4) . '.' . $item->getClientOriginalExtension();
 
                 $path = public_path('assets/upload/lesson_file/attachment');
-                if (!File::isDirectory($path)) {
+                if (! File::isDirectory($path)) {
                     File::makeDirectory($path, 0777, true, true);
                 } else {
                     $item->move(public_path('assets/upload/lesson_file/attachment/'), $file_name);
@@ -235,7 +234,7 @@ class CurriculumController extends Controller
                 $file_name = strtotime('now') . random(4) . '.' . $item->getClientOriginalExtension();
 
                 $path = public_path('assets/upload/lesson_file/attachment');
-                if (!File::isDirectory($path)) {
+                if (! File::isDirectory($path)) {
                     File::makeDirectory($path, 0777, true, true);
                 } else {
                     $item->move(public_path('assets/upload/lesson_file/attachment/'), $file_name);
@@ -269,7 +268,7 @@ class CurriculumController extends Controller
                 $file_name = strtotime('now') . random(4) . '.' . $item->getClientOriginalExtension();
 
                 $path = public_path('assets/upload/lesson_file/videos');
-                if (!File::isDirectory($path)) {
+                if (! File::isDirectory($path)) {
                     File::makeDirectory($path, 0777, true, true);
                 } else {
                     $item->move(public_path('assets/upload/lesson_file/videos/'), $file_name);
@@ -294,97 +293,6 @@ class CurriculumController extends Controller
     {
         Lesson::where('id', $id)->delete();
         Session::flash('success', get_phrase('Delete successfully'));
-        return redirect()->back();
-    }
-
-    // quiz
-    public function quiz_store(Request $request)
-    {
-        $rules = [
-            'title'      => 'required',
-            'section_id' => 'required',
-            'total_mark' => 'required',
-            'pass_mark'  => 'required',
-            'hour'       => 'required_without:minute|min:1|max:24',
-            'minute'     => 'required_without:hour|min:1|max:59',
-            'drip_rule'  => 'required',
-        ];
-        $validate = Validator::make($request->all(), $rules);
-
-        if ($validate->fails()) {
-            return redirect()->back()->withErrors($validate)->withInput();
-        }
-
-        $hour     = $request->hour ?? 0;
-        $minute   = $request->minute ?? 0;
-        $duration = ['hour' => $hour, 'minute' => $minute];
-
-        $quiz['user_id']    = auth()->user()->id;
-        $quiz['title']      = $request->title;
-        $quiz['section_id'] = $request->section_id;
-        $quiz['total_mark'] = $request->total_mark;
-        $quiz['pass_mark']  = $request->pass_mark;
-        $quiz['duration']   = json_encode($duration);
-        $quiz['drip_rule']  = $request->drip_rule;
-        $quiz['summary']    = $request->summary;
-
-        Quiz::insert($quiz);
-
-        Session::flash('success', get_phrase('Quiz added successfully.'));
-        return redirect()->back();
-    }
-
-    public function quiz_update(Request $request, $id)
-    {
-        $quiz = Quiz::where('id', $id)->where('user_id', auth()->user()->id);
-        if ($quiz->doesntExist()) {
-            Session::flash('error', get_phrase('Data not found.'));
-            return redirect()->back();
-        }
-
-        $rules = [
-            'title'      => 'required',
-            'section_id' => 'required',
-            'total_mark' => 'required',
-            'pass_mark'  => 'required',
-            'hour'       => 'required_without:minute|min:1|max:24',
-            'minute'     => 'required_without:hour|min:1|max:59',
-            'drip_rule'  => 'required',
-        ];
-        $validate = Validator::make($request->all(), $rules);
-
-        if ($validate->fails()) {
-            return redirect()->back()->withErrors($validate)->withInput();
-        }
-
-        $hour     = $request->hour ?? 0;
-        $minute   = $request->minute ?? 0;
-        $duration = ['hour' => $hour, 'minute' => $minute];
-
-        $data['title']      = $request->title;
-        $data['section_id'] = $request->section_id;
-        $data['total_mark'] = $request->total_mark;
-        $data['pass_mark']  = $request->pass_mark;
-        $data['duration']   = json_encode($duration);
-        $data['drip_rule']  = $request->drip_rule;
-        $data['summary']    = $request->summary;
-
-        $quiz->update($data);
-
-        Session::flash('success', get_phrase('Quiz updated successfully.'));
-        return redirect()->back();
-    }
-
-    public function quiz_delete($id)
-    {
-        $quiz = Quiz::where('id', $id)->where('user_id', auth()->user()->id);
-        if ($quiz->doesntExist()) {
-            Session::flash('error', get_phrase('Data not found.'));
-            return redirect()->back();
-        }
-        $quiz->delete();
-
-        Session::flash('success', get_phrase('Quiz deleted successfully.'));
         return redirect()->back();
     }
 }

@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\frontend\AboutController;
 use App\Http\Controllers\frontend\BlogController;
+use App\Http\Controllers\frontend\BootcampController;
 use App\Http\Controllers\frontend\ContactController;
 use App\Http\Controllers\frontend\CourseController;
 use App\Http\Controllers\frontend\HomeController;
 use App\Http\Controllers\frontend\InstructorController;
 use App\Http\Controllers\frontend\NewsletterController;
+use App\Http\Controllers\frontend\TeamTrainingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +48,12 @@ Route::prefix('{company}')->group(function () {
         Route::get('about-us/', 'index')->name('about.us');
     });
 
+    // bootcamps
+    Route::controller(BootcampController::class)->group(function () {
+        Route::get('bootcamps/{category?}', 'index')->name('bootcamps');
+        Route::get('bootcamp/{slug}', 'show')->name('bootcamp.details');
+    });
+
     // instructor details
     Route::controller(InstructorController::class)->group(function () {
         Route::get('instructors', 'index')->name('instructors');
@@ -69,5 +77,12 @@ Route::prefix('{company}')->group(function () {
         $view_path = 'frontend.' . get_frontend_settings('theme') . '.terms_and_condition.index';
         return view($view_path);
     })->name('terms.condition');
+
+    // team training page
+    Route::controller(TeamTrainingController::class)->group(function () {
+        Route::get('team_training/packages', 'index')->name('team_training_packages');
+        Route::get('blog/{slug?}', 'blog_details')->name('blog.details');
+        Route::get('blogs-list/{id}', 'blog_by_category')->name('blog.by.category');
+    });
 
 });

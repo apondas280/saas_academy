@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 
 class BlogController extends Controller
 {
-    public function index(Request $request, $category = '')
+    public function index(Request $request, $company = '', $category = '')
     {
         $category_row = BlogCategory::where('slug', $category)->first();
         $query = Blog::query();
@@ -35,7 +35,7 @@ class BlogController extends Controller
         return view($view_path, $page_data);
     }
 
-    public function blog_details($slug)
+    public function blog_details($company, $slug)
     {
         $query = Blog::join('users', 'blogs.user_id', 'users.id')
             ->select(

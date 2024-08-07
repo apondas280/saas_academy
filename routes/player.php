@@ -10,6 +10,9 @@ Route::prefix('{company}')->group(function () {
     Route::controller(PlayerController::class)->middleware('auth')->group(function () {
         Route::get('play-course/{slug}/{id?}', 'course_player')->name('course.player');
         Route::post('set-watch-history/', 'set_watch_history')->name('set.watch.history');
+
+        //bootcamp
+        Route::get('watch-bootcamp/{slug?}', 'bootcamp_player')->name('bootcamp.player');
     });
 
     Route::controller(ForumController::class)->middleware('auth')->group(function () {

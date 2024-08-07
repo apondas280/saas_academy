@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/nice-select.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/animate.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/jquery.rprogessbar.min.css') }}">
     <!-- Custom Css File -->
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/custom_style.css') }}">
@@ -44,6 +45,7 @@
     <script src="{{ asset('assets/frontend/default/js/jquery.waypoints.js') }}"></script>
     <script src="{{ asset('assets/frontend/default/js/jquery.counterup.min.js') }}"></script>
     <script src="{{ asset('assets/frontend/default/js/wow.min.js') }}"></script>
+    <script src="{{ asset('assets/frontend/default/js/jQuery.rProgressbar.min.js') }}"></script>
     <!-- Custom Js File -->
     <script src="{{ asset('assets/frontend/default/js/script.js') }}"></script>
 </body>

@@ -2,7 +2,8 @@
 
 <div class="sidebar-logo-area">
     <a href="#" class="sidebar-logos">
-        <img class="sidebar-logo-lg" height="50px" src="{{ get_image(get_frontend_settings('dark_logo')) }}" alt="">
+        <img class="sidebar-logo-lg" height="50px" src="{{ get_image(get_frontend_settings('dark_logo')) }}"
+            alt="">
         <img class="sidebar-logo-sm" height="40px" src="{{ get_image(get_frontend_settings('favicon')) }}" alt="">
     </a>
     <button class="sidebar-cross menu-toggler d-block d-lg-none">
@@ -24,7 +25,10 @@
             </li>
 
 
-            <li class="sidebar-first-li first-li-have-sub @if ($current_route == 'instructor.courses' || $current_route == 'instructor.course.create' || $current_route == 'instructor.course.edit') active showMenu @endif">
+            <li class="sidebar-first-li first-li-have-sub @if (
+                $current_route == 'instructor.courses' ||
+                    $current_route == 'instructor.course.create' ||
+                    $current_route == 'instructor.course.edit') active showMenu @endif">
                 <a href="javascript:void(0);">
                     <span class="icon fi fi-rr-e-learning"></span>
                     <div class="text">
@@ -38,6 +42,31 @@
                     </li>
                     <li class="sidebar-second-li @if ($current_route == 'instructor.course.create') active @endif">
                         <a href="{{ route('instructor.course.create') }}">{{ get_phrase('Add New Course') }}</a>
+                    </li>
+                </ul>
+            </li>
+
+
+            <li
+                class="sidebar-first-li first-li-have-sub {{ $current_route == 'instructor.bootcamps' || $current_route == 'instructor.bootcamp.purchase.history' || $current_route == 'instructor.bootcamp.purchase.invoice' || $current_route == 'instructor.bootcamp.create' || $current_route == 'instructor.bootcamp.edit' || $current_route == 'instructor.bootcamp.categories' ? 'active' : '' }}">
+                <a href="javascript:void(0);">
+                    <span class="icon fi fi-sr-users-alt"></span>
+                    <div class="text">
+                        <span>{{ get_phrase('Bootcamp') }}</span>
+                    </div>
+                </a>
+                <ul class="first-sub-menu">
+                    <li class="first-sub-menu-title fs-14px mb-18px">{{ get_phrase('Bootcamp') }}</li>
+
+                    <li class="sidebar-second-li @if (($current_route == 'instructor.bootcamps' || $current_route == 'instructor.bootcamp.edit') && request('type') == '') active @endif"><a
+                            href="{{ route('instructor.bootcamps') }}">{{ get_phrase('Manage Bootcamps') }}</a></li>
+                    <li class="sidebar-second-li @if ($current_route == 'instructor.bootcamp.create') active @endif">
+                        <a href="{{ route('instructor.bootcamp.create') }}">{{ get_phrase('Add New Bootcamp') }}</a>
+                    </li>
+                    <li
+                        class="sidebar-second-li {{ $current_route == 'instructor.bootcamp.purchase.history' || $current_route == 'instructor.bootcamp.purchase.invoice' ? 'active' : '' }}">
+                        <a
+                            href="{{ route('instructor.bootcamp.purchase.history') }}">{{ get_phrase('Purchase History') }}</a>
                     </li>
                 </ul>
             </li>
@@ -72,7 +101,11 @@
 
 
             @if (get_frontend_settings('instructors_blog_permission'))
-                <li class="sidebar-first-li first-li-have-sub @if ($current_route == 'instructor.blogs' || $current_route == 'instructor.blog.create' || $current_route == 'instructor.blog.edit' || $current_route == 'instructor.blog.pending') active showMenu @endif">
+                <li class="sidebar-first-li first-li-have-sub @if (
+                    $current_route == 'instructor.blogs' ||
+                        $current_route == 'instructor.blog.create' ||
+                        $current_route == 'instructor.blog.edit' ||
+                        $current_route == 'instructor.blog.pending') active showMenu @endif">
                     <a href="javascript:void(0);">
                         <span class="icon fi fi-rr-blog-text"></span>
                         <div class="text">

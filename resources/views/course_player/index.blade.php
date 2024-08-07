@@ -4,82 +4,62 @@
 <head>
     <title>{{ get_phrase('Course Playing Page') }}| {{ config('app.name') }}</title>
     <!-- all the meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta content="" name="description" />
-    <meta content="" name="author" />
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="" />
     <!-- all the css files -->
-    <link rel="shortcut icon" href="{{ asset(get_frontend_settings('favicon')) }}" />
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/global/course_player/vendors/bootstrap/css/bootstrap.min.css') }}" />
-    <!-- Fontawesome CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/global/course_player/vendors/fontawesome/fontawesome.css') }}" />
-    <!-- Player CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/global/course_player/vendors/plyr/plyr.css') }}" />
-    <!-- Main CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/global/course_player/css/style.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/global/course_player/css/custom.css') }}" />
-    <!-- FlatIcons Css -->
-    <link rel="stylesheet" href="{{ asset('assets/global/icons/uicons-bold-rounded/css/uicons-bold-rounded.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/global/icons/uicons-bold-straight/css/uicons-bold-straight.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/global/icons/uicons-regular-rounded/css/uicons-regular-rounded.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/global/icons/uicons-solid-rounded/css/uicons-solid-rounded.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/global/icons/uicons-solid-rounded/css/uicons-solid-rounded.css') }}" />
+    <!-- <link rel="shortcut icon" href="{{ asset(get_frontend_settings('favicon')) }}" /> -->
+     
+    <link rel="apple-touch-icon" href="{{ asset('assets/frontend/default/images/favicon.svg') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/frontend/default/images/favicon.svg') }}" type="image/x-icon">
 
-    <!-- Summernote Css -->
-    <link rel="stylesheet" href="{{ asset('assets/global/summernote/summernote.min.css') }}">
+    <!-- Css Files -->
+    <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/fontawesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/nice-select.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/plyr.css') }}">
+    <!-- Custom Css File -->
+    <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/responsive.css') }}">
 
 </head>
 
 <body>
 
-    <!-- Start Course Playing Header -->
-    <header class="playing-header-section">
-        @include('course_player.header')
-    </header>
-    <!-- End Course Playing Header -->
-
-    <!-- Start Course Playing Video and Playlist Area -->
-    <section class="video-playlist-section">
-        <div class="my-container">
-            <div class="row">
-                <div class="col-lg-8" id="player_content">
-                    <div class="course-video-area border border-primary">
-                        <!-- Video -->
-                        <div class="course-video-wrap">
-                            <div class="plyr__video-embed">
-                                @include('course_player.player_page')
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Tab -->
-                    <div class="course-video-navtab">
-                        @include('course_player.tab_bar')
-                    </div>
+    <!-- Course Playing Area Start -->
+    <section>
+        <div class="container">
+            <div class="row mrg-30 padding-bottom-110">
+                <div class="col-md-12">
+                    @include('course_player.header')
                 </div>
-                <div class="col-lg-4" id="player_side_bar">
-                    @include('course_player.side_bar')
+                <div class="col-xl-8 col-lg-7">
+                    <!-- Video -->
+                    <div class="playing-video-area padding-bottom-50">
+                        @include('course_player.player_page')
+                    </div>
+                    <!-- Tabs -->
+                    @include('course_player.tab_bar')
+                </div>
+                <div class="col-xl-4 col-lg-5">
+                    <div class="player-right-sidebar">
+                        @include('course_player.side_bar')
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- End Course Playing Video and Playlist Area -->
+    <!-- Course Playing Area End -->
 
-    <!-- Main Jquery -->
-    <script src="{{ asset('assets/global/course_player/vendors/jquery/jquery.min.js') }}"></script>
-
-    <!-- Bootstrap bundle with popper -->
-    <script src="{{ asset('assets/global/course_player/vendors/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/global/course_player/vendors/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-    <!-- Summernote Css -->
-    <script src="{{ asset('assets/global/summernote/summernote.min.js') }}"></script>
-
-    <!-- Fontawesome JS -->
-    <script src="{{ asset('assets/global/course_player/vendors/fontawesome/fontawesome.all.min.js') }}"></script>
-
-    <!-- Player JS -->
-    <script src="{{ asset('assets/global/course_player/vendors/plyr/plyr.js') }}"></script>
+    <!-- Js Files -->
+    <script src="{{ asset('assets/frontend/default/js/jquery-3.7.0.min.js') }}"></script>
+    <script src="{{ asset('assets/frontend/default/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/frontend/default/js/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ asset('assets/frontend/default/js/plyr.js') }}"></script>
+    <!-- Custom Js File -->
+    <script src="{{ asset('assets/frontend/default/js/script.js') }}"></script>
 
     <!-- toster file -->
     @include('frontend.default.toaster')

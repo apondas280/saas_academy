@@ -24,7 +24,7 @@ class PurchaseController extends Controller
         return view($view_path, $page_data);
     }
 
-    public function invoice($id)
+    public function invoice($company, $id)
     {
         // validate course id
         if (!is_numeric($id) && $id < 1) {

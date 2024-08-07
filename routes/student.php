@@ -5,14 +5,17 @@ use App\Http\Controllers\frontend\LanguageController;
 use App\Http\Controllers\student\BecomeInstructorController;
 use App\Http\Controllers\student\BlogCommentController;
 use App\Http\Controllers\student\BlogController;
+use App\Http\Controllers\student\BootcampPurchaseController;
 use App\Http\Controllers\student\CartController;
 use App\Http\Controllers\student\InvoiceController;
 use App\Http\Controllers\student\LiveClassController;
 use App\Http\Controllers\student\MessageController;
+use App\Http\Controllers\student\MyBootcampsController;
 use App\Http\Controllers\student\MyCoursesController;
 use App\Http\Controllers\student\MyProfileController;
 use App\Http\Controllers\student\OfflinePaymentController;
 use App\Http\Controllers\student\PurchaseController;
+use App\Http\Controllers\student\QuizController;
 use App\Http\Controllers\student\ReviewController;
 use App\Http\Controllers\student\WishListController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +39,13 @@ Route::prefix('{company}')->group(function () {
         // my course routes
         Route::controller(MyCoursesController::class)->group(function () {
             Route::get('my-courses', 'index')->name('my.courses');
+        });
+
+        // quiz routes
+        Route::controller(QuizController::class)->group(function () {
+            Route::post('quiz/submit/{id}', 'quiz_submit')->name('quiz.submit');
+            Route::get('load/quiz/result/', 'load_result')->name('load.quiz.result');
+            Route::get('load/quiz/questions/', 'load_questions')->name('load.quiz.questions');
         });
 
         // purchase routes
@@ -94,6 +104,23 @@ Route::prefix('{company}')->group(function () {
         Route::controller(LiveClassController::class)->group(function () {
             Route::get('live-class/join/{id}', 'live_class_join')->name('live.class.join');
         });
+
+        // my bootcamp routes
+        Route::controller(MyBootcampsController::class)->group(function () {
+            Route::get('my-bootcamps/', 'index')->name('my.bootcamps');
+            Route::get('my-bootcamps/details/{slug?}', 'show')->name('my.bootcamp.details');
+            Route::get('bootcamp/live/class/join/{topic}', 'join_class')->name('bootcamp.live.class.join');
+            Route::get('bootcamp/resource/download/{id}', 'download')->name('bootcamp.resource.download');
+            Route::get('bootcamp/resource/play/{file}', 'play')->name('bootcamp.resource.play');
+        });
+
+        // purchase bootcamp routes
+        Route::controller(BootcampPurchaseController::class)->group(function () {
+            Route::get('purchase/bootcamp/{id}', 'purchase')->name('purchase.bootcamp');
+            Route::get('bootcamp/purchase/history', 'purchase_history')->name('bootcamp.purchase.history');
+            Route::get('bootcamp/invoice/{id}', 'invoice')->name('bootcamp.invoice');
+        });
+
     });
 
     //Certificate download

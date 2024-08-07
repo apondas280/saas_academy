@@ -5,7 +5,28 @@
 @section('content')
 
 
-    @include('frontend.default.student.banner')
+    <!-- Top Link Path Area Start -->
+    <section class="top-link-path-section2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="top-link-path-area2">
+                        <div class="top-link-path-inner2">
+                            <h1 class="title">{{ get_phrase('My Course') }}</h1>
+                            <div class="top-link-path d-flex align-items-center justify-content-center">
+                                <a href="{{ route('home') }}">
+                                    <img src="{{ asset('assets/frontend/default/images/icons/home-white.svg') }}" alt="">
+                                    {{ get_phrase('Home') }}
+                                </a>
+                                <a href="{{ route('my.courses') }}">{{ get_phrase('My Course') }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Top Link Path Area End -->
 
 
     <section>

@@ -65,11 +65,11 @@
                <div class="footer-menu-area">
                   <h2 class="text-20">Company</h2>
                   <ul>
-                     <li><a href="javascript:void(0);">About Us</a></li>
+                     <li><a href="{{ route('about.us') }}">{{ get_phrase('About Us') }}</a></li>
                      <li><a href="javascript:void(0);">Careers</a></li>
                      <li><a href="javascript:void(0);">FAQs</a></li>
                      <li><a href="javascript:void(0);">Teams</a></li>
-                     <li><a href="javascript:void(0);">Contact Us</a></li>
+                     <li><a href="{{ route('contact.us') }}">{{ get_phrase('Contact Us') }}</a></li>
                   </ul>
                </div>
             </div>

@@ -20,6 +20,24 @@ class Lesson extends Model
     }
 
     protected $fillable = [
-        'user_id', 'title', 'course_id', 'section_id', 'lesson_type', 'duration', 'lesson_src', 'is_free', 'sort', 'description', 'status',
+        'title',
+        'user_id',
+        'course_id',
+        'section_id',
+        'lesson_type',
+        'duration',
+        'lesson_src',
+        'attachment',
+        'attachment_type',
+        'video_type',
+        'thumbnail',
+        'is_free',
+        'sort',
+        'description',
+        'summary',
+        'status',
+        'total_mark',
+        'pass_mark',
+        'retake',
     ];
 }

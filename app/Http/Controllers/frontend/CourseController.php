@@ -89,7 +89,7 @@ class CourseController extends Controller
         return view('frontend' . '.' . get_frontend_settings('theme') . '.course.index', $page_data);
     }
 
-    public function course_details(Request $request, $slug)
+    public function course_details(Request $request, $company, $slug)
     {
         // validate slug
         if (empty($slug)) {

@@ -1,10 +1,17 @@
 <?php
 
+use App\Http\Controllers\Admin\BootcampCategoryController;
+use App\Http\Controllers\Admin\BootcampController;
+use App\Http\Controllers\Admin\BootcampLiveClassController;
+use App\Http\Controllers\Admin\BootcampModuleController;
+use App\Http\Controllers\Admin\BootcampResourceController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\OfflinePaymentController;
 use App\Http\Controllers\Admin\OpenAiController;
 use App\Http\Controllers\Admin\PageBuilderController;
+use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
@@ -36,7 +43,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('{company}')->group(function () {
 
-    Route::name('admin.')->prefix('admin')->middleware('admin')->group(function () {
+    Route::name('admin.')->prefix('admin')->middleware(['admin'])->group(function () {
 
         //dashboard
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -64,7 +71,7 @@ Route::prefix('{company}')->group(function () {
         //invoice
         Route::get('invoice/{id?}', [InvoiceController::class, 'invoice'])->name('invoice');
 
-        Route::controller(Updater::class)->middleware('auth', 'verified')->group(function () {
+        Route::controller(Updater::class)->middleware(['auth', 'verified'])->group(function () {
 
             Route::post('admin/addon/create', 'update')->name('addon.create');
             Route::post('admin/addon/update', 'update')->name('addon.update');
@@ -322,6 +329,74 @@ Route::prefix('{company}')->group(function () {
             Route::get('coupon/edit/{id}', 'edit')->name('coupon.edit');
             Route::post('coupon/update/{id}', 'update')->name('coupon.update');
             Route::get('coupon/status/{id}', 'status')->name('coupon.status');
+        });
+
+        // course quiz
+        Route::controller(QuizController::class)->group(function () {
+            Route::post('course/quiz/store', 'store')->name('course.quiz.store');
+            Route::get('course/quiz/delete/{id}', 'delete')->name('course.quiz.delete');
+            Route::post('course/quiz/update/{id}', 'update')->name('course.quiz.update');
+            Route::get('quiz/participant/result', 'result')->name('quiz.participant.result');
+            Route::get('quiz/result/preview', 'result_preview')->name('quiz.result.preview');
+        });
+
+        // question route
+        Route::controller(QuestionController::class)->group(function () {
+            Route::post('course/question/store', 'store')->name('course.question.store');
+            Route::get('course/question/delete/{id}', 'delete')->name('course.question.delete');
+            Route::post('course/question/update/{id}', 'update')->name('course.question.update');
+            Route::get('course/question/sort/', 'sort')->name('course.question.sort');
+
+            Route::get('load/question/type/', 'load_type')->name('load.question.type');
+        });
+
+        // bootcamp category
+        Route::controller(BootcampCategoryController::class)->group(function () {
+            Route::get('bootcamp/categories', 'index')->name('bootcamp.categories');
+            Route::post('bootcamp/category/store', 'store')->name('bootcamp.category.store');
+            Route::get('bootcamp/category/delete/{id}', 'delete')->name('bootcamp.category.delete');
+            Route::post('bootcamp/category/update/{id}', 'update')->name('bootcamp.category.update');
+        });
+
+        // bootcamp
+        Route::controller(BootcampController::class)->group(function () {
+            Route::get('bootcamps/{type?}', 'index')->name('bootcamps');
+            Route::get('bootcamp/create', 'create')->name('bootcamp.create');
+            Route::get('bootcamp/edit/{id}', 'edit')->name('bootcamp.edit');
+            Route::post('bootcamp/store', 'store')->name('bootcamp.store');
+            Route::get('bootcamp/delete/{id}', 'delete')->name('bootcamp.delete');
+            Route::post('bootcamp/update/{id}', 'update')->name('bootcamp.update');
+            Route::get('bootcamp/status/{id}', 'status')->name('bootcamp.status');
+            Route::get('bootcamp/duplicate/{id}', 'duplicate')->name('bootcamp.duplicate');
+            Route::get('bootcamp/purchase/history', 'purchase_history')->name('bootcamp.purchase.history');
+            Route::get('bootcamp/purchase/invoice/{id}', 'invoice')->name('bootcamp.purchase.invoice');
+        });
+
+        // bootcamp module
+        Route::controller(BootcampModuleController::class)->group(function () {
+            Route::post('bootcamp/module/store', 'store')->name('bootcamp.module.store');
+            Route::get('bootcamp/module/delete/{id}', 'delete')->name('bootcamp.module.delete');
+            Route::post('bootcamp/module/update/{id}', 'update')->name('bootcamp.module.update');
+            Route::get('bootcamp/module/sort', 'sort')->name('bootcamp.module.sort');
+        });
+
+        // bootcamp live class
+        Route::controller(BootcampLiveClassController::class)->group(function () {
+            Route::post('bootcamp/live-class/store', 'store')->name('bootcamp.live.class.store');
+            Route::get('bootcamp/live-class/delete/{id}', 'delete')->name('bootcamp.live.class.delete');
+            Route::post('bootcamp/live-class/update/{id}', 'update')->name('bootcamp.live.class.update');
+            Route::get('bootcamp/live-class/sort', 'sort')->name('bootcamp.live.class.sort');
+
+            Route::get('bootcamp/live/class/join/{topic}', 'join_class')->name('bootcamp.live.class.join');
+            Route::get('bootcamp/live/class/end/{id}', 'stop_class')->name('bootcamp.class.end');
+            Route::get('update/on/class/end/', 'update_on_end_class')->name('update.on.end.class');
+        });
+
+        // bootcamp resource
+        Route::controller(BootcampResourceController::class)->group(function () {
+            Route::post('bootcamp/resource/store', 'store')->name('bootcamp.resource.store');
+            Route::get('bootcamp/resource/delete/{id}', 'delete')->name('bootcamp.resource.delete');
+            Route::get('bootcamp/resource/download/{id}', 'download')->name('bootcamp.resource.download');
         });
 
         Route::get('select-language/{language}', [LanguageController::class, 'select_lng'])->name('select.language');

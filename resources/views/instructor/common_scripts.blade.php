@@ -49,6 +49,7 @@
         }
         if (isValidJson) {
             response = JSON.parse(response);
+
             //For reload after submission
             if (typeof response.reload != "undefined" && response.reload != 0) {
                 location.reload();
@@ -127,6 +128,10 @@
             //For appending elements after a element
             if (typeof response.after != "undefined" && response.after != 0 && $(response.after.elem).length) {
                 $(response.after.elem).after(response.after.content);
+            }
+            //For function call
+            if (typeof response.functionCall != "undefined" && response.functionCall != 0) {
+                eval(response.functionCall)
             }
 
             // Update the browser URL and add a new entry to the history

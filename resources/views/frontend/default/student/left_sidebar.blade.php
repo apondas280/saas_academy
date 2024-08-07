@@ -52,6 +52,17 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('my.bootcamps') }}" class="svg-stroke-color @if (Route::currentRouteName() == 'my.bootcamps') active @endif">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.66602 7.5V6.66667C1.66602 4.16667 3.33268 2.5 5.83268 2.5H14.166C16.666 2.5 18.3327 4.16667 18.3327 6.66667V13.3333C18.3327 15.8333 16.666 17.5 14.166 17.5H13.3327" stroke="#6B7385" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M3.07617 9.75879C6.92617 10.2505 9.75117 13.0838 10.2512 16.9338" stroke="#6B7385" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2.18359 12.5591C5.00859 12.9174 7.0836 15.0008 7.45027 17.8258" stroke="#6B7385" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M1.65039 15.7173C3.05872 15.9006 4.10039 16.934 4.28373 18.3506" stroke="#6B7385" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>             
+                    <span>{{ get_phrase('My Bootcamps') }}</span>                              
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('logout') }}">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.90039 7.55999C9.21039 3.95999 11.0604 2.48999 15.1104 2.48999H15.2404C19.7104 2.48999 21.5004 4.27999 21.5004 8.74999V15.27C21.5004 19.74 19.7104 21.53 15.2404 21.53H15.1104C11.0904 21.53 9.24039 20.08 8.91039 16.54" stroke="#6B7385" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -62,10 +73,11 @@
                 </a>
             </li>
         </ul>
-        @if (auth()->user()->role == 'student')
-            <div class="my-course-btn mt-4 justify-content-center">
-                <a href="{{ route('become.instructor') }}" class="continue-leason-btn">{{ get_phrase('Become An Instructors') }}</a>
-            </div>
-        @endif
     </div>
+    @if (auth()->user()->role == 'student')
+        <a href="{{ route('become.instructor') }}" class="lms2-btn-primary d-flex align-items-center gap-2 w-100 justify-content-center">
+            <span>{{ get_phrase('Become An Instructors') }}</span>
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    @endif
 </div>

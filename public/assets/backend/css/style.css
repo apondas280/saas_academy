@@ -3106,6 +3106,113 @@ custom tab style start
 custom tab style end
 ======================*/
 
+/*=============================
+bootcamp resource modal start
+==============================*/
+.bootcamp-resource p {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--grayColor);
+}
+.bootcamp-resource .file {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: .4s ease;
+}
+
+.action-btns{
+font-size: 14px;
+cursor: pointer;
+opacity: 0;
+transition: .4s ease;
+}
+
+.bootcamp-resource .file:hover{
+background: #f4f7fe;
+}
+.bootcamp-resource .file:hover .action-btns{
+opacity: 1;
+}
+
+.bootcamp-resource .badge{
+    width: 60px !important;
+}
+.resource-title{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--darkColor);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.resource-title::before{
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--borderColor);
+    z-index: -2;
+}
+
+.resource-title::after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 10px;
+    background: #fff;
+    z-index: -1;
+}
+
+.edit-delete path{
+    fill: #6F7A98;
+    transition: .3s;
+}
+
+.list-group-3 li .buttons .edit-delete:hover path{
+    fill: var(--skinColor);
+}
+
+.live-animation{
+    display: inline-block;
+    position: relative;
+    width: 1px;
+    height: 1px;
+    border-radius: 50%;
+    background-color: rgb(255 85 119);
+    padding: 3px;
+    border: 3px solid #fff;
+    outline: 1px solid rgb(255 85 119);
+    animation: blink 2s linear infinite;
+}
+
+@keyframes blink{
+    0%{
+        background: rgba(255, 85,119, .3);
+    }
+    50%{
+        background: rgba(255, 85,119, 1);
+    }
+    100%{
+        background: rgba(255, 85,119, .3);
+    }
+}
+
+/*=============================
+bootcamp resource modal end
+==============================*/
+
 #certificate_element_content::placeholder {
     font-size: 14px;
     opacity: .6;

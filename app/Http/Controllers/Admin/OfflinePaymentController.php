@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bootcamp;
+use App\Models\BootcampPurchase;
 use App\Models\CartItem;
 use App\Models\Course;
 use App\Models\Enrollment;
@@ -54,12 +56,6 @@ class OfflinePaymentController extends Controller
 
     public function accept_payment($id)
     {
-        // validate id
-        if (empty($id)) {
-            Session::flash('error', get_phrase('Data not found.'));
-            return redirect()->back();
-        }
-
         // payment details
         $query = OfflinePayment::where('id', $id)->where('status', 0);
         if ($query->doesntExist()) {
@@ -68,42 +64,55 @@ class OfflinePaymentController extends Controller
         }
 
         $payment_details = $query->first();
-        $items           = json_decode($payment_details->items);
 
         $payment['invoice']      = Str::random(20);
         $payment['user_id']      = $payment_details['user_id'];
         $payment['payment_type'] = 'offline';
         $payment['coupon']       = $payment_details->coupon;
 
-        foreach ($items as $item) {
-            $accept_payment = null;
-            if ($payment_details->item_type == 'course') {
-                $course               = Course::where('id', $item)->first();
-                $payment['course_id'] = $course->id;
-                $payment['amount']    = $course->discount_flag == 1 ? $course->discounted_price : $course->price;
-                $payment['tax']       = $payment['amount'] * (get_settings('course_selling_tax') / 100);
+        if ($payment_details->item_type == 'course') {
+            $items = json_decode($payment_details->items);
+            foreach ($items as $item) {
+                $accept_payment = null;
+                if ($payment_details->item_type == 'course') {
+                    $course               = Course::where('id', $item)->first();
+                    $payment['course_id'] = $course->id;
+                    $payment['amount']    = $course->discount_flag == 1 ? $course->discounted_price : $course->price;
+                    $payment['tax']       = $payment['amount'] * (get_settings('course_selling_tax') / 100);
 
-                if (get_course_creator_id($course->id)->role == 'admin') {
-                    $payment['admin_revenue'] = $payment['amount'];
-                } else {
-                    $payment['instructor_revenue'] = $payment['amount'] * (get_settings('instructor_revenue') / 100);
-                    $payment['admin_revenue']      = $payment['amount'] - $payment['instructor_revenue'];
+                    if (get_course_creator_id($course->id)->role == 'admin') {
+                        $payment['admin_revenue'] = $payment['amount'];
+                    } else {
+                        $payment['instructor_revenue'] = $payment['amount'] * (get_settings('instructor_revenue') / 100);
+                        $payment['admin_revenue']      = $payment['amount'] - $payment['instructor_revenue'];
+                    }
+                    $accept_payment = Payment_history::insert($payment);
+                    // start enroll user
+                    if ($accept_payment) {
+                        $enroll['course_id']       = $course->id;
+                        $enroll['user_id']         = $payment_details['user_id'];
+                        $enroll['enrollment_type'] = "paid";
+                        $enroll['entry_date']      = time();
+                        $enroll['created_at']      = date('Y-m-d H:i:s');
+                        $enroll['updated_at']      = date('Y-m-d H:i:s');
+
+                        // insert a new enrollment
+                        $enrollment = Enrollment::insert($enroll);
+                    }
                 }
-                $accept_payment = Payment_history::insert($payment);
             }
+        } elseif ($payment_details->item_type == 'bootcamp') {
+            $bootcamp                           = Bootcamp::where('id', $payment_details->items)->first();
+            $bootcamp_payment['invoice']        = '#' . Str::random(20);
+            $bootcamp_payment['user_id']        = $payment_details['user_id'];
+            $bootcamp_payment['bootcamp_id']    = $bootcamp->id;
+            $bootcamp_payment['price']          = $bootcamp->discount_flag == 1 ? $bootcamp->price - $bootcamp->discounted_price : $bootcamp->price;
+            $bootcamp_payment['tax']            = 0;
+            $bootcamp_payment['payment_method'] = 'offline';
+            $bootcamp_payment['status']         = 1;
 
-            // start enroll user
-            if ($accept_payment) {
-                $enroll['course_id']       = $course->id;
-                $enroll['user_id']         = $payment_details['user_id'];
-                $enroll['enrollment_type'] = "paid";
-                $enroll['entry_date']      = time();
-                $enroll['created_at']      = date('Y-m-d H:i:s');
-                $enroll['updated_at']      = date('Y-m-d H:i:s');
-
-                // insert a new enrollment
-                $enrollment = Enrollment::insert($enroll);
-            }
+            // insert bootcamp purchase
+            BootcampPurchase::insert($bootcamp_payment);
         }
 
         // remove items from offline payment
@@ -114,11 +123,15 @@ class OfflinePaymentController extends Controller
         return redirect()->route('admin.offline.payments');
     }
 
-    function decline_payment($id)
+    public function decline_payment($id)
     {
-        // remove items from offline payment
-        OfflinePayment::where('id', $id)->update(['status' => 2]);
+        $offline = OfflinePayment::where('id', $id)->first();
+        if (! $offline) {
+            Session::flash('error', get_phrase('Data not found.'));
+            return redirect()->back();
+        }
 
+        $offline->update(['status' => 2]);
         // go back
         Session::flash('success', 'Payment has been suspended');
         return redirect()->route('admin.offline.payments');

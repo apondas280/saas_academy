@@ -535,15 +535,10 @@ if (! function_exists('has_permission')) {
             $get_admin_permission = DB::table('permissions')->where('admin_id', $user_id)->first();
             if ($get_admin_permission) {
                 $permissions = json_decode($get_admin_permission->permissions, true);
-                if (is_array($permissions)) {
-                    if(in_array($route, $permissions)){
-                        return true;
-                    }else{
-                        return false;
-                    }
-                }else{
-                    echo '<span class="d-none">'.redirect('/').'</span>';
-                    die;
+                if (is_array($route, $permissions) && in_array($route, $permissions)) {
+                    return true;
+                } else {
+                    return false;
                 }
             }
         }
@@ -1103,5 +1098,152 @@ if (! function_exists('get_blog_tags')) {
         })->pluck('value')->unique()->shuffle()->take(15);
 
         return $tags;
+    }
+}
+
+// Get Home page Settings Data
+if (! function_exists('replace_url_symbol')) {
+    function replace_url_symbol($str)
+    {
+        $pattern = '/[\?#&\/:@=%]/';
+        return preg_replace($pattern, '-', $str);
+    }
+}
+
+// count bootcamps
+if (! function_exists('count_bootcamps_by_category')) {
+    function count_bootcamps_by_category($id = "")
+    {
+        if ($id != '') {
+            $bootcamps = DB::table('bootcamps')->where('status', 1)->where('category_id', $id)->count();
+            return $bootcamps;
+        }
+    }
+}
+
+// count bootcamp modules
+if (! function_exists('count_bootcamp_modules')) {
+    function count_bootcamp_modules($id = "")
+    {
+        $query = DB::table('bootcamp_modules');
+        if ($id) {
+            $query = $query->where('bootcamp_id', $id);
+        }
+        return $query->count();
+    }
+}
+
+// count bootcamp live classes
+if (! function_exists('count_bootcamp_classes')) {
+    function count_bootcamp_classes($id = "", $type = "bootcamp")
+    {
+        $query = DB::table('bootcamp_live_classes')
+            ->join('bootcamp_modules', 'bootcamp_live_classes.module_id', 'bootcamp_modules.id')
+            ->join('bootcamps', 'bootcamp_modules.bootcamp_id', 'bootcamps.id');
+        if ($id && $type == 'bootcamp') {
+            $query = $query->where('bootcamp_modules.bootcamp_id', $id);
+        } elseif ($id && $type == 'module') {
+            $query = $query->where('bootcamp_live_classes.module_id', $id);
+        }
+        return $query->count();
+    }
+}
+
+// activated theme path
+if (! function_exists('theme_path')) {
+    function theme_path()
+    {
+        return 'frontend.' . get_frontend_settings('theme') . '.';
+    }
+}
+
+// bootcamp purchase
+if (! function_exists('is_purchased_bootcamp')) {
+    function is_purchased_bootcamp($bootcamp_id, $user_id = null)
+    {
+        $user_id  = $user_id ?? auth()->user()->id;
+        $purchase = App\Models\BootcampPurchase::where('user_id', $user_id)->where('bootcamp_id', $bootcamp_id)->first();
+        return $purchase;
+    }
+}
+
+// bootcamp enrolls
+if (! function_exists('bootcamp_enrolls')) {
+    function bootcamp_enrolls($bootcamp_id, $user_id = null)
+    {
+        $bootcamp = App\Models\Bootcamp::where('id', $bootcamp_id)->first();
+        $user_id  = $user_id ?? $bootcamp->user_id;
+
+        $purchases = App\Models\BootcampPurchase::join('bootcamps', 'bootcamp_purchases.bootcamp_id', 'bootcamps.id')
+            ->select('bootcamp_purchases.*', 'bootcamps.user_id as creator')
+            ->where('bootcamp_purchases.bootcamp_id', $bootcamp_id)
+            ->where('bootcamps.user_id', $user_id)->count();
+        return $purchases;
+    }
+}
+
+// check online class
+if (! function_exists('class_started')) {
+    function class_started($class_id)
+    {
+        $current_time  = time();
+        $extended_time = $current_time + (60 * 15);
+
+        $bootcamp = App\Models\BootcampLiveClass::where('id', $class_id)
+            ->where('force_stop', 0)
+            ->whereNotNull('joining_data')
+            ->where('start_time', '<', $extended_time)
+            ->where('end_time', '>', $current_time)
+            ->first();
+        return $bootcamp ? true : null;
+    }
+}
+
+// check online class
+if (! function_exists('count_instructor_bootcamps')) {
+    function count_instructor_bootcamps($user_id)
+    {
+        if ($user_id != '') {
+            $count_course = DB::table('bootcamps')->where('status', 1)->where('user_id', $user_id)->count();
+            return ($count_course > 1) ? "{$count_course} " . get_phrase('Bootcamps') : "{$count_course} " . get_phrase('Bootcamp');
+        }
+    }
+}
+
+// delete relevant bootcamp data
+if (! function_exists('remove_bootcamp_data')) {
+    function remove_bootcamp_data($id)
+    {
+        remove_module_data($id);
+        App\Models\Bootcamp::where('id', $id)->latest('id')->delete();
+    }
+}
+
+// delete relevant module
+if (! function_exists('remove_module_data')) {
+    function remove_module_data($id)
+    {
+        $modules = App\Models\BootcampModule::where('bootcamp_id', $id)->latest('id')->get();
+        foreach ($modules as $module) {
+            remove_live_class_data($module->id);
+            remove_resource_data($module->id);
+        }
+        App\Models\BootcampModule::where('bootcamp_id', $id)->delete();
+    }
+}
+
+// delete relevant live class
+if (! function_exists('remove_live_class_data')) {
+    function remove_live_class_data($id)
+    {
+        App\Models\BootcampLiveClass::where('module_id', $id)->delete();
+    }
+}
+
+// delete relevant resource
+if (! function_exists('remove_resource_data')) {
+    function remove_resource_data($id)
+    {
+        App\Models\BootcampResource::where('module_id', $id)->delete();
     }
 }

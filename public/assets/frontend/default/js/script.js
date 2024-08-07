@@ -88,10 +88,33 @@ $(document).ready(function(){
     }
     
     
+    // Mobile Search Toggle 
+    const searchContainer = $(".header-mobile-search");
+    const searchToggle = $(".mobile-search-label");
+    const searchWrap = $(".mobile-search");
+    if (searchToggle.length) {
+        searchToggle.on("click", function(event) {
+            event.stopPropagation();
+            searchWrap.toggleClass("active");
+            searchToggle.toggleClass("active");
+            // focus 
+        setTimeout(function() {
+            $('.mobile-search-inner .form-control').focus();
+        }, 100);
+        });
+    }
+    $(document).on("click", function(event) {
+        const target = $(event.target);
+        if (searchContainer.length && !searchContainer.is(target) && !searchContainer.has(target).length) {
+            searchWrap.removeClass("active");
+            if (searchToggle.length) {
+                searchToggle.removeClass("active");
+            }
+        }
+    });
+    
     
 });
-
-
 
 
 // Accordion Menu 
@@ -121,7 +144,36 @@ if (screen.width < 992) {
     }
     accordion();
 }
+if (screen.width < 992) {
+    function accordion2() {
+        var Accordion2 = function(el, multiple) {
+            this.el = el || {};
+            this.multiple = multiple || false;
+            var links = this.el.find('.item-have-submenu > a');
+            links.on('click', {el: this.el, multiple: this.multiple}, this.dropdown)
+        }
+    
+        Accordion2.prototype.dropdown = function(e) {
+            var $el = e.data.el,
+                $this = $(this),
+                $next = $this.next();
+    
+            $next.slideToggle();
+            $this.parent().toggleClass('child-submenu');
+    
+            if (!e.data.multiple) {
+                $el.find('.dropdown-submenu').not($next).slideUp().parent().removeClass('child-submenu');
+                $el.find('.dropdown-submenu').not($next).slideUp();
+            };
+        }
+        var accordion2 = new Accordion2($('.menu-dropdown'), false);
+    }
+    accordion2();
+}
 // Accordion Menu
+
+
+
 
 
 // Wow JS 

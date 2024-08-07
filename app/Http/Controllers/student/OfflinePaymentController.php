@@ -30,12 +30,15 @@ class OfflinePaymentController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $items     = array_column($payment_details['items'], 'id');
+        $itemsJson = json_encode($items);
+        if ($request->item_type == 'bootcamp') {
+            $item = $items[0];
+        }
+
         $file      = $request->doc;
         $file_name = Str::random(20) . '.' . $file->extension();
         $path      = 'uploads/offline_payment/' . Str::slug(auth()->user()->name) . '/' . $file_name;
@@ -43,7 +46,7 @@ class OfflinePaymentController extends Controller
 
         $offline_payment['user_id']      = auth()->user()->id;
         $offline_payment['item_type']    = $request->item_type;
-        $offline_payment['items']        = json_encode($items);
+        $offline_payment['items']        = isset($item) ? $item : $items;
         $offline_payment['tax']          = $payment_details['tax'];
         $offline_payment['total_amount'] = $request->amount;
         $offline_payment['phone_no']     = $request->phone_no;
@@ -55,10 +58,15 @@ class OfflinePaymentController extends Controller
         OfflinePayment::insert($offline_payment);
 
         // remove from cart
-        CartItem::whereIn('course_id', $items)->where('user_id', auth()->user()->id)->delete();
+        if ($request->item_type == 'course') {
+            $url = 'courses';
+            CartItem::whereIn('course_id', $items)->where('user_id', auth()->user()->id)->delete();
+        } elseif ($request->item_type == 'bootcamp') {
+            $url = 'bootcamps';
+        }
 
         // return to courses
         Session::flash('success', get_phrase('Your request is in process.'));
-        return redirect()->route('courses');
+        return redirect()->route($url);
     }
 }

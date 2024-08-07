@@ -41,7 +41,7 @@ class CartController extends Controller
         return view($view_path, $page_data);
     }
 
-    public function store($id)
+    public function store($company, $id)
     {
         // check personal course
         if (Course::where('id', $id)->where('user_id', auth()->user()->id)->exists()) {
@@ -65,7 +65,7 @@ class CartController extends Controller
         return redirect()->back();
     }
 
-    public function delete($id)
+    public function delete($company, $id)
     {
         // if user has selected item then delete item else redirect to cart page
         $query = CartItem::where('course_id', $id)->where('user_id', auth()->user()->id);

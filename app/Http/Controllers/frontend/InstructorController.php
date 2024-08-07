@@ -17,7 +17,7 @@ class InstructorController extends Controller
         return view($view_path, $page_data);
     }
 
-    public function show($name, $id)
+    public function show($company, $name, $id)
     {
         $instructor = User::where('id', $id)->first();
 

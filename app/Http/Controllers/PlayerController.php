@@ -7,12 +7,13 @@ use App\Models\Enrollment;
 use App\Models\Forum;
 use App\Models\Lesson;
 use App\Models\Watch_history;
+use App\Models\BootcampPurchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class PlayerController extends Controller
 {
-    public function course_player(Request $request, $slug, $id = '')
+    public function course_player(Request $request, $company = "", $slug, $id = '')
     {
         $course = Course::where('slug', $slug)->first();
 
@@ -116,5 +117,23 @@ class PlayerController extends Controller
             Watch_history::insert($data);
         }
         return redirect()->back();
+    }
+
+    //Bootcamp
+
+    public function bootcamp_player(Request $request, $company = "", $slug)
+    {
+        $page_data['bootcamp'] = BootcampPurchase::join('bootcamps', 'bootcamp_purchases.bootcamp_id', 'bootcamps.id')
+            ->where('bootcamp_purchases.user_id', auth()->user()->id)
+            ->where('bootcamp_purchases.status', 1)
+            ->where('bootcamps.slug', $slug)
+            ->select('bootcamps.*')->latest('id')->first();
+
+        if (! $page_data['bootcamp']) {
+            Session::flash('error', get_phrase('Data not found.'));
+            return redirect()->back();
+        }
+
+        return view('bootcamp_player.index', $page_data);
     }
 }
