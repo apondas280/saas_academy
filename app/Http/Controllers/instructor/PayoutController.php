@@ -13,38 +13,28 @@ class PayoutController extends Controller
 {
     public function index()
     {
-        $total_income = Course::join('payment_histories', 'courses.id', 'payment_histories.course_id')
-            ->select('payment_histories.*', 'courses.id as course_id')
-            ->where('courses.user_id', auth()->user()->id)
-            ->sum('payment_histories.instructor_revenue');
+        $page_data['start_date'] = strtotime('first day of this month');
+        $page_data['end_date']   = strtotime('last day of this month');
 
-        $start_date = strtotime('first day of this month');
-        $end_date   = strtotime('last day of this month');
-
+        // modify date and prepare to compare with database
         if (request()->has('eDateRange')) {
-            // modify date and prepare to compare with database
-            $date       = explode('-', urldecode(request()->query('eDateRange')));
-            $start_date = strtotime($date[0] . ' 00:00:00');
-            $end_date   = strtotime($date[1] . ' 23:59:59');
+            $date                    = explode('-', urldecode(request()->query('eDateRange')));
+            $page_data['start_date'] = strtotime($date[0] . ' 00:00:00');
+            $page_data['end_date']   = strtotime($date[1] . ' 23:59:59');
         }
-        $query = Payout::where('user_id', auth()->user()->id)->where('created_at', '>=', date('Y-m-d H:i:s', $start_date))
-            ->where('created_at', '<=', date('Y-m-d H:i:s', $end_date))->latest('id');
+        $query = Payout::where('user_id', auth()->user()->id)->where('created_at', '>=', date('Y-m-d H:i:s', $page_data['start_date']))
+            ->where('created_at', '<=', date('Y-m-d H:i:s', $page_data['end_date']))->latest('id');
 
-        $page_data['start_date']     = $start_date;
-        $page_data['end_date']       = $end_date;
-        $page_data['end_date']       = $end_date;
         $page_data['payout_reports'] = $query->paginate(10)->appends(request()->query('eDateRange'));
-
-        $page_data['total_payout']   = Payout::where('status', 1)->where('user_id', auth()->user()->id)->sum('amount');
-        $page_data['balance']        = $total_income - $page_data['total_payout'];
         $page_data['payout_request'] = Payout::where('user_id', auth()->user()->id)->where('status', 0)->first();
+        $page_data['total_payout']   = instructor_total_payout();
+        $page_data['balance']        = instructor_available_balance();
 
         return view('instructor.payout_report.index', $page_data);
     }
 
     public function store(Request $request)
     {
-
         // check old request
         if (Payout::where('user_id', auth()->user()->id)->where('status', 0)->exists()) {
             Session::flash('error', get_phrase('Your request is in process.'));
@@ -52,12 +42,8 @@ class PayoutController extends Controller
         }
 
         // check amount validity
-        $total_income = Course::join('payment_histories', 'courses.id', 'payment_histories.course_id')
-            ->select('payment_histories.*', 'courses.id as course_id')
-            ->where('courses.user_id', auth()->user()->id)
-            ->sum('payment_histories.instructor_revenue');
-
-        $total_payout      = Payout::where('user_id', auth()->user()->id)->sum('amount');
+        $total_income      = instructor_total_revenue();
+        $total_payout      = instructor_total_payout();
         $balance_remaining = $total_income - $total_payout;
 
         if ($request->amount < 1 || $request->amount > $balance_remaining) {
@@ -73,7 +59,7 @@ class PayoutController extends Controller
         return redirect()->back();
     }
 
-    public function delete($id)
+    public function delete($company = "", $id)
     {
         if (Payout::where('id', $id)->where('user_id', auth()->user()->id)->doesntExist()) {
             Session::flash('error', get_phrase('Data not found.'));

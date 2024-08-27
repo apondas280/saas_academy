@@ -48,7 +48,7 @@ class BootcampModuleController extends Controller
         return redirect()->back();
     }
 
-    public function delete($id)
+    public function delete($company = "", $id)
     {
         $module = BootcampModule::where('id', $id);
         if ($module->doesntExist()) {
@@ -62,7 +62,7 @@ class BootcampModuleController extends Controller
         return redirect()->back();
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $company = "", $id)
     {
         $module = BootcampModule::where('id', $id)->where('bootcamp_id', $request->bootcamp_id);
         if ($module->doesntExist()) {

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BootcampPurchase;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Forum;
 use App\Models\Lesson;
 use App\Models\Watch_history;
-use App\Models\BootcampPurchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -19,17 +19,14 @@ class PlayerController extends Controller
 
         // check if course is paid
         if ($course->is_paid && auth()->user()->role != 'admin') {
-            if (auth()->user()->role == 'student') { // for student check enrollment
-                $enrollment = Enrollment::where('course_id', $course->id)->where('user_id', auth()->user()->id)->first();
-                if (!$enrollment) {
-                    Session::flash('error', get_phrase('Not registered for this course.'));
-                    return redirect()->route('my.courses');
-                }
-            } elseif (auth()->user()->role == 'instructor') { // for instructor check who is course instructor
-                if ($course->user_id != auth()->user()->id) {
+            $enrollment = Enrollment::where('course_id', $course->id)->where('user_id', auth()->user()->id)->first();
+            if (! $enrollment) {
+                if (auth()->user()->role == 'instructor' && $course->user_id != auth()->user()->id) {
                     Session::flash('error', get_phrase('Not valid instructor.'));
                     return redirect()->route('my.courses');
                 }
+                Session::flash('error', get_phrase('Not registered for this course.'));
+                return redirect()->route('my.courses');
             }
         }
 
@@ -41,8 +38,8 @@ class PlayerController extends Controller
         }
 
         // if user has any watched history or not
-        if (!$check_lesson_history && $id > 0) {
-            $data                   = [
+        if (! $check_lesson_history && $id > 0) {
+            $data = [
                 'course_id'          => $course->id,
                 'student_id'         => auth()->user()->id,
                 'watching_lesson_id' => $id,
@@ -58,13 +55,9 @@ class PlayerController extends Controller
                 ->update(['watching_lesson_id' => $id]);
         }
 
-
-
-
         $page_data['course_details'] = $course;
         $page_data['lesson_details'] = Lesson::where('id', $id)->first();
         $page_data['history']        = Watch_history::where('course_id', $course->id)->where('student_id', auth()->user()->id)->first();
-
 
         $forum_query = Forum::join('users', 'forums.user_id', 'users.id')
             ->select('forums.*', 'users.name as user_name', 'users.photo as user_photo')
@@ -79,7 +72,6 @@ class PlayerController extends Controller
         }
 
         $page_data['questions'] = $forum_query->get();
-
         return view('course_player.index', $page_data);
     }
 
@@ -87,7 +79,7 @@ class PlayerController extends Controller
     {
         $course     = Course::where('id', $request->course_id)->first();
         $enrollment = Enrollment::where('course_id', $course->id)->where('user_id', auth()->user()->id)->first();
-        if (!$enrollment && auth()->user()->role != 'admin' || !is_course_instructor($course->id)) {
+        if (! ($enrollment && auth()->user()->role != 'admin' || ! is_course_instructor($course->id))) {
             Session::flash('error', get_phrase('Not registered for this course.'));
             return redirect()->back();
         }
@@ -102,7 +94,7 @@ class PlayerController extends Controller
 
         if (isset($watch_history)) {
             $lessons = (array) json_decode($watch_history->completed_lesson);
-            if (!in_array($request->lesson_id, $lessons)) {
+            if (! in_array($request->lesson_id, $lessons)) {
                 array_push($lessons, $request->lesson_id);
             }
             $data['completed_lesson']   = json_encode($lessons);

@@ -2,6 +2,9 @@
 // import facade
 
 use App\Models\Addon;
+use App\Models\CartItem;
+use App\Models\Wishlist;
+
 use function PHPUnit\Framework\fileExists;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -245,12 +248,12 @@ if (! function_exists('total_enroll')) {
 if (! function_exists('is_course_instructor')) {
     function is_course_instructor($course_id = "", $user_id = "")
     {
-        if($user_id == ''){
+        if ($user_id == '') {
             $user_id = auth()->user()->id;
         }
         $course = App\Models\Course::where('id', $course_id)->first();
-        if($course){
-            if($course->instructors()->where('id', $user_id)->count() > 0 || $course->user_id == $user_id){
+        if ($course) {
+            if ($course->instructors()->where('id', $user_id)->count() > 0 || $course->user_id == $user_id) {
                 return true;
             }
         }
@@ -493,28 +496,29 @@ if (! function_exists('is_root_admin')) {
     }
 }
 
-if (!function_exists('removeScripts')) {
-    function removeScripts($text) {
+if (! function_exists('removeScripts')) {
+    function removeScripts($text)
+    {
         // Remove <script> tags and their content
         $pattern_script = '/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/is';
-        $cleanText = preg_replace($pattern_script, '', $text);
-    
+        $cleanText      = preg_replace($pattern_script, '', $text);
+
         // Remove inline event handlers (e.g., onclick, onmouseover)
         $pattern_inline = '/\s*on\w+="[^"]*"/i';
-        $cleanText = preg_replace($pattern_inline, '', $cleanText);
-    
+        $cleanText      = preg_replace($pattern_inline, '', $cleanText);
+
         // Remove JavaScript: URIs
         $pattern_js_uri = '/\s*href="javascript:[^"]*"/i';
-        $cleanText = preg_replace($pattern_js_uri, '', $cleanText);
-    
+        $cleanText      = preg_replace($pattern_js_uri, '', $cleanText);
+
         // Remove other potentially dangerous tags (e.g., <iframe>, <object>, <embed>)
         $pattern_dangerous_tags = '/<(iframe|object|embed|applet|meta|link|style|base|form)\b[^<]*(?:(?!<\/\1>)<[^<]*)*<\/\1>/is';
-        $cleanText = preg_replace($pattern_dangerous_tags, '', $cleanText);
-    
+        $cleanText              = preg_replace($pattern_dangerous_tags, '', $cleanText);
+
         // Remove any remaining dangerous attributes (e.g., srcset on <img>)
         $pattern_dangerous_attributes = '/\s*(src|srcset|data)="[^"]*"/i';
-        $cleanText = preg_replace($pattern_dangerous_attributes, '', $cleanText);
-    
+        $cleanText                    = preg_replace($pattern_dangerous_attributes, '', $cleanText);
+
         return $cleanText;
 
     }
@@ -1149,6 +1153,38 @@ if (! function_exists('count_bootcamp_classes')) {
     }
 }
 
+// count bootcamp resources
+if (! function_exists('count_bootcamp_resources')) {
+    function count_bootcamp_resources($id = "", $type = "bootcamp")
+    {
+        $query = DB::table('bootcamp_resources')
+            ->join('bootcamp_modules', 'bootcamp_resources.module_id', 'bootcamp_modules.id')
+            ->join('bootcamps', 'bootcamp_modules.bootcamp_id', 'bootcamps.id');
+        if ($id && $type == 'bootcamp') {
+            $query = $query->where('bootcamp_modules.bootcamp_id', $id);
+        } elseif ($id && $type == 'module') {
+            $query = $query->where('bootcamp_resources.module_id', $id);
+        }
+        return $query->where('bootcamp_resources.upload_type', 'resource')->count();
+    }
+}
+
+// count bootcamp class records
+if (! function_exists('count_bootcamp_class_records')) {
+    function count_bootcamp_class_records($id = "", $type = "bootcamp")
+    {
+        $query = DB::table('bootcamp_resources')
+            ->join('bootcamp_modules', 'bootcamp_resources.module_id', 'bootcamp_modules.id')
+            ->join('bootcamps', 'bootcamp_modules.bootcamp_id', 'bootcamps.id');
+        if ($id && $type == 'bootcamp') {
+            $query = $query->where('bootcamp_modules.bootcamp_id', $id);
+        } elseif ($id && $type == 'module') {
+            $query = $query->where('bootcamp_resources.module_id', $id);
+        }
+        return $query->where('bootcamp_resources.upload_type', 'record')->count();
+    }
+}
+
 // activated theme path
 if (! function_exists('theme_path')) {
     function theme_path()
@@ -1245,5 +1281,193 @@ if (! function_exists('remove_resource_data')) {
     function remove_resource_data($id)
     {
         App\Models\BootcampResource::where('module_id', $id)->delete();
+    }
+}
+
+// player settings
+if (! function_exists('get_player_settings')) {
+    function get_player_settings($title = "", $return_type = false)
+    {
+        $value = App\Models\PlayerSettings::where('title', $title);
+        if ($value->count() > 0) {
+            if ($return_type === true) {
+                return json_decode($value->value('description'), true);
+            } elseif ($return_type === "object") {
+                return json_decode($value->value('description'));
+            } else {
+                return $value->value('description');
+            }
+        } else {
+            return false;
+        }
+    }
+}
+
+// get reserved team members
+if (! function_exists('reserved_team_members')) {
+    function reserved_team_members($package_id)
+    {
+        $count_members = App\Models\TeamPackageMember::where(['leader_id' => auth()->user()->id, 'team_package_id' => $package_id])->count();
+        return $count_members;
+    }
+}
+
+// get team purchases
+if (! function_exists('team_package_purchases')) {
+    function team_package_purchases($package_id)
+    {
+        $count_purchase = App\Models\TeamPackagePurchase::where('package_id', $package_id)->count();
+        return $count_purchase;
+    }
+}
+
+// get team packages by course category
+if (! function_exists('team_packages_by_course_category')) {
+    function team_packages_by_course_category($category_id)
+    {
+        $course_ids          = App\Models\Course::where('category_id', $category_id)->pluck('id')->toArray();
+        $count_team_packages = [];
+        foreach ($course_ids as $course_id) {
+            $count_team_packages[] = App\Models\TeamTrainingPackage::where('course_id', $course_id)->count();
+        }
+        return array_sum($count_team_packages);
+    }
+}
+
+// team package purchase
+if (! function_exists('is_purchased_package')) {
+    function is_purchased_package($package_id, $user_id = null)
+    {
+        $user_id  = $user_id ?? auth()->user()->id;
+        $purchase = App\Models\TeamPackagePurchase::where('user_id', $user_id)->where('package_id', $package_id)->first();
+        return $purchase;
+    }
+}
+
+// get instructor course revenue
+if (! function_exists('instructor_course_revenue')) {
+    function instructor_course_revenue($user_id = null)
+    {
+        $id             = $user_id ?? auth()->user()->id;
+        $course_revenue = App\Models\Course::join('payment_histories', 'courses.id', 'payment_histories.course_id')
+            ->select('payment_histories.*', 'courses.id as course_id')
+            ->where('courses.user_id', $id)
+            ->sum('payment_histories.instructor_revenue');
+        return $course_revenue;
+    }
+}
+
+// get instructor bootcamp revenue
+if (! function_exists('instructor_bootcamp_revenue')) {
+    function instructor_bootcamp_revenue($user_id = null)
+    {
+        $id               = $user_id ?? auth()->user()->id;
+        $bootcamp_revenue = App\Models\BootcampPurchase::join('bootcamps', 'bootcamp_purchases.bootcamp_id', 'bootcamps.id')
+            ->where('bootcamps.user_id', $id)->sum('bootcamp_purchases.instructor_revenue');
+        return $bootcamp_revenue;
+    }
+}
+
+// get instructor team training revenue
+if (! function_exists('instructor_team_training_revenue')) {
+    function instructor_team_training_revenue($user_id = null)
+    {
+        $id      = $user_id ?? auth()->user()->id;
+        $revenue = App\Models\TeamPackagePurchase::join('team_training_packages', 'team_package_purchases.package_id', 'team_training_packages.id')
+            ->where('team_training_packages.user_id', $id)->sum('team_package_purchases.instructor_revenue');
+        return $revenue;
+    }
+}
+
+// get instructor total revenue
+if (! function_exists('instructor_total_revenue')) {
+    function instructor_total_revenue($user_id = null)
+    {
+        $id            = $user_id ?? auth()->user()->id;
+        $total_revenue = instructor_course_revenue($id) + instructor_bootcamp_revenue($id) + instructor_team_training_revenue();
+        return $total_revenue;
+    }
+}
+
+// get instructor total payout
+if (! function_exists('instructor_total_payout')) {
+    function instructor_total_payout($user_id = null)
+    {
+        $id           = $user_id ?? auth()->user()->id;
+        $total_payout = App\Models\Payout::where(['user_id' => $id, 'status' => 1])->sum('amount');
+        return $total_payout;
+    }
+}
+
+// get instructor available balance
+if (! function_exists('instructor_available_balance')) {
+    function instructor_available_balance($user_id = null)
+    {
+        // sum all the revenue sources (course, ebook, bootcamp, team_training etc)
+        $id                = $user_id ?? auth()->user()->id;
+        $available_balance = instructor_total_revenue($id) - instructor_total_payout($id);
+        return $available_balance;
+    }
+}
+
+// get reserved team members
+if (! function_exists('reserved_team_members')) {
+    function reserved_team_members($package_id)
+    {
+        $count_members = App\Models\TeamPackageMember::where('team_package_id', $package_id)->count();
+        return $count_members;
+    }
+}
+
+// get team purchases
+if (! function_exists('team_package_purchases')) {
+    function team_package_purchases($package_id)
+    {
+        $count_purchase = App\Models\TeamPackagePurchase::where('package_id', $package_id)->count();
+        return $count_purchase;
+    }
+}
+
+// get team packages by course category
+if (! function_exists('team_packages_by_course_category')) {
+    function team_packages_by_course_category($category_id)
+    {
+        $course_ids          = App\Models\Course::where('category_id', $category_id)->pluck('id')->toArray();
+        $count_team_packages = [];
+        foreach ($course_ids as $course_id) {
+            $count_team_packages[] = App\Models\TeamTrainingPackage::where('course_id', $course_id)->count();
+        }
+        return array_sum($count_team_packages);
+    }
+}
+
+// team package purchase
+if (! function_exists('is_purchased_package')) {
+    function is_purchased_package($package_id, $user_id = null)
+    {
+        $user_id  = $user_id ?? auth()->user()->id;
+        $purchase = App\Models\TeamPackagePurchase::where('user_id', $user_id)->where('package_id', $package_id)->first();
+        return $purchase;
+    }
+}
+
+if (! function_exists('cart_items')) {
+    function cart_items()
+    {
+        $items = CartItem::join('courses', 'cart_items.course_id', 'courses.id')
+            ->select('cart_items.id as cart_id', 'courses.*', 'courses.id as course_id')
+            ->where('cart_items.user_id', auth()->user()->id)->get();
+        return $items;
+    }
+}
+
+if (! function_exists('wishlist')) {
+    function wishlist()
+    {
+        $items = Wishlist::join('courses', 'wishlists.course_id', 'courses.id')
+            ->join('users', 'courses.user_id', 'users.id')
+            ->select('wishlists.*', 'courses.*', 'courses.thumbnail as course_thumbnail', 'users.name as user_name', 'users.photo as users_photo')
+            ->where('wishlists.user_id', auth()->user()->id)->get();
+        return $items;
     }
 }

@@ -6,8 +6,8 @@
     <!-- start page title -->
 
     <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-12px px-20px">
-            <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
+        <div class="ol-card-body py-12px px-20px my-3">
+            <div class="d-flex align-items-center justify-content-between flex-md-nowrap flex-wrap gap-3">
                 <h4 class="title fs-16px">
                     <i class="fi-rr-settings-sliders me-2"></i>
                     {{ get_phrase('Payouts') }}
@@ -27,11 +27,11 @@
     </div>
 
     <div class="row print-d-none">
-        <div class="col-12 mt-3 ">
-            <div class="row g-2 g-sm-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3">
+        <div class="col-12 mt-3">
+            <div class="row g-2 g-sm-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 mb-3">
                 <div class="col">
                     <div class="ol-card card-hover h-100">
-                        <div class="ol-card-body px-3 py-12px">
+                        <div class="ol-card-body py-12px px-3">
                             <div class="d-flex align-items-center cg-12px">
                                 <div class="ol-card-icon d-inline-flex">
                                     <span class="icon fi fi-rr-sack-dollar fs-2 d-inline-flex"></span>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="col">
                     <div class="ol-card card-hover h-100">
-                        <div class="ol-card-body px-3 py-12px">
+                        <div class="ol-card-body py-12px px-3">
                             <div class="d-flex align-items-center cg-12px">
                                 <div class="ol-card-icon d-inline-flex">
                                     <span class="icon fi fi-rr-sack-dollar fs-2 d-inline-flex"></span>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="col">
                     <div class="ol-card card-hover h-100">
-                        <div class="ol-card-body px-3 py-12px">
+                        <div class="ol-card-body py-12px px-3">
                             <div class="d-flex align-items-center cg-12px">
                                 <div class="ol-card-icon d-inline-flex">
                                     <span class="icon fi fi-rr-sack-dollar fs-2 d-inline-flex"></span>
@@ -84,7 +84,7 @@
         <div class="col-12">
             <div class="ol-card">
                 <div class="ol-card-body p-3">
-                    <div class="row print-d-none mt-3 mb-4">
+                    <div class="row print-d-none mb-4 mt-3">
                         <div class="col-md-6 d-flex align-items-center gap-3">
                             @if (count($payout_reports))
                                 <div class="custom-dropdown ms-2">
@@ -94,8 +94,7 @@
                                     </button>
                                     <ul class="dropdown-list">
                                         <li>
-                                            <a class="dropdown-item export-btn" href="#" onclick="downloadPDF('.print-table', 'payout-reports')"><i class="fi-rr-file-pdf"></i>
-                                                {{ get_phrase('PDF') }}</a>
+                                            <a class="dropdown-item export-btn" href="#" onclick="downloadPDF('.print-table', 'payout-reports')"><i class="fi-rr-file-pdf"></i> {{ get_phrase('PDF') }}</a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item export-btn" href="#" onclick="window.print();"><i class="fi-rr-print"></i> {{ get_phrase('Print') }}</a>
@@ -108,7 +107,7 @@
                             <form class="form-inline" action="{{ route('instructor.payout.reports') }}" method="get">
                                 <div class="row">
                                     <div class="col-9">
-                                        <div class="mb-3 position-relative position-relative">
+                                        <div class="position-relative position-relative mb-3">
                                             <input type="text" class="form-control ol-form-control daterangepicker w-100" name="eDateRange"value="{{ date('m/d/Y', $start_date) . ' - ' . date('m/d/Y', $end_date) }}" />
                                         </div>
                                     </div>
@@ -121,13 +120,13 @@
                     </div>
 
                     @if (count($payout_reports))
-                        <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
+                        <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center gr-15 flex-wrap">
                             <p class="admin-tInfo">
                                 {{ get_phrase('Showing') . ' ' . count($payout_reports) . ' ' . get_phrase('of') . ' ' . $payout_reports->total() . ' ' . get_phrase('data') }}
                             </p>
                         </div>
                         <div class="table-responsive">
-                            <table class="table eTable eTable-2 print-table">
+                            <table class="eTable eTable-2 print-table table">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -175,7 +174,7 @@
                     @endif
                     <!-- Data info and Pagination -->
                     @if (count($payout_reports) > 0)
-                        <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
+                        <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center gr-15 flex-wrap">
                             <p class="admin-tInfo">
                                 {{ get_phrase('Showing') . ' ' . count($payout_reports) . ' ' . get_phrase('of') . ' ' . $payout_reports->total() . ' ' . get_phrase('data') }}
                             </p>
@@ -188,8 +187,6 @@
     @endsection
     @push('js')
         <script type="text/javascript">
-            "use strict";
-
             function update_date_range() {
                 var x = $("#selectedValue").html();
                 $("#date_range").val(x);

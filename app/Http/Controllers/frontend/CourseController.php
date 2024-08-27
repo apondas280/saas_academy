@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Session;
 
 class CourseController extends Controller
 {
-    public function index(Request $request, $company = '', $category ="")
+    public function index(Request $request, $company = '', $category = "")
     {
         $layout              = Session::has('view') ? session('view') : 'grid';
         $page_data['layout'] = $layout;
@@ -83,8 +83,8 @@ class CourseController extends Controller
             $wishlist = Wishlist::where('user_id', auth()->user()->id)->pluck('course_id')->toArray();
         }
 
-        $page_data['courses']  = $query->latest('id')->paginate($layout == 'grid' ? 9 : 5)->appends($request->query());
-        $page_data['wishlist'] = $wishlist;
+        $page_data['courses']          = $query->latest('id')->paginate(10)->appends($request->query());
+        $page_data['wishlist']         = $wishlist;
         $page_data['category_details'] = Category::where('slug', $category)->first();
         return view('frontend' . '.' . get_frontend_settings('theme') . '.course.index', $page_data);
     }
@@ -160,12 +160,12 @@ class CourseController extends Controller
             ->where('course.id', '!=', $course_2)
             ->where('course.id', '!=', $course_3)
             ->where('course.status', 'active')
-            
+
             ->like('course.title', $_GET['searchVal'])
             ->or_like('short_description', $_GET['searchVal'])
             ->or_like('first_name', $_GET['searchVal'])
             ->or_like('last_name', $_GET['searchVal'])
-            
+
             ->take(100)
             ->get();
 

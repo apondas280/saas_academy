@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\OpenAiController;
 use App\Http\Controllers\Admin\PageBuilderController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\QuizController;
+use App\Http\Controllers\Admin\TeamTrainingController;
 use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
@@ -238,13 +239,16 @@ Route::prefix('{company}')->group(function () {
             Route::get('about', 'about')->name('about');
             Route::any('admin/save_valid_purchase_code/{action_type?}', 'save_valid_purchase_code')->name('save_valid_purchase_code');
 
+            // player settings
+            Route::get('player-settings', 'player_settings')->name('player.settings');
+            Route::post('player-settings/update', 'player_settings_update')->name('player.settings.update');
+
             // Certificate settings
             Route::get('certificate_settings', 'certificate')->name('certificate.settings');
             Route::post('certificate/update/template', 'certificate_update_template')->name('certificate.update.template');
             Route::get('certificate/builder', 'certificate_builder')->name('certificate.builder');
             Route::post('certificate/builder/update', 'certificate_builder_update')->name('certificate.certificate.builder.update');
 
-            
             // Admin User Review Add
             Route::get('user/review', 'user_review_add')->name('review.create');
             Route::post('user/review/stor', 'user_review_stor')->name('review.store');
@@ -397,6 +401,26 @@ Route::prefix('{company}')->group(function () {
             Route::post('bootcamp/resource/store', 'store')->name('bootcamp.resource.store');
             Route::get('bootcamp/resource/delete/{id}', 'delete')->name('bootcamp.resource.delete');
             Route::get('bootcamp/resource/download/{id}', 'download')->name('bootcamp.resource.download');
+        });
+
+        // team training
+        Route::controller(TeamTrainingController::class)->group(function () {
+            Route::get('team-packages', 'index')->name('team.packages');
+            Route::view('team-packages/create', 'admin.team_training.create')->name('team.packages.create');
+            Route::post('team-packages/store', 'store')->name('team.packages.store');
+            Route::get('team-packages/purchase/history', 'purchase_history')->name('team.packages.purchase.history');
+
+            Route::middleware(['record.exists:team_training_packages,id,user_id'])->group(function () {
+                Route::get('team-packages/edit/{id}', 'edit')->name('team.packages.edit');
+                Route::post('team-packages/update/{id}', 'update')->name('team.packages.update');
+                Route::get('team-packages/delete/{id}', 'delete')->name('team.packages.delete');
+                Route::get('team-packages/duplicate/{id}', 'duplicate')->name('team.packages.duplicate');
+                Route::get('team-packages/toggle-status/{id}', 'toggle_status')->name('team.toggle.status');
+                Route::get('team-packages/purchase/invoice/{id}', 'invoice')->name('team.packages.purchase.invoice');
+            });
+
+            Route::get('get-courses-by-privacy/', 'get_courses')->name('get.courses.by.privacy');
+            Route::get('get-courses-price/', 'get_course_price')->name('get.course.price');
         });
 
         Route::get('select-language/{language}', [LanguageController::class, 'select_lng'])->name('select.language');

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Session;
 
 class BootcampPurchaseController extends Controller
 {
-    public function purchase($id)
+    public function purchase($company = "", $id)
     {
         $bootcamp = Bootcamp::where('id', $id)->first();
         if (! $bootcamp) {

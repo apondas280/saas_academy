@@ -130,15 +130,13 @@
         </p>
     </div>
 
-    <div class="col-12 d-flex justify-content-center gap-3">
+    <div class="col-12 d-flex justify-content-center gap-3 mt-4">
         @foreach ($submits as $key => $submit)
-            <button type="button" class="eBtn gradient-border result-btn" onclick="getResult(this)"
-                id="{{ $submit->id }}">{{ get_phrase('View Result') }} {{ ++$key }}</button>
+            <button type="button" class="continue-leason-btn w-auto result-btn" onclick="getResult(this)" id="{{ $submit->id }}">{{ get_phrase('View Result') }} {{ ++$key }}</button>
         @endforeach
 
         @if ($submits->count() < $quiz->retake)
-            <button type="button" class="eBtn gradient border-0"
-                id="starterBtn">{{ get_phrase('Start Quiz') }}</button>
+            <button type="button" class="continue-leason-btn w-auto active" id="starterBtn">{{ get_phrase('Start Quiz') }}</button>
         @endif
     </div>
 </div>

@@ -24,8 +24,8 @@ class Razorpay extends Model
     public static function payment_create($identifier)
     {
         $payment_details = session('payment_details');
-        $user = DB::table('users')->where('id', auth()->user()->id)->first();
-        $model = $payment_details['success_method']['model_name'];
+        $user            = DB::table('users')->where('id', auth()->user()->id)->first();
+        $model           = $payment_details['success_method']['model_name'];
 
         if ($model == 'InstructorPayment') {
             $settings = DB::table('users')->where('id', $payment_details['items'][0]['id'])
@@ -38,12 +38,7 @@ class Razorpay extends Model
                 $secret_key = $keys->razorpay->secret_key;
             }
 
-            if ($model == 'InstructorPayment') {
-                $description = 'Instructor Payment.';
-            } elseif ($model == 'CampaignPayout') {
-                $description = 'Campaign payment.';
-            }
-        } elseif ($model == 'PurchaseCourse') {
+        } else {
             $payment_gateway = DB::table('payment_gateways')
                 ->where('identifier', $identifier)
                 ->first();
@@ -51,36 +46,34 @@ class Razorpay extends Model
 
             $public_key = $keys['public_key'];
             $secret_key = $keys['secret_key'];
-            $description = 'By course.';
-            $color = '';
+            $color      = '';
         }
 
         $receipt_id = Str::random(20);
-        $api = new Api($public_key, $secret_key);
+        $api        = new Api($public_key, $secret_key);
 
         $order = $api->order->create(array(
-            'receipt' => $receipt_id,
-            'amount' => $payment_details['payable_amount'] * 100,
+            'receipt'  => $receipt_id,
+            'amount'   => $payment_details['payable_amount'] * 100,
             'currency' => 'USD',
         ));
 
         $page_data = [
-            'order_id' => $order['id'],
+            'order_id'    => $order['id'],
             'razorpay_id' => $public_key,
-            'amount' => $payment_details['payable_amount'] * 100,
+            'amount'      => $payment_details['payable_amount'] * 100,
 
-            'name' => $user->name,
-            'currency' => 'USD',
-            'email' => $user->email,
-            'phone' => $user->phone,
-            'address' => $user->address,
-            'description' => $description,
+            'name'        => $user->name,
+            'currency'    => 'USD',
+            'email'       => $user->email,
+            'phone'       => $user->phone,
+            'address'     => $user->address,
+            'description' => isset($payment_details['custom_field']['description']) ? $payment_details['custom_field']['description'] : '',
         ];
 
-
         $data = [
-            'page_data' => $page_data,
-            'color' => null,
+            'page_data'       => $page_data,
+            'color'           => null,
             'payment_details' => $payment_details,
         ];
         return $data;

@@ -16,7 +16,7 @@ class PaymentController extends Controller
     public function index()
     {
         $payment_details = session('payment_details');
-        if (!$payment_details || !is_array($payment_details) || count($payment_details) <= 0) {
+        if (! $payment_details || ! is_array($payment_details) || count($payment_details) <= 0) {
             Session::flash('error', get_phrase('Payment not configured yet'));
             return redirect()->back();
         }
@@ -30,14 +30,14 @@ class PaymentController extends Controller
         return view('payment.index', $page_data);
     }
 
-    public function show_payment_gateway_by_ajax($identifier)
+    public function show_payment_gateway_by_ajax($company = "", $identifier)
     {
         $page_data['payment_details'] = session('payment_details');
         $page_data['payment_gateway'] = DB::table('payment_gateways')->where('identifier', $identifier)->first();
         return view('payment.' . $identifier . '.index', $page_data);
     }
 
-    public function payment_success($identifier, Request $request)
+    public function payment_success($company = "", $identifier, Request $request)
     {
         $payment_details = session('payment_details');
         $payment_gateway = DB::table('payment_gateways')->where('identifier', $identifier)->first();
@@ -58,7 +58,7 @@ class PaymentController extends Controller
         }
     }
 
-    public function payment_create($identifier)
+    public function payment_create($company = "", $identifier)
     {
         $payment_details      = session('payment_details');
         $payment_gateway      = DB::table('payment_gateways')->where('identifier', $identifier)->first();
@@ -69,7 +69,7 @@ class PaymentController extends Controller
         return redirect()->to($created_payment_link);
     }
 
-    public function payment_razorpay($identifier)
+    public function payment_razorpay($company = "", $identifier)
     {
         $payment_details = session('payment_details');
         $payment_gateway = DB::table('payment_gateways')->where('identifier', $identifier)->first();

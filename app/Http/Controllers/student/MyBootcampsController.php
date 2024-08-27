@@ -20,11 +20,11 @@ class MyBootcampsController extends Controller
         $page_data['my_bootcamps'] = BootcampPurchase::join('bootcamps', 'bootcamp_purchases.bootcamp_id', 'bootcamps.id')
             ->where('bootcamp_purchases.user_id', auth()->user()->id)
             ->where('bootcamp_purchases.status', 1)
-            ->select('bootcamps.*')->latest('id')->paginate(10)->appends(request()->query());
+            ->select('bootcamps.*')->latest('id')->paginate(9)->appends(request()->query());
         return view(theme_path() . 'student.my_bootcamps.index', $page_data);
     }
 
-    public function show($slug)
+    public function show($company = "", $slug)
     {
         $page_data['bootcamp'] = BootcampPurchase::join('bootcamps', 'bootcamp_purchases.bootcamp_id', 'bootcamps.id')
             ->where('bootcamp_purchases.user_id', auth()->user()->id)
@@ -40,7 +40,7 @@ class MyBootcampsController extends Controller
         return view(theme_path() . 'student.my_bootcamps.details', $page_data);
     }
 
-    public function join_class($slug)
+    public function join_class($company = "", $slug)
     {
         $current_time  = time();
         $extended_time = $current_time + (60 * 15);
@@ -79,7 +79,7 @@ class MyBootcampsController extends Controller
         }
     }
 
-    public function download($id)
+    public function download($company = "", $id)
     {
         $resource = BootcampResource::join('bootcamp_modules', 'bootcamp_resources.module_id', 'bootcamp_modules.id')
             ->join('bootcamps', 'bootcamp_modules.bootcamp_id', 'bootcamps.id')
@@ -103,7 +103,7 @@ class MyBootcampsController extends Controller
         return response()->download($file_path);
     }
 
-    public function play($file)
+    public function play($company = "", $file)
     {
         $class = BootcampResource::join('bootcamp_modules', 'bootcamp_resources.module_id', 'bootcamp_modules.id')
             ->join('bootcamps', 'bootcamp_modules.bootcamp_id', 'bootcamps.id')

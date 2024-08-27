@@ -37,6 +37,14 @@ class BootcampPurchase extends Model
         $payment['payment_method'] = $identifier;
         $payment['status']         = 1;
 
+        $package = Bootcamp::find($payment_details['items'][0]['id']);
+        if (get_user_info($package->user_id)->role == 'admin') {
+            $payment['admin_revenue'] = $payment_details['payable_amount'];
+        } else {
+            $payment['instructor_revenue'] = $payment_details['payable_amount'] * (get_settings('instructor_revenue') / 100);
+            $payment['admin_revenue']      = $payment_details['payable_amount'] - $payment['instructor_revenue'];
+        }
+
         // insert payment details
         BootcampPurchase::insert($payment);
 

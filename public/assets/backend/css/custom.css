@@ -1007,10 +1007,10 @@ i:not(.fas, .fa, .fab) {
 }
 
 .first-li-have-sub>a::after {
-    content: "\f130";
+    content: "\f155";
     font-family: uicons-regular-rounded !important;
     font-style: normal;
-    font-weight: normal !important;
+    font-weight: 600 !important;
     font-variant: normal;
     text-transform: none;
     line-height: 1;

@@ -24,15 +24,7 @@
         if ($key == '') {
             $msg = "This payment gateway isn't configured.";
         }
-
-        if ($model == 'InstructorPayment') {
-            $title = 'Instructor payment.';
-            $description = 'Instructor payment.';
-        } elseif ($model == 'CampaignPayout') {
-            $title = 'Campaign Payout.';
-            $description = 'Campaign Payout.';
-        }
-    } elseif ($model == 'PurchaseCourse') {
+    } else {
         $payment_keys = json_decode($payment_gateway->keys, true);
         $key = $key_type = '';
 
@@ -54,9 +46,10 @@
         } else {
             $msg = get_phrase("This payment gateway isn't configured.");
         }
-        $title = get_phrase('Purchase Course');
-        $description = get_phrase('Payment for course purchase.');
     }
+
+    $title = isset($payment_details['custom_field']['title']) ? $payment_details['custom_field']['title'] : '';
+    $description = isset($payment_details['custom_field']['description']) ? $payment_details['custom_field']['description'] : '';
 
     // user information
     $user = DB::table('users')
@@ -82,7 +75,7 @@
     </svg>
 
     <div class="alert alert-danger d-flex align-items-center" role="alert">
-        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+        <svg class="bi me-2 flex-shrink-0" width="24" height="24" role="img" aria-label="Danger:">
             <use xlink:href="#exclamation-triangle-fill" />
         </svg>
         <div class="payment_err_msg">

@@ -1,3 +1,9 @@
+<style>
+    .spinner-border {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+</style>
 <div class="paymentWrap d-flex align-items-start flex-wrap">
     <div class="paymentLeft">
         <p class="payment_tab_title pb-30">{{ get_phrase('Select payment gateway') }}</p>
@@ -5,15 +11,10 @@
         <div class="nav flex-md-column flex-row nav-pills payment_modalTab" role="tablist" aria-orientation="vertical">
 
             @foreach ($payment_gateways as $key => $payment_gateway)
-                <div class="tabItem" onclick="showPaymentGatewayByAjax('{{ $payment_gateway->identifier }}')"
-                    id="{{ $payment_gateway->identifier }}-tab" data-bs-toggle="pill"
-                    data-bs-target="#{{ $payment_gateway->identifier }}" role="tab"
-                    aria-controls="{{ $payment_gateway->identifier }}" aria-selected="true">
+                <div class="tabItem" onclick="showPaymentGatewayByAjax('{{ $payment_gateway->identifier }}')" id="{{ $payment_gateway->identifier }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $payment_gateway->identifier }}" role="tab" aria-controls="{{ $payment_gateway->identifier }}" aria-selected="true">
                     <div class="payment_gateway_option d-flex align-items-center">
                         <div class="logo">
-                            <img width="100px"
-                                src="{{ get_image('assets/payment/' . $payment_gateway->identifier . '.png') }}"
-                                alt="" />
+                            <img width="100px" src="{{ get_image('assets/payment/' . $payment_gateway->identifier . '.png') }}" alt="" />
                         </div>
                         <div class="info">
                             <p class="card_no">{{ $payment_gateway->title }}</p>
@@ -45,7 +46,7 @@
                                 </td>
                                 <td>
                                     <div class="dAdmin_info_name min-w-150px text-end">
-                                        @if ($item['discount_price'] != $item['price'])
+                                        @if ($item['discount_price'] > 0)
                                             <p class="text-dark">
                                                 <small class="text-muted">
                                                     <del>{{ currency(number_format($item['price'], 2)) }}</del>
@@ -70,9 +71,7 @@
                             @php
                                 $payable = $payment_details['payable_amount'];
                                 if (isset($payment_details['custom_field']['coupon_discount'])) {
-                                    $payable =
-                                        $payment_details['payable_amount'] +
-                                        $payment_details['custom_field']['coupon_discount'];
+                                    $payable = $payment_details['payable_amount'] + $payment_details['custom_field']['coupon_discount'];
                                 }
                                 $payable = $payable - $payment_details['tax'];
                             @endphp
@@ -152,9 +151,11 @@
 
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 <script type="text/javascript">
+    "use strict";
+
     function showPaymentGatewayByAjax(identifier) {
         $('#showPaymentGatewayByAjax').html(
-            '<div class="w-100 text-center my-5"><div class="spinner-border" style="width: 3.5rem; height: 3.5rem;" role="status"><span class="visually-hidden"></span></div></div>'
+            '<div class="w-100 text-center my-5"><div class="spinner-border" role="status"><span class="visually-hidden"></span></div></div>'
         );
         $.ajax({
             url: "{{ route('payment.show_payment_gateway_by_ajax', '') }}/" + identifier,

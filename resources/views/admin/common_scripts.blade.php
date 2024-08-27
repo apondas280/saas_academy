@@ -247,4 +247,10 @@
         link.trigger('click');
         document.body.removeChild(link);
     }
+
+    function loadImage(elem, preview) {
+        var x = URL.createObjectURL(event.target.files[0]);
+        console.log(x);
+        $(preview).attr('src', x);
+    }
 </script>

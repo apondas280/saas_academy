@@ -119,7 +119,7 @@
 
                                     @if (isset($_GET) && count($_GET))
                                         <span class="text-12px">
-                                            ({{count($_GET)}})
+                                            ({{ count($_GET) }})
                                         </span>
                                     @endif
                                 </button>
@@ -219,7 +219,7 @@
                                         {{ get_phrase('Showing') . ' ' . count($courses) . ' ' . get_phrase('of') . ' ' . $courses->total() . ' ' . get_phrase('data') }}
                                     </p>
                                 </div>
-                                <div class="table-responsive overflow-auto course_list overflow-auto" id="course_list">
+                                <div class="table-responsive overflow-auto course_list" id="course_list">
                                     <table class="table eTable eTable-2 print-table">
                                         <thead>
                                             <tr>
@@ -335,7 +335,8 @@
                                                                     </li>
                                                                 @elseif($row->status == 'pending')
                                                                     <li>
-                                                                        <a class="dropdown-item" onclick="ajaxModal('{{ route('view', ['path' => 'admin.course.course_approval', 'course_id' => $row->id]) }}', '{{ get_phrase('Write a congratulatory message') }}')" href="#">{{ get_phrase('Make As Active') }}</a>
+                                                                        <a class="dropdown-item" onclick="ajaxModal('{{ route('view', ['path' => 'admin.course.course_approval', 'course_id' => $row->id]) }}', '{{ get_phrase('Write a congratulatory message') }}')"
+                                                                            href="#">{{ get_phrase('Make As Active') }}</a>
                                                                     </li>
                                                                 @else
                                                                     <li>

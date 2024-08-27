@@ -3,34 +3,67 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Blog;
-use App\Models\BlogCategory;
-use App\Models\BlogComment;
+use App\Models\Category;
+use App\Models\Course;
+use App\Models\TeamTrainingPackage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
 class TeamTrainingController extends Controller
 {
-    public function index(Request $request, $company = ''){
-        // $category_row = BlogCategory::where('slug', $category)->first();
-        $query = Blog::query();
+    public function index($company = "", $category = '')
+    {
+        $query = TeamTrainingPackage::join('courses', 'team_training_packages.course_id', 'courses.id')
+            ->join('users', 'team_training_packages.user_id', 'users.id')
+            ->where('team_training_packages.status', 1)
+            ->select(
+                'team_training_packages.*',
+                'courses.title as course_title',
+                'courses.slug as course_slug',
+                'courses.price as course_price',
+                'users.name as creator_name',
+                'users.email as creator_email',
+                'users.photo as creator_photo',
+            );
 
-        // // search result
-        // if (request()->has('search')) {
-        //     $search = request()->input('search');
-        //     $query->where(function ($query) use ($search) {
-        //         $query->where('title', 'LIKE', '%' . $search . '%');
-        //         $query->orWhere('description', 'LIKE', '%' . $search . '%');
-        //     });
-        // }
+        if (request()->has('search')) {
+            $query = $query->where('team_training_packages.title', 'LIKE', "%" . request()->query('search') . "%");
+        }
 
-        // // if blog has category
-        // if ($category != '') {
-        //     $query->where('category_id', $category_row->id);
-        // }
+        if ($category) {
+            $category_details = Category::where('slug', $category)->first();
+            if ($category_details->parent_id == 0) {
+                $sub_cat_id = Category::where('parent_id', $category_details->id)->pluck('id');
+                $courses    = Course::whereIn('category_id', $sub_cat_id)->pluck('id')->toArray();
+            } else {
+                $courses = Course::where('category_id', $category_details->id)->pluck('id')->toArray();
+            }
 
-        $page_data['blogs'] = $query->latest('id')->paginate(6)->appends($request->query());
-        $view_path          = 'frontend' . '.' . get_frontend_settings('theme') . '.team_training.index';
-        return view($view_path, $page_data);
+            $query = $query->where('course_id', $courses);
+        }
+
+        $page_data['packages'] = $query->latest('id')->paginate(6)->appends(request()->query());
+        return view('frontend.default.team_training.index', $page_data);
+    }
+
+    public function show($company = "", $slug)
+    {
+        $page_data['package'] = TeamTrainingPackage::join('courses', 'team_training_packages.course_id', 'courses.id')
+            ->join('users', 'team_training_packages.user_id', 'users.id')
+            ->select(
+                'team_training_packages.*',
+                'courses.title as course_title',
+                'courses.slug as course_slug',
+                'courses.price as course_price',
+                'users.name as creator_name',
+                'users.email as creator_email',
+                'users.photo as creator_photo',
+            )
+            ->where('team_training_packages.slug', $slug)
+            ->first();
+
+        if (! $page_data['package']) {
+            return redirect()->back()->with('error', get_phrase('Data not found.'));
+        }
+        return view('frontend.default.team_training.details', $page_data);
     }
 }

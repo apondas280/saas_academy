@@ -30,4 +30,13 @@ class Bootcamp extends Model
         'status',
         'pending',
     ];
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+    public function category()
+    {
+        return $this->belongsTo(BootcampCategory::class, 'category_id', 'id');
+    }
 }

@@ -26,13 +26,10 @@
                                 </button>
                                 <ul class="dropdown-list">
                                     <li>
-                                        <a class="dropdown-item" href="#"
-                                            onclick="downloadPDF('.print-table', 'bootcamp-payment-history')"><i
-                                                class="fi-rr-file-pdf"></i> {{ get_phrase('PDF') }}</a>
+                                        <a class="dropdown-item" href="#" onclick="downloadPDF('.print-table', 'bootcamp-payment-history')"><i class="fi-rr-file-pdf"></i> {{ get_phrase('PDF') }}</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#" onclick="window.print();"><i
-                                                class="fi-rr-print"></i> {{ get_phrase('Print') }}</a>
+                                        <a class="dropdown-item" href="#" onclick="window.print();"><i class="fi-rr-print"></i> {{ get_phrase('Print') }}</a>
                                     </li>
                                 </ul>
                             </div>
@@ -41,8 +38,7 @@
 
                     <!-- Table -->
                     @if (count($purchases) > 0)
-                        <div
-                            class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
+                        <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
                             <p class="admin-tInfo">
                                 {{ get_phrase('Showing') . ' ' . count($purchases) . ' ' . get_phrase('of') . ' ' . $purchases->total() . ' ' . get_phrase('data') }}
                             </p>
@@ -69,32 +65,35 @@
 
                                             <td>
                                                 <div class="dAdmin_profile d-flex align-items-center min-w-200px">
-                                                    <div class="dAdmin_profile_name">
-                                                        <h4 class="title fs-14px">
-                                                            {{ get_user_info($report->user_id)->name }}
-                                                        </h4>
-                                                        <p class="sub-title text-12px">
-                                                            {{ get_user_info($report->user_id)->email }}</p>
+                                                    <div class="dAdmin_profile_img">
+                                                        <img class="img-fluid rounded-circle image-45" width="40" height="40" src="{{ get_image(get_user_info($report->user_id)->photo) }}">
+                                                    </div>
+                                                    <div class="ms-1 mt-1">
+                                                        <h4 class="title fs-14px">{{ get_user_info($report->user_id)->name }}</h4>
+                                                        <p class="sub-title2 text-12px">{{ get_user_info($report->user_id)->email }}</p>
                                                     </div>
                                                 </div>
                                             </td>
 
                                             <td>
                                                 <div class="sub-title2 text-12px min-w-150px">
-                                                    <a
-                                                        href="{{ route('bootcamp.details', $report->slug) }}">{{ $report->title }}</a>
+                                                    <a href="{{ route('bootcamp.details', $report->slug) }}">{{ $report->title }}</a>
                                                 </div>
                                             </td>
 
                                             <td>
                                                 <div class="sub-title2 text-12px min-w-150px">
-                                                    <p>{{ currency($report->price) }}</p>
+                                                    <p>{{ currency(number_format($report->price, 2)) }}</p>
+                                                    <p><span>{{ get_phrase('Admin :') }} </span>{{ currency(number_format($report->admin_revenue, 2)) }}</p>
+                                                    @if (get_user_info($report->author)->role != 'admin')
+                                                        <p><span>{{ get_phrase('Author :') }} </span>{{ currency(number_format($report->instructor_revenue, 2)) }}</p>
+                                                    @endif
                                                 </div>
                                             </td>
 
                                             <td>
                                                 <div class="sub-title2 text-12px">
-                                                    <p>{{ date('d-M-y', strtotime($report->purchase_date)) }}</p>
+                                                    <p>{{ date('d-M-y', strtotime($report->created_at)) }}</p>
                                                 </div>
                                             </td>
 
@@ -106,8 +105,7 @@
 
                                             <td class="print-d-none">
                                                 <div class="sub-title2 text-12px text-capitalize">
-                                                    <a href="{{ route('instructor.bootcamp.purchase.invoice', $report->id) }}"
-                                                        class="btn ol-btn-outline-secondary d-flex align-items-center cg-10px">
+                                                    <a href="{{ route('instructor.bootcamp.purchase.invoice', $report->id) }}" class="btn ol-btn-outline-secondary d-flex align-items-center cg-10px">
                                                         <span>{{ get_phrase('Invoice') }}</span>
                                                     </a>
                                                 </div>
@@ -123,8 +121,7 @@
                     @endif
                     <!-- Data info and Pagination -->
                     @if (count($purchases) > 0)
-                        <div
-                            class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
+                        <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
                             <p class="admin-tInfo">
                                 {{ get_phrase('Showing') . ' ' . count($purchases) . ' ' . get_phrase('of') . ' ' . $purchases->total() . ' ' . get_phrase('data') }}
                             </p>

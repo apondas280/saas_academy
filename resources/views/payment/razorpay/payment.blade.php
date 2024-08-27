@@ -1,11 +1,10 @@
 @php
     $page_data = $data['page_data'];
     $payment_details = $data['payment_details'];
-    $payment_details['custom_field'] = ['user_photo' => auth()->user()->photo];
     $color = $data['color'];
 @endphp
 
-<button id="rzp-button1" hidden>Pay</button>
+<button id="rzp-button1" hidden>{{ get_phrase('Pay') }}</button>
 
 <form action="{{ route('payment.success', ['identifier' => 'razorpay']) }}" hidden>
     @csrf
@@ -18,6 +17,7 @@
 <script src="{{ asset('assets/frontend/default/js/jquery-3.7.1.min.js') }}"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
+    "use strict";
     var color = "{{ $color }}";
 
     var options = {
@@ -27,7 +27,7 @@
 
         "name": "{{ $page_data['name'] }}",
         "description": "{{ $page_data['description'] }}",
-        "image": "{{ get_image($payment_details['custom_field']['user_photo']) }}",
+        "image": "{{ get_image(auth()->user()->photo) }}",
 
         "order_id": "{{ $page_data['order_id'] }}",
 
@@ -40,7 +40,7 @@
             $('#razorpay_order_id').val(razorpay_order_id);
             $('#razorpay_signature').val(razorpay_signature);
 
-            $('#payment_done').click();
+            $('#payment_done').trigger('click');
         },
 
         "prefill": {
@@ -71,6 +71,6 @@
     }
 
     $(document).ready(function() {
-        $('#rzp-button1').click();
+        $('#rzp-button1').trigger('click');
     });
 </script>

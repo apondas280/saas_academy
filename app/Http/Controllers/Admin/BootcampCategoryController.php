@@ -36,7 +36,7 @@ class BootcampCategoryController extends Controller
         return redirect()->back();
     }
 
-    public function delete($id)
+    public function delete($company = "", $id)
     {
         $category = BootcampCategory::where('id', $id);
         if ($category->doesntExist()) {
@@ -49,7 +49,7 @@ class BootcampCategoryController extends Controller
         return redirect()->back();
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $company = "", $id)
     {
         $category = BootcampCategory::where('id', $id);
         if ($category->doesntExist()) {

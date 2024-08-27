@@ -75,7 +75,7 @@ class QuizController extends Controller
         Session::flash('success', get_phrase('Quiz has been created.'));
         return redirect()->back();
     }
-    public function update(Request $request, $id)
+    public function update(Request $request, $company = "", $id)
     {
         $validator = Validator::make($request->all(), [
             'title'      => 'required',

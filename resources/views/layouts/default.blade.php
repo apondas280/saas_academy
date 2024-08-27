@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     @include('layouts.seo')
     @stack('meta')
@@ -15,6 +16,16 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/nice-select.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/jquery.rprogessbar.min.css') }}">
+
+    <!-- FlatIcons -->
+    <link rel="stylesheet" href="{{ asset('assets/global/flaticon/css/all/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/global/flaticon/css/bold/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/global/flaticon/css/brands/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/global/flaticon/css/regular/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/global/flaticon/css/solid/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/global/flaticon/css/thin/rounded.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/global/flaticon/css/thin/straight.css') }}">
+
     <!-- Custom Css File -->
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/custom_style.css') }}">
@@ -25,8 +36,9 @@
 
     @stack('css')
 </head>
+
 <body>
-    
+
     <header>
         @include('frontend.default.header')
     </header>
@@ -36,7 +48,9 @@
     <footer class="footer-section">
         @include('frontend.default.footer')
     </footer>
-    
+
+    @include('frontend.default.modal')
+
     @stack('js')
     <!-- Js Files -->
     <script src="{{ asset('assets/frontend/default/js/bootstrap.bundle.min.js') }}"></script>
@@ -49,4 +63,5 @@
     <!-- Custom Js File -->
     <script src="{{ asset('assets/frontend/default/js/script.js') }}"></script>
 </body>
+
 </html>

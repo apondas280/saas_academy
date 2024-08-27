@@ -62,7 +62,7 @@ class BootcampResourceController extends Controller
         return redirect()->back();
     }
 
-    public function delete($id)
+    public function delete($company = "", $id)
     {
         $resource = BootcampResource::where('id', $id)->first();
         if (! $resource) {
@@ -80,7 +80,7 @@ class BootcampResourceController extends Controller
         return redirect()->back();
     }
 
-    public function download($id)
+    public function download($company = "", $id)
     {
         $resource = BootcampResource::where('id', $id);
         if ($resource->doesntExist()) {

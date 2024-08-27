@@ -91,7 +91,7 @@ class BootcampLiveClassController extends Controller
         return redirect()->route('admin.bootcamp.edit', ['id' => $module->bootcamp_id, 'tab' => 'curriculum']);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $company = "", $id)
     {
         $validator = Validator::make($request->all(), [
             'title'       => 'required|string',
@@ -112,6 +112,7 @@ class BootcampLiveClassController extends Controller
             ->where('bootcamps.user_id', auth()->user()->id)
             ->select('bootcamp_live_classes.*', 'bootcamp_modules.restriction', 'bootcamp_modules.publish_date', 'bootcamp_modules.expiry_date')
             ->first();
+
         if (! $class) {
             Session::flash('error', get_phrase('Data not found.'));
             return redirect()->back();
@@ -173,7 +174,7 @@ class BootcampLiveClassController extends Controller
         return redirect()->back();
     }
 
-    public function delete($id)
+    public function delete($company = "", $id)
     {
         $class = BootcampLiveClass::join('bootcamp_modules', 'bootcamp_live_classes.module_id', 'bootcamp_modules.id')
             ->join('bootcamps', 'bootcamp_modules.bootcamp_id', 'bootcamps.id')
@@ -192,7 +193,7 @@ class BootcampLiveClassController extends Controller
         return redirect()->back();
     }
 
-    public function join_class($slug)
+    public function join_class($company = "", $slug)
     {
         $current_time  = time();
         $extended_time = $current_time + (60 * 15);
@@ -222,7 +223,7 @@ class BootcampLiveClassController extends Controller
         }
     }
 
-    public function stop_class($id)
+    public function stop_class($company = "", $id)
     {
         $class = BootcampLiveClass::join('bootcamp_modules', 'bootcamp_live_classes.module_id', 'bootcamp_modules.id')
             ->join('bootcamps', 'bootcamp_modules.bootcamp_id', 'bootcamps.id')

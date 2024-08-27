@@ -66,6 +66,7 @@ class CurriculumController extends Controller
         $data['is_free']     = $request->free_lesson;
         $data['lesson_type'] = $request->lesson_type;
         $data['summary']     = $request->summary;
+
         if ($request->lesson_type == 'text') {
             $data['attachment']      = $request->text_description;
             $data['attachment_type'] = $request->lesson_provider;
@@ -152,13 +153,29 @@ class CurriculumController extends Controller
                 $item      = $request->file('system_video_file');
                 $file_name = strtotime('now') . random(4) . '.' . $item->getClientOriginalExtension();
 
-                $path = public_path('assets/upload/lesson_file/videos');
+                $path = public_path('uploads/lesson_file/videos/');
                 if (! File::isDirectory($path)) {
                     File::makeDirectory($path, 0777, true, true);
-                } else {
-                    $item->move(public_path('assets/upload/lesson_file/videos/'), $file_name);
                 }
-                $file = $file_name;
+
+                $type = get_player_settings('watermark_type');
+                if ($type == 'ffmpeg') {
+                    $watermark = get_player_settings('watermark_logo');
+                    if (! $watermark) {
+                        return redirect()->back()->with('error', get_phrase('Please configure watermark setting.'));
+                    }
+
+                    if (! file_exists(public_path($watermark))) {
+                        return redirect()->back()->with('error', get_phrase('File doesn\'t exists.'));
+                    }
+
+                    $watermark_status = WatermarkController::encode($item, $file_name, $path);
+                    if (! $watermark_status) {
+                        return redirect()->back()->with('error', get_phrase('Something went wrong.'));
+                    }
+                }
+                $item->move($path, $file_name);
+                $file = str_replace(public_path(''), '', $path) . $file_name;
             }
 
             $data['video_type'] = $request->lesson_provider;
@@ -171,7 +188,7 @@ class CurriculumController extends Controller
         }
 
         Lesson::insert($data);
-        Session::flash('success', get_phrase('lesson added successfully'));
+        Session::flash('success', get_phrase('Lesson added successfully'));
         return redirect()->back();
     }
 
@@ -187,10 +204,10 @@ class CurriculumController extends Controller
 
     public function lesson_edit(Request $request)
     {
-
         $lesson['title']      = $request->title;
         $lesson['section_id'] = $request->section_id;
         $lesson['summary']    = $request->summary;
+
         if ($request->lesson_type == 'text') {
             $lesson['description'] = $request->text_description;
         } elseif ($request->lesson_type == 'video-url') {
@@ -260,20 +277,37 @@ class CurriculumController extends Controller
             $sec                  = sprintf('%02d', $duration_formatter[2]);
             $lesson['duration']   = $hour . ':' . $min . ':' . $sec;
         } elseif ($request->lesson_type == 'system-video') {
-
+            dd($request->lesson_type);
             if ($request->system_video_file == '') {
                 $file = '';
             } else {
                 $item      = $request->file('system_video_file');
                 $file_name = strtotime('now') . random(4) . '.' . $item->getClientOriginalExtension();
 
-                $path = public_path('assets/upload/lesson_file/videos');
+                $path = public_path('uploads/lesson_file/videos/');
                 if (! File::isDirectory($path)) {
                     File::makeDirectory($path, 0777, true, true);
-                } else {
-                    $item->move(public_path('assets/upload/lesson_file/videos/'), $file_name);
                 }
-                $file = $file_name;
+
+                $type = get_player_settings('watermark_type');
+                dd($type);
+                if ($type == 'ffmpeg') {
+                    $watermark = get_player_settings('watermark_logo');
+                    if (! $watermark) {
+                        return redirect()->back()->with('error', get_phrase('Please configure watermark setting.'));
+                    }
+
+                    if (! file_exists(public_path($watermark))) {
+                        return redirect()->back()->with('error', get_phrase('File doesn\'t exists.'));
+                    }
+
+                    $watermark_status = WatermarkController::encode($item, $file_name, $path);
+                    if (! $watermark_status) {
+                        return redirect()->back()->with('error', get_phrase('Something went wrong.'));
+                    }
+                }
+                $item->move($path, $file_name);
+                $file = str_replace(public_path(''), '', $path) . $file_name;
             }
 
             $lesson['lesson_src'] = $file;

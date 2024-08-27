@@ -13,4 +13,9 @@ class BootcampCategory extends Model
         'title',
         'slug',
     ];
+
+    public function bootcamp()
+    {
+        return $this->hasMany(Bootcamp::class, 'category_id');
+    }
 }

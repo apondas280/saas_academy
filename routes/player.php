@@ -7,15 +7,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('{company}')->group(function () {
 
-    Route::controller(PlayerController::class)->middleware('auth')->group(function () {
+    Route::controller(PlayerController::class)->middleware(['auth', 'ip.detector'])->group(function () {
         Route::get('play-course/{slug}/{id?}', 'course_player')->name('course.player');
         Route::post('set-watch-history/', 'set_watch_history')->name('set.watch.history');
+        Route::get('player/prepend/watermark', 'prepend_watermark')->name('player.prepend.watermark');
 
         //bootcamp
         Route::get('watch-bootcamp/{slug?}', 'bootcamp_player')->name('bootcamp.player');
     });
 
-    Route::controller(ForumController::class)->middleware('auth')->group(function () {
+    Route::controller(ForumController::class)->middleware(['auth', 'ip.detector'])->group(function () {
         Route::get('forum/questions', 'index')->name('forum.questions');
         Route::get('forum/question/create', 'create')->name('forum.question.create');
         Route::post('forum/question/store', 'store')->name('forum.question.store');

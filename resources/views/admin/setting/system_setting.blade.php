@@ -70,7 +70,8 @@
                             </div>
 
                             <div class="fpb-7 mb-3">
-                                <label class="form-label ol-form-label" for="youtube_api_key">{{ get_phrase('Youtube API key') }}<span>*</span> &nbsp; <a href = "https://developers.google.com/youtube/v3/getting-started" target = "_blank" class="text-12px text-secondary">({{ get_phrase('Get YouTube API key') }} <i class="mdi mdi-open-in-new"></i>)</a></label>
+                                <label class="form-label ol-form-label" for="youtube_api_key">{{ get_phrase('Youtube API key') }}<span>*</span> &nbsp; <a href = "https://developers.google.com/youtube/v3/getting-started" target = "_blank"
+                                        class="text-12px text-secondary">({{ get_phrase('Get YouTube API key') }} <i class="mdi mdi-open-in-new"></i>)</a></label>
                                 <input type="text" name = "youtube_api_key" id = "youtube_api_key" class="form-control ol-form-control" value="{{ get_settings('youtube_api_key') }}" required>
                                 <a href="https://support.google.com/googleapi/answer/6158841" target="_blank" class="text-12px text-secondary">
                                     {{ get_phrase('If you want to use Google Drive video, you need to enable the Google Drive service in this API') }}
@@ -110,6 +111,11 @@
                                     </div>
                                 </div>
                                 <small>{{ get_phrase('Enter 0 if you want to disable the tax option') }}</small>
+                            </div>
+
+                            <div class="fpb-7 mb-3">
+                                <label class="form-label ol-form-label" for="max_device">{{ get_phrase('Max Device') }}</label>
+                                <input type="number" name="max_device" id="max_device" class="form-control ol-form-control" value="{{ get_settings('max_device') }}" required>
                             </div>
 
                             <div class="fpb-7 mb-3">

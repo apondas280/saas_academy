@@ -48,7 +48,7 @@ class BootcampModuleController extends Controller
         return redirect()->back();
     }
 
-    public function delete($id)
+    public function delete($company = "", $id)
     {
         $module = BootcampModule::join('bootcamps', 'bootcamp_modules.bootcamp_id', 'bootcamps.id')
             ->where('bootcamp_modules.id', $id)
@@ -64,7 +64,7 @@ class BootcampModuleController extends Controller
         return redirect()->back();
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $company = "", $id)
     {
         $rules = [
             'title'    => 'required|string',

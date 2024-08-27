@@ -17,9 +17,7 @@
         @else
             {{ ucfirst($lesson_type) }}
         @endif
-        <a onclick="ajaxModal('{{ route('modal', ['admin.course.lesson_type', 'id' => $id]) }}', '{{ get_phrase('Sort sections') }}')"
-            class="btn text-primary ms-auto p-0 text-14px" href="javascript:void(0)">{{ get_phrase('Change') }} <i
-                class="fi-rr-arrow-alt-circle-right"></i></a>
+        <a onclick="ajaxModal('{{ route('modal', ['admin.course.lesson_type', 'id' => $id]) }}', '{{ get_phrase('Sort sections') }}')" class="btn text-primary ms-auto p-0 text-14px" href="javascript:void(0)">{{ get_phrase('Change') }} <i class="fi-rr-arrow-alt-circle-right"></i></a>
     </p>
 </div>
 
@@ -83,8 +81,7 @@
     </div>
 
     <div class="text-center">
-        <button class="btn ol-btn-primary ol-btn-sm w-100 formSubmissionBtn" type="submit"
-            name="button">{{ get_phrase('Add lesson') }}</button>
+        <button class="btn ol-btn-primary ol-btn-sm w-100 formSubmissionBtn" type="submit" name="button">{{ get_phrase('Add lesson') }}</button>
     </div>
 </form>
 
@@ -104,7 +101,6 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    console.log(response);
                     jQuery('#duration').val(response.duration);
                     $('#perloader').hide();
                     $('#invalid_url').hide();
@@ -114,7 +110,6 @@
             $('#invalid_url').show();
             $('#perloader').hide();
             jQuery('#duration').val('');
-
         }
     }
 

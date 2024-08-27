@@ -37,10 +37,7 @@
 
     @foreach ($questions as $key => $question)
         @php
-            $given_answer =
-                $question->type == 'true_false'
-                    ? $question->answer
-                    : implode(', ', json_decode($question->answer, true));
+            $given_answer = $question->type == 'true_false' ? $question->answer : implode(', ', json_decode($question->answer, true));
             $user_answers = array_key_exists($question->id, $submits) ? $submits[$question->id] : [];
         @endphp
 
@@ -62,23 +59,19 @@
                     @foreach ($options as $index => $option)
                         @php $val = $user_answers ? array_search($option, $user_answers) : ''; @endphp
                         <div class="col-sm-6">
-                            <input class="form-check-input" type="checkbox" value="{{ $option }}"
-                                @if (is_numeric($val)) checked @endif disabled>
+                            <input class="form-check-input" type="checkbox" value="{{ $option }}" @if (is_numeric($val)) checked @endif disabled>
                             <label class="form-check-label text-capitalize">{{ $option }}</label>
                         </div>
                     @endforeach
                 @elseif($question->type == 'fill_blanks')
-                    <input type="text" class="form-control tagify" data-role="tagsinput"
-                        value="{{ json_encode($user_answers) }}" disabled>
+                    <input type="text" class="form-control tagify" data-role="tagsinput" value="{{ json_encode($user_answers) }}" disabled>
                 @elseif($question->type == 'true_false')
                     <div class="col-sm-2">
-                        <input class="form-check-input" type="radio" disabled
-                            @if ($user_answers == 'true') checked @endif>
+                        <input class="form-check-input" type="radio" disabled @if ($user_answers == 'true') checked @endif>
                         <label class="form-check-label">{{ get_phrase('True') }}</label>
                     </div>
                     <div class="col-sm-2">
-                        <input class="form-check-input" type="radio" disabled
-                            @if ($user_answers == 'false') checked @endif>
+                        <input class="form-check-input" type="radio" disabled @if ($user_answers == 'false') checked @endif>
                         <label class="form-check-label">{{ get_phrase('False') }}</label>
                     </div>
                 @endif
@@ -90,9 +83,8 @@
     @endforeach
 
     <div class="row">
-        <div class="col-12 d-flex gap-3 justify-content-center">
-            <button type="button" class="eBtn gradient border-0 mb-4 d-flex align-items-center gap-2" id="backBtn"
-                onclick="back()"><i class="fi fi-rr-angle-small-left fs-5"></i>{{ get_phrase('Back') }}</button>
+        <div class="col-12 d-flex gap-3 justify-content-end">
+            <button type="button" class="continue-leason-btn active w-auto px-3" id="backBtn" onclick="back()"><i class="fi fi-rr-angle-small-left fs-5"></i>{{ get_phrase('Back') }}</button>
         </div>
     </div>
 </div>

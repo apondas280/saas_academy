@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 class ModalController extends Controller
 {
 
-    public function common_view_function($view_path = "", Request $request)
+    public function common_view_function($company = "", $view_path = "", Request $request)
     {
         $page_data = array();
-        foreach ($request->all() as $key => $value) :
+        foreach ($request->all() as $key => $value):
             $page_data[$key] = $value;
         endforeach;
 

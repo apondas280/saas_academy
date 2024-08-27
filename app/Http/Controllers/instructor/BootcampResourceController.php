@@ -43,15 +43,21 @@ class BootcampResourceController extends Controller
                 Session::flash('error', get_phrase("Failed to upload. File type must be a video."));
                 return redirect()->back();
             }
+
             $file_name     = $file->getClientOriginalName();
             $data['title'] = replace_url_symbol($file_name);
             $data['file']  = 'uploads/bootcamp/resource/' . auth()->user()->name . '/' . $module->bootcamp_title . '/' . $module->title . '/' . $data['title'];
 
-            $query = BootcampResource::where('title', $data['title']);
+            $query = BootcampResource::join('bootcamp_modules', 'bootcamp_resources.module_id', 'bootcamp_modules.id')
+                ->join('bootcamps', 'bootcamp_modules.bootcamp_id', 'bootcamps.id')
+                ->where('bootcamps.user_id', auth()->user()->id)
+                ->where('bootcamp_resources.title', $data['title']);
+
             if ($query->exists()) {
                 Session::flash('error', get_phrase("File already exists."));
                 return redirect()->back();
             }
+
             $query->insert($data);
             FileUploader::upload($file, $data['file']);
         }
@@ -59,7 +65,7 @@ class BootcampResourceController extends Controller
         return redirect()->back();
     }
 
-    public function delete($id)
+    public function delete($company = "", $id)
     {
         $resource = BootcampResource::where('id', $id)->first();
         if (! $resource) {
@@ -77,7 +83,7 @@ class BootcampResourceController extends Controller
         return redirect()->back();
     }
 
-    public function download($id)
+    public function download($company = "", $id)
     {
         $resource = BootcampResource::where('id', $id);
         if ($resource->doesntExist()) {

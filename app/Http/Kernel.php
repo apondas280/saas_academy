@@ -70,5 +70,7 @@ class Kernel extends HttpKernel
         'blog.visibility'          => \App\Http\Middleware\BlogVisibility::class,
         'permissioncheck'          => \App\Http\Middleware\ParmissionCheckRoute::class,
         'becomeaninstructor'       => \App\Http\Middleware\Becomeaninstructor::class,
+        'ip.detector'              => \App\Http\Middleware\IpDetectorMiddleware::class,
+        'record.exists'            => \App\Http\Middleware\RecordVerification::class,
     ];
 }

@@ -21,7 +21,7 @@ class BootcampController extends Controller
     {
         date_default_timezone_set('Asia/Dhaka');
     }
-    public function index($type = '')
+    public function index($company = "", $type = '')
     {
         $query = Bootcamp::join('bootcamp_categories', 'bootcamps.category_id', 'bootcamp_categories.id')
             ->select('bootcamps.*', 'bootcamp_categories.title as category', 'bootcamp_categories.slug as category_slug')
@@ -68,7 +68,7 @@ class BootcampController extends Controller
         return view('admin.bootcamp.create');
     }
 
-    public function edit($id)
+    public function edit($company = "", $id)
     {
         $bootcamp = Bootcamp::where('id', $id)->where('user_id', auth()->user()->id)->first();
         if (! $bootcamp) {
@@ -129,7 +129,7 @@ class BootcampController extends Controller
         return redirect()->route('admin.bootcamp.edit', [$insert_id, 'tab' => 'basic']);
     }
 
-    public function delete($id)
+    public function delete($company = "", $id)
     {
         $bootcamp = Bootcamp::where('id', $id)->where('user_id', auth()->user()->id);
         if ($bootcamp->doesntExist()) {
@@ -142,7 +142,7 @@ class BootcampController extends Controller
         return redirect()->back();
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $company = "", $id)
     {
         $query = Bootcamp::where('id', $id)->where('user_id', auth()->user()->id);
 
@@ -274,7 +274,7 @@ class BootcampController extends Controller
         return redirect()->back();
     }
 
-    public function duplicate($id)
+    public function duplicate($company = "", $id)
     {
         $bootcamp = Bootcamp::where('id', $id);
         if ($bootcamp->doesntExist()) {
@@ -295,7 +295,7 @@ class BootcampController extends Controller
         return redirect()->route('admin.bootcamp.edit', [$insert_id, 'tab' => 'basic']);
     }
 
-    public function status($id)
+    public function status($company = "", $id)
     {
         $bootcamp = Bootcamp::where('id', $id)->where('user_id', auth()->user()->id);
         if ($bootcamp->doesntExist()) {
@@ -308,16 +308,12 @@ class BootcampController extends Controller
         $status = $bootcamp->first()->status ? 0 : 1;
         Bootcamp::where('id', $id)->update(['status' => $status]);
 
-        $response = [
-            'success' => get_phrase('Status has been updated.'),
-        ];
-        return json_encode($response);
+        return redirect()->back()->with('success', get_phrase('Status has been updated.'));
     }
 
     public function purchase_history()
     {
         $page_data['purchases'] = BootcampPurchase::join('bootcamps', 'bootcamp_purchases.bootcamp_id', 'bootcamps.id')
-            ->where('bootcamps.user_id', auth()->user()->id)
             ->select(
                 'bootcamp_purchases.*',
                 'bootcamps.user_id as author',
@@ -330,10 +326,9 @@ class BootcampController extends Controller
         return view('admin.bootcamp.purchase_history', $page_data);
     }
 
-    public function invoice($id)
+    public function invoice($company = "", $id)
     {
         $invoice = BootcampPurchase::join('bootcamps', 'bootcamp_purchases.bootcamp_id', 'bootcamps.id')
-            ->where('bootcamps.user_id', auth()->user()->id)
             ->where('bootcamp_purchases.id', $id)
             ->select(
                 'bootcamp_purchases.*',

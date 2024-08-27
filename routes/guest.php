@@ -78,11 +78,10 @@ Route::prefix('{company}')->group(function () {
         return view($view_path);
     })->name('terms.condition');
 
-    // team training page
+    // team training
     Route::controller(TeamTrainingController::class)->group(function () {
-        Route::get('team_training/packages', 'index')->name('team_training_packages');
-        Route::get('blog/{slug?}', 'blog_details')->name('blog.details');
-        Route::get('blogs-list/{id}', 'blog_by_category')->name('blog.by.category');
+        Route::get('team-packages/{category?}', 'index')->name('team.packages');
+        Route::get('team-package/{slug}', 'show')->name('team.package.details');
     });
 
 });

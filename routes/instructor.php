@@ -15,6 +15,7 @@ use App\Http\Controllers\instructor\QuestionController;
 use App\Http\Controllers\instructor\QuizController;
 use App\Http\Controllers\instructor\SalesReportController;
 use App\Http\Controllers\instructor\SectionController;
+use App\Http\Controllers\instructor\TeamTrainingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('{company}')->group(function () {
 
-    Route::name('instructor.')->prefix('instructor')->middleware('instructor')->group(function () {
+    Route::name('instructor.')->prefix('instructor')->middleware(['instructor', 'ip.detector'])->group(function () {
         // dashboard
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -45,7 +46,7 @@ Route::prefix('{company}')->group(function () {
             Route::get('course/delete/{id}', 'delete')->name('course.delete');
             Route::get('course/draft/{id}', 'draft')->name('course.draft');
             Route::get('course/status/{type}/{id}', 'status')->name('course.status');
-            
+
         });
 
         //Section route
@@ -157,6 +158,26 @@ Route::prefix('{company}')->group(function () {
             Route::post('bootcamp/resource/store', 'store')->name('bootcamp.resource.store');
             Route::get('bootcamp/resource/delete/{id}', 'delete')->name('bootcamp.resource.delete');
             Route::get('bootcamp/resource/download/{id}', 'download')->name('bootcamp.resource.download');
+        });
+
+        // team training
+        Route::controller(TeamTrainingController::class)->group(function () {
+            Route::get('team-packages', 'index')->name('team.packages');
+            Route::view('team-packages/create', 'instructor.team_training.create')->name('team.packages.create');
+            Route::post('team-packages/store', 'store')->name('team.packages.store');
+            Route::get('team-packages/purchase/history', 'purchase_history')->name('team.packages.purchase.history');
+
+            Route::middleware(['record.exists:team_training_packages,id,user_id'])->group(function () {
+                Route::get('team-packages/edit/{id}', 'edit')->name('team.packages.edit');
+                Route::post('team-packages/update/{id}', 'update')->name('team.packages.update');
+                Route::get('team-packages/delete/{id}', 'delete')->name('team.packages.delete');
+                Route::get('team-packages/duplicate/{id}', 'duplicate')->name('team.packages.duplicate');
+                Route::get('team-packages/toggle-status/{id}', 'toggle_status')->name('team.toggle.status');
+            });
+            Route::get('team-packages/purchase/invoice/{id}', 'invoice')->name('team.packages.purchase.invoice');
+
+            Route::get('get-courses-by-privacy/', 'get_courses')->name('get.courses.by.privacy');
+            Route::get('get-courses-price/', 'get_course_price')->name('get.course.price');
         });
 
     });

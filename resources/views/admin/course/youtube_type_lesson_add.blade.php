@@ -9,6 +9,6 @@
 
 <div class="form-group mb-2">
     <label class="form-label ol-form-label">{{ get_phrase('Duration') }}</label>
-    <small class="form-label text-12px d-hidden mb-0" id="perloader"><i class="fi-rr-loading mdi-loading "></i> {{get_phrase('Analyzing')}}....</small>
+    <small class="form-label text-12px d-hidden mb-0" id="perloader"><i class="fi-rr-loading mdi-loading "></i> {{ get_phrase('Analyzing') }}....</small>
     <input type="text" name="duration" id="duration" class="form-control ol-form-control" value="00:00:00" readonly>
 </div>

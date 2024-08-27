@@ -12,6 +12,7 @@
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
+        "pbmedia/laravel-ffmpeg": "^8.5",
         "razorpay/razorpay": "^2.8",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "stripe/stripe-php": "^12.5"

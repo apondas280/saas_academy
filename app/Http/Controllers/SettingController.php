@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Builder_page;
 use App\Models\FileUploader;
 use App\Models\FrontendSetting;
-use App\Models\Language;
-use App\Models\Builder_page;
 use App\Models\HomePageSetting;
-use App\Models\User;
-use App\Models\UserReview;
+use App\Models\Language;
 use App\Models\Language_phrase;
 use App\Models\NotificationSetting;
 use App\Models\Payment_gateway;
+use App\Models\PlayerSettings;
 use App\Models\Setting;
+use App\Models\User;
+use App\Models\UserReview;
+use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
 
 class SettingController extends Controller
 {
@@ -81,7 +83,7 @@ class SettingController extends Controller
             foreach ($files as $file) {
                 $file_name_arr = explode('/', $file);
                 $file_name     = end($file_name_arr);
-                if (!in_array($file_name, $images)) {
+                if (! in_array($file_name, $images)) {
                     unlink($file);
                 }
             }
@@ -136,16 +138,14 @@ class SettingController extends Controller
                 $data = "assets/upload/banner_image/" . nice_file_name('banner_image', $banner);
                 FileUploader::upload($request->banner_image, $data);
 
-
                 if (get_frontend_settings('home_page')) {
                     $active_banner = array(
-                        get_frontend_settings('home_page') => $data
+                        get_frontend_settings('home_page') => $data,
                     );
                     FrontendSetting::where('key', $request->type)->update(['value' => json_encode($active_banner)]);
                 } else {
                     FrontendSetting::where('key', $request->type)->update(['value' => $data]);
                 }
-
 
                 Session::flash('success', get_phrase('Banner image update successfully'));
             }
@@ -290,7 +290,7 @@ class SettingController extends Controller
         return redirect()->back();
     }
 
-    function language_import(Request $request)
+    public function language_import(Request $request)
     {
         // Get the file name without extension
         $fileName = pathinfo($request->file('language_file')->getClientOriginalName(), PATHINFO_FILENAME);
@@ -303,10 +303,10 @@ class SettingController extends Controller
         if (Language::where('name', 'like', $language_name)->count() > 0) {
             $language_id = Language::where('name', 'like', $language_name)->first()->id;
         } else {
-            $language_data['name'] = $language_name;
-            $language_data['direction'] = 'ltr';
+            $language_data['name']       = $language_name;
+            $language_data['direction']  = 'ltr';
             $language_data['created_at'] = date('Y-m-d H:i:s');
-            $language_id = Language::insertGetId($language_data);
+            $language_id                 = Language::insertGetId($language_data);
         }
 
         // Insert phrases into the database
@@ -315,14 +315,14 @@ class SettingController extends Controller
             if (Language_phrase::where('language_id', $language_id)->where('phrase', $phrase)->count() > 0) {
                 Language_phrase::where('language_id', $language_id)->where('phrase', $phrase)->update([
                     'translated' => $translated, // Assuming you want to store the language name
-                    'updated_at' => date('Y-m-d H:i:s')
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ]);
             } else {
                 Language_phrase::create([
                     'language_id' => $language_id,
-                    'phrase' => $phrase,
-                    'translated' => $translated, // Assuming you want to store the language name
-                    'created_at' => date('Y-m-d H:i:s')
+                    'phrase'      => $phrase,
+                    'translated'  => $translated, // Assuming you want to store the language name
+                    'created_at' => date('Y-m-d H:i:s'),
                 ]);
             }
         }
@@ -336,27 +336,27 @@ class SettingController extends Controller
         return view('admin.setting.language_setting');
     }
 
-    function language_direction_update(Request $request)
+    public function language_direction_update(Request $request)
     {
         Language::where('id', $request->language_id)->update(['direction' => $request->direction]);
         return true;
     }
 
-    function edit_phrase($lan_id)
+    public function edit_phrase($lan_id)
     {
-        $page_data['phrases'] = Language_phrase::where('language_id', $lan_id)->get();
+        $page_data['phrases']  = Language_phrase::where('language_id', $lan_id)->get();
         $page_data['language'] = Language::where('id', $lan_id)->first();
         return view('admin.setting.edit_phrase', $page_data);
     }
 
-    function update_phrase(Request $request, $phrase_id)
+    public function update_phrase(Request $request, $phrase_id)
     {
         $translated = $request->translated_phrase;
 
         Language_phrase::where('id', $phrase_id)->update(['translated' => $translated, 'updated_at' => date('Y-m-d H:i:s')]);
     }
 
-    function phrase_import($lan_id)
+    public function phrase_import($lan_id)
     {
         $english_lan_id = Language::where('name', 'like', 'English')->first()->id;
         foreach (Language_phrase::where('language_id', $english_lan_id)->get() as $en_lan_phrase) {
@@ -386,7 +386,7 @@ class SettingController extends Controller
         return redirect()->back();
     }
 
-    function language_delete($id)
+    public function language_delete($id)
     {
         Language::where('id', $id)->delete();
         Language_phrase::where('language_id', $id)->delete();
@@ -551,7 +551,7 @@ class SettingController extends Controller
         return view('admin.setting.about', $data);
     }
 
-    function curl_request($code = '')
+    public function curl_request($code = '')
     {
         $purchase_code = $code;
 
@@ -587,7 +587,7 @@ class SettingController extends Controller
         }
     }
 
-    function save_valid_purchase_code($action_type, Request $request)
+    public function save_valid_purchase_code($action_type, Request $request)
     {
         if ($action_type == 'update') {
             $data['description'] = $request->purchase_code;
@@ -605,12 +605,12 @@ class SettingController extends Controller
         }
     }
 
-    function api_configurations()
+    public function api_configurations()
     {
         return view('admin.api_configuration.index');
     }
 
-    function api_configuration_update(Request $request, $type = "")
+    public function api_configuration_update(Request $request, $type = "")
     {
 
         if (Setting::where('type', $type)->count()) {
@@ -624,12 +624,12 @@ class SettingController extends Controller
         return redirect()->back();
     }
 
-    function certificate()
+    public function certificate()
     {
         return view('admin.certificate.index');
     }
 
-    function certificate_update_template(Request $request)
+    public function certificate_update_template(Request $request)
     {
         $request->validate(['certificate_template' => 'required|image']);
 
@@ -654,12 +654,12 @@ class SettingController extends Controller
         return redirect(route('admin.certificate.settings'))->with('success', get_phrase('Certificate template has been updated'));
     }
 
-    function certificate_builder()
+    public function certificate_builder()
     {
         return view('admin.certificate.builder');
     }
 
-    function certificate_builder_update(Request $request)
+    public function certificate_builder_update(Request $request)
     {
         $request->validate(['certificate_builder_content' => 'required']);
 
@@ -674,7 +674,7 @@ class SettingController extends Controller
         return route('admin.certificate.settings');
     }
 
-    //User Review Add 
+    //User Review Add
     public function user_review_add()
     {
         $page_data['userList'] = User::where('role', 'student')->get();
@@ -682,11 +682,11 @@ class SettingController extends Controller
     }
     public function user_review_stor(Request $request)
     {
-        $data = $request->all();
-        $reviewAdd = new UserReview;
+        $data                 = $request->all();
+        $reviewAdd            = new UserReview;
         $reviewAdd['user_id'] = $data['user_id'];
-        $reviewAdd['rating'] = $data['rating'];
-        $reviewAdd['review'] = $data['review'];
+        $reviewAdd['rating']  = $data['rating'];
+        $reviewAdd['review']  = $data['review'];
         $reviewAdd->save();
         Session::flash('success', get_phrase('Review added successfull'));
         return redirect()->back();
@@ -695,7 +695,7 @@ class SettingController extends Controller
     public function review_edit($id)
     {
         $page_data["review_data"] = UserReview::find($id);
-        $page_data['userList'] = User::where('role', 'student')->get();
+        $page_data['userList']    = User::where('role', 'student')->get();
         return view("admin.setting.user_review_edit", $page_data);
     }
     public function review_update(Request $request, $id)
@@ -719,25 +719,25 @@ class SettingController extends Controller
     {
         $home_page = $request->type;
         if ($home_page == 'cooking') {
-            $title = $request->input('title');
+            $title       = $request->input('title');
             $description = $request->input('description');
-            $video_url = $request->input('video_url');
-            $speech = [
-                'title' => $title,
+            $video_url   = $request->input('video_url');
+            $speech      = [
+                'title'       => $title,
                 'description' => $description,
-                'video_url' => $video_url,
-                'image' => $request->input('previous_image'),
+                'video_url'   => $video_url,
+                'image'       => $request->input('previous_image'),
             ];
 
             if ($request->hasFile('image')) {
-                $image = $request->file('image');
+                $image      = $request->file('image');
                 $image_name = $image->getClientOriginalName();
                 $image->move(public_path('assets/upload/home_page_image/cooking/'), $image_name);
                 $speech['image'] = $image_name;
 
                 // Unlink the previous image if it exists
                 $previous_image = $request->input('previous_image');
-                if (!empty($previous_image)) {
+                if (! empty($previous_image)) {
                     $previous_image_path = public_path('assets/upload/home_page_image/cooking/') . $previous_image;
                     if (file_exists($previous_image_path)) {
                         unlink($previous_image_path);
@@ -746,20 +746,20 @@ class SettingController extends Controller
             }
         } elseif ($home_page == 'university') {
             $homePageSetting = HomePageSetting::where('home_page_id', $id)->first();
-            $storImage = json_decode($homePageSetting->value, true);
+            $storImage       = json_decode($homePageSetting->value, true);
 
             if ($request->hasFile('image')) {
                 $image_name = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
                 $request->file('image')->move(public_path('assets/upload/home_page_image/university/'), $image_name);
-                $previous_image = $request->input('previous_image');
+                $previous_image  = $request->input('previous_image');
                 $speech['image'] = $image_name;
-                if (!empty($previous_image)) {
+                if (! empty($previous_image)) {
                     $previous_image_path = public_path('assets/upload/home_page_image/university/') . $previous_image;
                     if (file_exists($previous_image_path)) {
                         unlink($previous_image_path);
                     }
                 }
-            } elseif (!array_key_exists('image', $storImage)) {
+            } elseif (! array_key_exists('image', $storImage)) {
                 $speech['image'] = 0;
             } else {
                 $speech['image'] = $storImage['image'];
@@ -769,37 +769,37 @@ class SettingController extends Controller
                 $image_names = uniqid() . '.' . $request->file('faq_image')->getClientOriginalExtension();
                 $request->file('faq_image')->move(public_path('assets/upload/home_page_image/university/'), $image_names);
                 $speech['faq_image'] = $image_names;
-                $previous_images = $request->input('previous_faq_image');
-                if (!empty($previous_images)) {
+                $previous_images     = $request->input('previous_faq_image');
+                if (! empty($previous_images)) {
                     $previous_image_path = public_path('assets/upload/home_page_image/university/') . $previous_images;
                     if (file_exists($previous_image_path)) {
                         unlink($previous_image_path);
                     }
                 }
-            } elseif (!array_key_exists('faq_image', $storImage)) {
+            } elseif (! array_key_exists('faq_image', $storImage)) {
                 $speech['faq_image'] = 0;
             } else {
                 $speech['faq_image'] = $storImage['faq_image'];
             }
         } elseif ($home_page == 'development') {
-            $title = $request->input('title');
+            $title       = $request->input('title');
             $description = $request->input('description');
-            $video_url = $request->input('video_url');
-            $speech = [
-                'title' => $title,
+            $video_url   = $request->input('video_url');
+            $speech      = [
+                'title'       => $title,
                 'description' => $description,
-                'video_url' => $video_url,
-                'image' => $request->input('previous_image'),
+                'video_url'   => $video_url,
+                'image'       => $request->input('previous_image'),
             ];
             if ($request->hasFile('image')) {
-                $image = $request->file('image');
+                $image      = $request->file('image');
                 $image_name = uniqid() . '.' . $image->getClientOriginalName();
                 $image->move(public_path('assets/upload/home_page_image/development/'), $image_name);
                 $speech['image'] = $image_name;
 
                 // Unlink the previous image if it exists
                 $previous_image = $request->input('previous_image');
-                if (!empty($previous_image)) {
+                if (! empty($previous_image)) {
                     $previous_image_path = public_path('assets/upload/home_page_image/development/') . $previous_image;
                     if (file_exists($previous_image_path)) {
                         unlink($previous_image_path);
@@ -807,22 +807,22 @@ class SettingController extends Controller
                 }
             }
         } elseif ($home_page == 'kindergarden') {
-            $title = $request->input('title');
+            $title       = $request->input('title');
             $description = $request->input('description');
-            $speech = [
-                'title' => $title,
+            $speech      = [
+                'title'       => $title,
                 'description' => $description,
-                'image' => $request->input('previous_image'),
+                'image'       => $request->input('previous_image'),
             ];
             if ($request->hasFile('image')) {
-                $image = $request->file('image');
+                $image      = $request->file('image');
                 $image_name = uniqid() . '.' . $image->getClientOriginalName();
                 $image->move(public_path('assets/upload/home_page_image/kindergarden/'), $image_name);
                 $speech['image'] = $image_name;
 
                 // Unlink the previous image if it exists
                 $previous_image = $request->input('previous_image');
-                if (!empty($previous_image)) {
+                if (! empty($previous_image)) {
                     $previous_image_path = public_path('assets/upload/home_page_image/kindergarden/') . $previous_image;
                     if (file_exists($previous_image_path)) {
                         unlink($previous_image_path);
@@ -830,54 +830,54 @@ class SettingController extends Controller
                 }
             }
         } elseif ($home_page == 'marketplace') {
-            $title = $request->input('title');
+            $title       = $request->input('title');
             $description = $request->input('description');
-            $video_url = $request->input('video_url');
-            $instructor = [
-                'title' => $title,
+            $video_url   = $request->input('video_url');
+            $instructor  = [
+                'title'       => $title,
                 'description' => $description,
-                'video_url' => $video_url,
-                'image' => $request->input('previous_image'),
+                'video_url'   => $video_url,
+                'image'       => $request->input('previous_image'),
             ];
             if ($request->hasFile('image')) {
-                $image = $request->file('image');
+                $image      = $request->file('image');
                 $image_name = uniqid() . '.' . $image->getClientOriginalName();
                 $image->move(public_path('assets/upload/home_page_image/marketplace/'), $image_name);
                 $instructor['image'] = $image_name;
 
                 // Unlink the previous image if it exists
                 $previous_image = $request->input('previous_image');
-                if (!empty($previous_image)) {
+                if (! empty($previous_image)) {
                     $previous_image_path = public_path('assets/upload/home_page_image/marketplace/') . $previous_image;
                     if (file_exists($previous_image_path)) {
                         unlink($previous_image_path);
                     }
                 }
             }
-            $sliders = $request->slider;
+            $sliders            = $request->slider;
             $marketplace_banner = array();
             foreach ($sliders as $slider) {
-                $banner_title_field = 'banner_title' . $slider;
-                $banner_description_field = 'banner_description' . $slider;
-                $datas['banner_title'] = $request->$banner_title_field;
+                $banner_title_field          = 'banner_title' . $slider;
+                $banner_description_field    = 'banner_description' . $slider;
+                $datas['banner_title']       = $request->$banner_title_field;
                 $datas['banner_description'] = $request->$banner_description_field;
                 array_push($marketplace_banner, $datas);
             }
             $speech['instructor'] = $instructor;
-            $speech['slider'] = $marketplace_banner;
+            $speech['slider']     = $marketplace_banner;
         } elseif ($home_page == 'meditation') {
             if ($request->hasFile('big_image')) {
                 $image_name = uniqid() . '.' . $request->file('big_image')->getClientOriginalExtension();
                 $request->file('big_image')->move(public_path('assets/upload/home_page_image/meditation/'), $image_name);
-                $previous_image = $request->input('big_previous_image');
+                $previous_image      = $request->input('big_previous_image');
                 $speech['big_image'] = $image_name;
-                if (!empty($previous_image)) {
+                if (! empty($previous_image)) {
                     $previous_image_path = public_path('assets/upload/home_page_image/meditation/') . $previous_image;
                     if (file_exists($previous_image_path)) {
                         unlink($previous_image_path);
                     }
                 }
-            } elseif (isset($storImage) && !array_key_exists('big_image', $storImage)) {
+            } elseif (isset($storImage) && ! array_key_exists('big_image', $storImage)) {
                 $speech['big_image'] = 0;
             } elseif (isset($storImage)) {
                 $speech['big_image'] = $storImage['big_image'];
@@ -885,40 +885,38 @@ class SettingController extends Controller
                 $speech['big_image'] = $request->input('big_previous_image');
             }
 
-
-            $meditations = $request->meditation;
+            $meditations      = $request->meditation;
             $meditation_array = array();
             foreach ($meditations as $meditation) {
-                $meditation_title_field = 'banner_title' . $meditation;
-                $meditation_image_field = 'image' . $meditation;
+                $meditation_title_field     = 'banner_title' . $meditation;
+                $meditation_image_field     = 'image' . $meditation;
                 $meditation_old_image_field = 'old_image' . $meditation;
 
                 $image_name = $request->input($meditation_old_image_field);
 
                 if ($request->hasFile($meditation_image_field)) {
-                    $image = $request->file($meditation_image_field);
+                    $image      = $request->file($meditation_image_field);
                     $image_name = uniqid() . '.' . $image->getClientOriginalName();
                     $image->move(public_path('assets/upload/home_page_image/meditation/'), $image_name);
-                    $old_image = $request->input('old_image');
+                    $old_image     = $request->input('old_image');
                     $previous_path = public_path('assets/upload/home_page_image/meditation/') . $old_image;
                     if (file_exists('assets/upload/home_page_image/meditation/' . $old_image)) {
                         unlink($previous_path);
                     }
                 }
                 $meditation_description_field = 'banner_description' . $meditation;
-                $stor['banner_title'] = $request->$meditation_title_field;
-                $stor['image'] = $image_name;
-                $stor['banner_description'] = $request->$meditation_description_field;
+                $stor['banner_title']         = $request->$meditation_title_field;
+                $stor['image']                = $image_name;
+                $stor['banner_description']   = $request->$meditation_description_field;
                 array_push($meditation_array, $stor);
             }
             $speech['meditation'] = $meditation_array;
         }
 
-
-        $data['home_page_id'] =  $id;
-        $data['key'] =  $home_page;
-        $data['value'] = json_encode($speech);
-        $homePageSetting = HomePageSetting::where('key', $home_page);
+        $data['home_page_id'] = $id;
+        $data['key']          = $home_page;
+        $data['value']        = json_encode($speech);
+        $homePageSetting      = HomePageSetting::where('key', $home_page);
         if ($homePageSetting->first()) {
             $homePageSetting->update($data);
         } else {
@@ -928,5 +926,56 @@ class SettingController extends Controller
         }
         Session::flash('success', get_phrase('Homepage updated successfully'));
         return redirect()->back();
+    }
+
+    public function player_settings()
+    {
+        return view('admin.setting.player_settings');
+    }
+    public function player_settings_update(Request $request)
+    {
+        if ($request->type == 'watermark') {
+            $watermark['watermark_width']   = $request->watermark_width;
+            $watermark['watermark_height']  = $request->watermark_height;
+            $watermark['watermark_top']     = $request->watermark_top;
+            $watermark['watermark_left']    = $request->watermark_left;
+            $watermark['watermark_opacity'] = $request->watermark_opacity;
+            $watermark['watermark_type']    = $request->watermark_type;
+            $watermark['watermark_logo']    = $request->watermark_logo;
+
+            $validator = Validator::make($watermark, [
+                'watermark_width'   => 'required|numeric',
+                'watermark_height'  => 'required|numeric',
+                'watermark_top'     => 'required|numeric',
+                'watermark_left'    => 'required|numeric',
+                'watermark_opacity' => 'required|integer|min:0|max:100',
+                'watermark_type'    => 'required|in:js,ffmpeg',
+            ]);
+
+            $validator->sometimes('watermark_logo', 'file|mimes:png,jpg,gif', function ($input) {
+                return isset($input->watermark_logo);
+            });
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            unset($watermark['watermark_logo']);
+            if (isset($request->watermark_logo) && $request->watermark_logo != '') {
+                $watermark['watermark_logo'] = "upload/watermark/" . nice_file_name('watermark', $request->watermark_logo->extension());
+                FileUploader::upload($request->watermark_logo, $watermark['watermark_logo']);
+            }
+
+            foreach ($watermark as $key => $data) {
+                if (! PlayerSettings::where('title', $key)->exists()) {
+                    PlayerSettings::insert(['title' => $key, 'description' => $data]);
+                    continue;
+                }
+                PlayerSettings::where('title', $key)->update(['description' => $data]);
+            }
+        }
+
+        Session::flash('success', get_phrase('Your changes has been saved.'));
+        return redirect()->route('admin.player.settings');
     }
 }

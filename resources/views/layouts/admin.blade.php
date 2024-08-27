@@ -18,11 +18,13 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/vendors/bootstrap/bootstrap.min.css') }}" />
 
     {{-- FlatIcons --}}
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/global/icons/uicons-solid-rounded/css/uicons-solid-rounded.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/global/icons/uicons-bold-rounded/css/uicons-bold-rounded.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/global/icons/uicons-bold-straight/css/uicons-bold-straight.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/global/icons/uicons-regular-rounded/css/uicons-regular-rounded.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/global/icons/uicons-thin-rounded/css/uicons-thin-rounded.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/global/flaticon/css/all/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/global/flaticon/css/bold/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/global/flaticon/css/brands/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/global/flaticon/css/regular/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/global/flaticon/css/solid/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/global/flaticon/css/thin/rounded.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/global/flaticon/css/thin/straight.css') }}">
 
     {{-- Font awesome icons --}}
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/global/icon-picker/fontawesome-iconpicker.min.css') }}" />

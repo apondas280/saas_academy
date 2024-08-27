@@ -9,8 +9,7 @@
                     {{ get_phrase('Manage Bootcamp') }}
                 </h4>
 
-                <a
-                    href="{{ route('admin.bootcamp.create') }}"class="btn ol-btn-outline-secondary d-flex align-items-center cg-10px">
+                <a href="{{ route('admin.bootcamp.create') }}"class="btn ol-btn-outline-secondary d-flex align-items-center cg-10px">
                     <span class="fi-rr-plus"></span>
                     <span>{{ get_phrase('Add New Bootcamp') }}</span>
                 </a>
@@ -33,13 +32,10 @@
                                 </button>
                                 <ul class="dropdown-list">
                                     <li>
-                                        <a class="dropdown-item export-btn" href="#"
-                                            onclick="downloadPDF('.print-table', 'bootcamp-list')"><i
-                                                class="fi-rr-file-pdf"></i> {{ get_phrase('PDF') }}</a>
+                                        <a class="dropdown-item export-btn" href="#" onclick="downloadPDF('.print-table', 'bootcamp-list')"><i class="fi-rr-file-pdf"></i> {{ get_phrase('PDF') }}</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item export-btn" href="#" onclick="window.print();"><i
-                                                class="fi-rr-print"></i> {{ get_phrase('Print') }}</a>
+                                        <a class="dropdown-item export-btn" href="#" onclick="window.print();"><i class="fi-rr-print"></i> {{ get_phrase('Print') }}</a>
                                     </li>
                                 </ul>
                             </div>
@@ -53,85 +49,63 @@
                                 </button>
                                 <ul class="dropdown-list w-250px">
                                     <li>
-                                        <form id="filter-dropdown"
-                                            action="{{ route('admin.bootcamps', ['type' => request()->route()->parameter('type')]) }}"
-                                            method="get">
+                                        <form id="filter-dropdown" action="{{ route('admin.bootcamps', ['type' => request()->route()->parameter('type')]) }}" method="get">
                                             <input type="hidden" name="search" value="{{ request('search') }}">
                                             <div class="filter-option d-flex flex-column gap-3">
                                                 <div>
-                                                    <label for="eDataList"
-                                                        class="form-label ol-form-label">{{ get_phrase('Category') }}</label>
-                                                    <select class="form-control ol-form-control ol-select2"
-                                                        data-toggle="select2" name="category"
-                                                        data-placeholder="Type to search...">
+                                                    <label for="eDataList" class="form-label ol-form-label">{{ get_phrase('Category') }}</label>
+                                                    <select class="form-control ol-form-control ol-select2" data-toggle="select2" name="category" data-placeholder="Type to search...">
                                                         <option value="all">{{ get_phrase('All') }}</option>
 
                                                         @foreach (App\Models\BootcampCategory::orderBy('title', 'asc')->get() as $category)
-                                                            <option value="{{ $category->slug }}"
-                                                                @if (request('category') == $category->slug) selected @endif>
+                                                            <option value="{{ $category->slug }}" @if (request('category') == $category->slug) selected @endif>
                                                                 {{ $category->title }}
                                                             </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div>
-                                                    <label for="eDataList"
-                                                        class="form-label ol-form-label">{{ get_phrase('Status') }}</label>
-                                                    <select class="form-control ol-form-control ol-select2"
-                                                        data-toggle="select2" name="status" class="ol-select-2"
-                                                        data-placeholder="Type to search...">
+                                                    <label for="eDataList" class="form-label ol-form-label">{{ get_phrase('Status') }}</label>
+                                                    <select class="form-control ol-form-control ol-select2" data-toggle="select2" name="status" class="ol-select-2" data-placeholder="Type to search...">
                                                         <option value="all">{{ get_phrase('All') }}
                                                         </option>
 
-                                                        <option
-                                                            value="active"@if (request('status') == 'active') selected @endif>
+                                                        <option value="active"@if (request('status') == 'active') selected @endif>
                                                             {{ get_phrase('Active') }} </option>
-                                                        <option
-                                                            value="inactive"@if (request('status') == 'inactive') selected @endif>
+                                                        <option value="inactive"@if (request('status') == 'inactive') selected @endif>
                                                             {{ get_phrase('Inactive') }} </option>
                                                     </select>
                                                 </div>
 
                                                 <div>
-                                                    <label for="eDataList"
-                                                        class="form-label ol-form-label">{{ get_phrase('Instructor') }}</label>
-                                                    <select class="form-control ol-form-control ol-select2"
-                                                        data-toggle="select2" name="instructor" class="ol-select-2"
-                                                        data-placeholder="Type to search...">
+                                                    <label for="eDataList" class="form-label ol-form-label">{{ get_phrase('Instructor') }}</label>
+                                                    <select class="form-control ol-form-control ol-select2" data-toggle="select2" name="instructor" class="ol-select-2" data-placeholder="Type to search...">
                                                         <option value="all">{{ get_phrase('All') }}
                                                         </option>
                                                         @foreach (App\Models\Course::select('user_id')->distinct()->get() as $course)
-                                                            <option
-                                                                value="{{ $course->user_id }}"@if (request('instructor') == $course->user_id) selected @endif>
+                                                            <option value="{{ $course->user_id }}"@if (request('instructor') == $course->user_id) selected @endif>
                                                                 {{ ucfirst(get_user_info($course->user_id)->name) }}
                                                             </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div>
-                                                    <label for="eDataList"
-                                                        class="form-label ol-form-label">{{ get_phrase('Price') }}</label>
-                                                    <select class="form-control ol-form-control ol-select2"
-                                                        data-toggle="select2" name="price" class="ol-select-2"
-                                                        data-placeholder="Type to search...">
+                                                    <label for="eDataList" class="form-label ol-form-label">{{ get_phrase('Price') }}</label>
+                                                    <select class="form-control ol-form-control ol-select2" data-toggle="select2" name="price" class="ol-select-2" data-placeholder="Type to search...">
                                                         <option value="all">{{ get_phrase('All') }}
                                                         </option>
 
-                                                        <option
-                                                            value="free"@if (request('price') == 'free') selected @endif>
+                                                        <option value="free"@if (request('price') == 'free') selected @endif>
                                                             {{ get_phrase('Free') }}</option>
-                                                        <option
-                                                            value="discounted"@if (request('price') == 'discounted') selected @endif>
+                                                        <option value="discounted"@if (request('price') == 'discounted') selected @endif>
                                                             {{ get_phrase('Discounted') }}</option>
-                                                        <option
-                                                            value="paid"@if (request('price') == 'paid') selected @endif>
+                                                        <option value="paid"@if (request('price') == 'paid') selected @endif>
                                                             {{ get_phrase('Paid') }}</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="filter-button d-flex justify-content-end align-items-center mt-3">
-                                                <button type="submit"
-                                                    class="ol-btn-primary">{{ get_phrase('Apply') }}</button>
+                                                <button type="submit" class="ol-btn-primary">{{ get_phrase('Apply') }}</button>
                                             </div>
                                         </form>
                                     </li>
@@ -139,15 +113,11 @@
                             </div>
 
                             @if (isset($_GET) && count($_GET) > 0)
-                                <a href="{{ route('admin.bootcamps', ['type' => request()->route()->parameter('type')]) }}"
-                                    class="me-2" data-bs-toggle="tooltip" title="{{ get_phrase('Clear') }}"><i
-                                        class="fi-rr-cross-circle"></i></a>
+                                <a href="{{ route('admin.bootcamps', ['type' => request()->route()->parameter('type')]) }}" class="me-2" data-bs-toggle="tooltip" title="{{ get_phrase('Clear') }}"><i class="fi-rr-cross-circle"></i></a>
                             @endif
                         </div>
                         <div class="col-md-6 mt-3 mt-md-0">
-                            <form
-                                action="{{ route('admin.bootcamps', ['type' => request()->route()->parameter('type')]) }}"
-                                method="get">
+                            <form action="{{ route('admin.bootcamps', ['type' => request()->route()->parameter('type')]) }}" method="get">
 
                                 @php
                                     $queries = request()->query();
@@ -156,14 +126,11 @@
                                 <div class="row">
                                     <div class="col-9">
                                         <div class="search-input flex-grow-1">
-                                            <input type="text" name="search" value="{{ request('search') }}"
-                                                placeholder="{{ get_phrase('Search Title') }}"
-                                                class="ol-form-control form-control" />
+                                            <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ get_phrase('Search Title') }}" class="ol-form-control form-control" />
                                         </div>
                                     </div>
                                     <div class="col-3">
-                                        <button type="submit" class="btn ol-btn-primary w-100"
-                                            id="submit-button">{{ get_phrase('Search') }}</button>
+                                        <button type="submit" class="btn ol-btn-primary w-100" id="submit-button">{{ get_phrase('Search') }}</button>
                                     </div>
                                 </div>
                                 @foreach ($queries as $key => $query)
@@ -176,13 +143,12 @@
                     <div class="row">
                         <div class="col-md-12">
                             @if ($bootcamps->count() > 0)
-                                <div
-                                    class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
+                                <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
                                     <p class="admin-tInfo">
                                         {{ get_phrase('Showing') . ' ' . count($bootcamps) . ' ' . get_phrase('of') . ' ' . $bootcamps->total() . ' ' . get_phrase('data') }}
                                     </p>
                                 </div>
-                                <div class="table-responsive overflow-auto course_list overflow-auto" id="course_list">
+                                <div class="table-responsive overflow-auto course_list" id="course_list">
                                     <table class="table eTable eTable-2 print-table">
                                         <thead>
                                             <tr>
@@ -206,12 +172,10 @@
                                                         <div class="dAdmin_profile d-flex align-items-center min-w-200px">
                                                             <div class="dAdmin_profile_name">
                                                                 <h4 class="title fs-14px">
-                                                                    <a
-                                                                        href="{{ route('admin.bootcamp.edit', [$bootcamp->id, 'tab' => 'curriculum']) }}">{{ ucfirst($bootcamp->title) }}</a>
+                                                                    <a href="{{ route('admin.bootcamp.edit', [$bootcamp->id, 'tab' => 'curriculum']) }}">{{ ucfirst($bootcamp->title) }}</a>
                                                                 </h4>
 
-                                                                <a
-                                                                    href="{{ route('admin.bootcamps', ['instructor' => $bootcamp->user_id]) }}">
+                                                                <a href="{{ route('admin.bootcamps', ['instructor' => $bootcamp->user_id]) }}">
                                                                     <p class="sub-title2 text-12px">
                                                                         {{ get_phrase('Instructor') }}:
                                                                         {{ get_user_info($bootcamp->user_id)->name }}</p>
@@ -224,14 +188,12 @@
                                                     </td>
                                                     <td>
                                                         <div class="sub-title2 text-12px">
-                                                            <a
-                                                                href="{{ route('admin.bootcamps', ['category' => $bootcamp->category_slug]) }}">{{ $bootcamp->category }}</a>
+                                                            <a href="{{ route('admin.bootcamps', ['category' => $bootcamp->category_slug]) }}">{{ $bootcamp->category }}</a>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="sub-title2 text-12px">
-                                                            <a
-                                                                href="{{ route('admin.bootcamp.edit', [$bootcamp->id, 'tab' => 'curriculum']) }}">
+                                                            <a href="{{ route('admin.bootcamp.edit', [$bootcamp->id, 'tab' => 'curriculum']) }}">
                                                                 <p>{{ get_phrase('Module') }}:
                                                                     {{ count_bootcamp_modules($bootcamp->id) }} </p>
                                                                 <p> {{ get_phrase('Class') }}:
@@ -247,14 +209,7 @@
                                                         </div>
                                                     </td>
                                                     <td class="print-d-none">
-                                                        <div class="eSwitches">
-                                                            <div class="form-check form-switch">
-                                                                <input class="form-check-input form-switch-medium"
-                                                                    onchange="actionTo('{{ route('admin.bootcamp.status', ['id' => $bootcamp->id]) }}');"
-                                                                    type="checkbox"
-                                                                    @if ($bootcamp->status) checked @endif>
-                                                            </div>
-                                                        </div>
+                                                        <span class="badge bg-{{ $bootcamp->status ? 'active' : 'inactive' }}">{{ get_phrase($bootcamp->status ? 'Active' : 'Inactive') }}</span>
                                                     </td>
                                                     <td>
                                                         <div class="dAdmin_info_name min-w-150px">
@@ -262,39 +217,40 @@
                                                                 <p class="eBadge ebg-soft-success">
                                                                     {{ get_phrase('Free') }}
                                                                 </p>
+                                                            @elseif($bootcamp->discount_flag == 1)
+                                                                <p>{{ currency($bootcamp->discounted_price) }} <del>{{ currency($bootcamp->price) }}</del></p>
                                                             @else
-                                                                <p>{{ currency($bootcamp->price - $bootcamp->discounted_price) }}
-                                                                </p>
+                                                                <p>{{ currency($bootcamp->price) }}</p>
                                                             @endif
                                                         </div>
                                                     </td>
                                                     <td class="print-d-none">
-                                                        <div
-                                                            class="dropdown ol-icon-dropdown ol-icon-dropdown-transparent">
-                                                            <button class="btn ol-btn-secondary dropdown-toggle"
-                                                                type="button" data-bs-toggle="dropdown"
-                                                                aria-expanded="false">
+                                                        <div class="dropdown ol-icon-dropdown ol-icon-dropdown-transparent">
+                                                            <button class="btn ol-btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                                 <span class="fi-rr-menu-dots-vertical"></span>
                                                             </button>
 
                                                             <ul class="dropdown-menu">
                                                                 <li>
-                                                                    <a class="dropdown-item" target="_blank"
-                                                                        href="{{ route('bootcamp.details', $bootcamp->slug) }}">{{ get_phrase('Frontend View') }}</a>
+                                                                    <a class="dropdown-item" target="_blank" href="{{ route('bootcamp.details', $bootcamp->slug) }}">{{ get_phrase('Frontend View') }}</a>
                                                                 </li>
                                                                 <li>
-                                                                    <a class="dropdown-item"
-                                                                        href="{{ route('admin.bootcamp.edit', [$bootcamp->id, 'tab' => 'basic']) }}">{{ get_phrase('Edit') }}</a>
+                                                                    <a class="dropdown-item" href="{{ route('admin.bootcamp.edit', [$bootcamp->id, 'tab' => 'basic']) }}">{{ get_phrase('Edit') }}</a>
+                                                                </li>
+                                                                @if ($bootcamp->status)
+                                                                    <li>
+                                                                        <a class="dropdown-item" onclick="confirmModal('{{ route('admin.bootcamp.status', ['id' => $bootcamp->id]) }}')" href="javascript:void(0)">{{ get_phrase('Make As Inactive') }}</a>
+                                                                    </li>
+                                                                @else
+                                                                    <li>
+                                                                        <a class="dropdown-item" onclick="confirmModal('{{ route('admin.bootcamp.status', ['id' => $bootcamp->id]) }}')" href="javascript:void(0)">{{ get_phrase('Make As Active') }}</a>
+                                                                    </li>
+                                                                @endif
+                                                                <li>
+                                                                    <a class="dropdown-item" onclick="confirmModal('{{ route('admin.bootcamp.duplicate', $bootcamp->id) }}')" href="javascript:void(0)">{{ get_phrase('Duplicate') }}</a>
                                                                 </li>
                                                                 <li>
-                                                                    <a class="dropdown-item"
-                                                                        onclick="confirmModal('{{ route('admin.bootcamp.duplicate', $bootcamp->id) }}')"
-                                                                        href="javascript:void(0)">{{ get_phrase('Duplicate') }}</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item"
-                                                                        onclick="confirmModal('{{ route('admin.bootcamp.delete', $bootcamp->id) }}')"
-                                                                        href="javascript:void(0)">{{ get_phrase('Delete') }}</a>
+                                                                    <a class="dropdown-item" onclick="confirmModal('{{ route('admin.bootcamp.delete', $bootcamp->id) }}')" href="javascript:void(0)">{{ get_phrase('Delete') }}</a>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -304,8 +260,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div
-                                    class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
+                                <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
                                     <p class="admin-tInfo">
                                         {{ get_phrase('Showing') . ' ' . count($bootcamps) . ' ' . get_phrase('of') . ' ' . $bootcamps->total() . ' ' . get_phrase('data') }}
                                     </p>

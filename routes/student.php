@@ -13,6 +13,7 @@ use App\Http\Controllers\student\MessageController;
 use App\Http\Controllers\student\MyBootcampsController;
 use App\Http\Controllers\student\MyCoursesController;
 use App\Http\Controllers\student\MyProfileController;
+use App\Http\Controllers\student\MyTeamPackageController;
 use App\Http\Controllers\student\OfflinePaymentController;
 use App\Http\Controllers\student\PurchaseController;
 use App\Http\Controllers\student\QuizController;
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('{company}')->group(function () {
 
-    Route::middleware('auth')->group(function () {
+    Route::middleware(['auth', 'ip.detector'])->group(function () {
         // my profile routes
         Route::controller(MyProfileController::class)->group(function () {
             Route::get('my-profile', 'index')->name('my.profile');
@@ -108,7 +109,7 @@ Route::prefix('{company}')->group(function () {
         // my bootcamp routes
         Route::controller(MyBootcampsController::class)->group(function () {
             Route::get('my-bootcamps/', 'index')->name('my.bootcamps');
-            Route::get('my-bootcamps/details/{slug?}', 'show')->name('my.bootcamp.details');
+            Route::get('my-bootcamps/{slug}', 'show')->name('my.bootcamp.details');
             Route::get('bootcamp/live/class/join/{topic}', 'join_class')->name('bootcamp.live.class.join');
             Route::get('bootcamp/resource/download/{id}', 'download')->name('bootcamp.resource.download');
             Route::get('bootcamp/resource/play/{file}', 'play')->name('bootcamp.resource.play');
@@ -119,6 +120,18 @@ Route::prefix('{company}')->group(function () {
             Route::get('purchase/bootcamp/{id}', 'purchase')->name('purchase.bootcamp');
             Route::get('bootcamp/purchase/history', 'purchase_history')->name('bootcamp.purchase.history');
             Route::get('bootcamp/invoice/{id}', 'invoice')->name('bootcamp.invoice');
+        });
+
+        // my team packages
+        Route::controller(MyTeamPackageController::class)->group(function () {
+            Route::get('my-team-packages/', 'index')->name('my.team.packages');
+            Route::get('my-team-packages/details/{slug}', 'show')->name('my.team.packages.details')
+                ->middleware('record.exists:team_training_packages,slug');
+            Route::get('my-team-packages/search/members/{package_id?}', 'search_members')->name('search.package.members');
+            Route::get('my-team-packages/{action}/members', 'member_action')->name('my.team.packages.members.action');
+            Route::get('purchase/team-package/{id}', 'purchase')->name('purchase.team.package');
+            Route::get('my-team-packages/invoice/{id}', 'invoice')->name('team.package.invoice')
+                ->middleware('record.exists:team_package_purchases,id');
         });
 
     });
