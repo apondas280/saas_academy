@@ -7,11 +7,14 @@
             right: 20px;
             cursor: pointer !important;
         }
+
+        .login-section {
+            margin: 120px 0;
+        }
     </style>
 @endpush
 @section('content')
     @if (get_frontend_settings('theme') == 'default')
-
         <main class="login-section">
             <div class="container">
                 <div class="row mrg-30">
@@ -23,11 +26,6 @@
                         </div>
                     </div>
                     <div class="col-lg-5 col-md-6">
-                        <div class="login-logo-area">
-                            <a href="{{ route('home') }}">
-                                <img src="{{ asset('assets/frontend/default/images/logo.svg') }}" alt="logo">
-                            </a>
-                        </div>
                         <div class="login-form-wrap">
                             <div class="login-logout-title">
                                 <h1 class="title">{{ get_phrase('Log in') }}</h1>
@@ -39,7 +37,7 @@
                                     <div class="login-input-group">
                                         <div class="input-wrap">
                                             <label for="email" class="form-label">{{ get_phrase('Email') }}</label>
-                                            <input type="email" id="email" name="email" class="form-control password-field" placeholder="{{ get_phrase('Your Email') }}">
+                                            <input type="email" id="email" name="email" class="form-control" placeholder="{{ get_phrase('Your Email') }}">
                                         </div>
                                         <div class="input-wrap">
                                             <label for="password" class="form-label">{{ get_phrase('Password') }}</label>
@@ -53,14 +51,14 @@
                                         <div class="form-check mform-check">
                                             <input class="form-check-input mcheck-input" type="checkbox" value="" id="remember" checked>
                                             <label class="form-check-label mcheck-lable" for="remember">
-                                            {{ get_phrase('Remember Me') }}
+                                                {{ get_phrase('Remember Me') }}
                                             </label>
                                         </div>
-                                        <a href="{{route('password.request')}}" class="forget">{{ get_phrase('Forget Password?') }}</a>
+                                        <a href="{{ route('password.request') }}" class="forget">{{ get_phrase('Forget Password?') }}</a>
                                     </div>
                                     <button type="submit" class="form-submit-btn">{{ get_phrase('Login') }}</button>
                                     <p class="create-or-login">
-                                        {{ get_phrase('Not have an account yet?') }} 
+                                        {{ get_phrase('Not have an account yet?') }}
                                         <a href="{{ route('register') }}">{{ get_phrase('Create Account') }}</a>
                                     </p>
                                 </form>
@@ -70,7 +68,6 @@
                 </div>
             </div>
         </main>
-        
     @endif
 @endsection
 @push('js')
@@ -94,19 +91,6 @@
                     $('#password').val('12345678');
                 }
                 $('#login').trigger('click');
-            });
-        });
-
-        $(document).ready(function() {
-            $('#showpassword').on('click', function(e) {
-                e.preventDefault();
-                const type = $('#password').attr('type');
-
-                if (type == 'password') {
-                    $('#password').attr('type', 'text');
-                } else {
-                    $('#password').attr('type', 'password');
-                }
             });
         });
     </script>

@@ -227,13 +227,14 @@
                                     </a>
                                 @endisset
                                 <div class="language-dropdown d-none d-sm-block">
-                                    <form action="">
-                                        <select>
-                                            <option value="1" data-display="EN">English</option>
-                                            <option value="2" data-display="FR">French</option>
-                                            <option value="3" data-display="GR">Germain</option>
-                                            <option value="4" data-display="SP">Spanish</option>
-                                            <option value="5" data-display="AR">Arabic</option>
+                                    <form action="{{ route('select.lng') }}" id="toggleLang" method="get">@csrf
+                                        <select name="language" id="lng-selector" onchange="$('#toggleLang').submit()">
+                                            @php
+                                                $activated_language = strtolower(session('language') ?? get_settings('language'));
+                                            @endphp
+                                            @foreach (App\Models\Language::all() as $lng)
+                                                <option value="{{ $lng->name }}" @selected(strtolower($lng->name) == $activated_language)>{{ $lng->name }}</option>
+                                            @endforeach
                                         </select>
                                     </form>
                                 </div>

@@ -25,14 +25,13 @@ class ApiController extends Controller
         $db_pass = 'a7#YwR!Ii]^k';
         $db_host = '127.0.0.1';
         $db_name = 'ctmacademy_creativeitem';
-        
 
         // Get the company name from the URL
         $app_variable = str_replace('index.php', '', $_SERVER['SCRIPT_NAME']);
         $app_variable = str_replace($app_variable, '', $_SERVER['REQUEST_URI']);
         $app_variable = explode('/', $app_variable);
 
-        if(isset($app_variable[0])) {
+        if (isset($app_variable[0])) {
             $company_slug = $app_variable[0];
 
             try {
@@ -46,22 +45,22 @@ class ApiController extends Controller
                 $stmt->execute();
 
                 // Check if any rows are returned
-                if($stmt->rowCount() > 0) {
+                if ($stmt->rowCount() > 0) {
                     $response = [
-                        'status' => 200,
-                        'message' => 'Company created successfully'
+                        'status'  => 200,
+                        'message' => 'Company created successfully',
                     ];
                 } else {
                     $response = [
-                        'status' => 404,
-                        'message' => 'Company creation failed'
+                        'status'  => 404,
+                        'message' => 'Company creation failed',
                     ];
                 }
             } catch (PDOException $e) {
                 // Handle errors
                 $response = [
-                    'status' => 500,
-                    'message' => 'Database error: ' . $e->getMessage()
+                    'status'  => 500,
+                    'message' => 'Database error: ' . $e->getMessage(),
                 ];
             }
 
@@ -71,8 +70,8 @@ class ApiController extends Controller
 
         // If no company_slug is provided in the URL
         return response()->json([
-            'status' => 400,
-            'message' => 'Invalid request'
+            'status'  => 400,
+            'message' => 'Invalid request',
         ]);
     }
 
@@ -88,7 +87,7 @@ class ApiController extends Controller
         $user = User::where('email', $fields['email'])->where('status', 1)->first();
 
         // Check password
-        if (!$user || !Hash::check($fields['password'], $user->password)) {
+        if (! $user || ! Hash::check($fields['password'], $user->password)) {
             if (isset($user) && $user->count() > 0) {
                 return response([
                     'message' => 'Invalid credentials!',
@@ -99,7 +98,6 @@ class ApiController extends Controller
                 ], 401);
             }
         } else if ($user->role == 'student') {
-
 
             $token = $user->createToken('auth-token')->plainTextToken;
 
@@ -227,7 +225,6 @@ class ApiController extends Controller
         $response   = array();
         $categories = array();
         $categories = sub_categories($request->category_id);
-
 
         $response[0]['sub_categories'] = $categories;
 
@@ -462,7 +459,7 @@ class ApiController extends Controller
             $auth = auth('sanctum')->user();
 
             // The passwords matches
-            if (!Hash::check($request->get('current_password'), $auth->password)) {
+            if (! Hash::check($request->get('current_password'), $auth->password)) {
                 $response['status']  = 'failed';
                 $response['message'] = 'Current Password is Invalid';
 

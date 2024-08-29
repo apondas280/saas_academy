@@ -13,7 +13,7 @@ class MyBootcampsController extends Controller
 {
     public function __construct()
     {
-        date_default_timezone_set('Asia/Dhaka');
+        date_default_timezone_set(get_settings('timezone'));
     }
     public function index()
     {
@@ -72,7 +72,7 @@ class MyBootcampsController extends Controller
             $page_data['class']   = $class;
             $page_data['user']    = get_user_info($class->enrolled_user);
             $page_data['is_host'] = 0;
-            return view('bootcamp_online_class.index', $page_data);
+            return view(theme_path() . 'student.my_bootcamps.online_class', $page_data);
         } else {
             $meeting_info = json_decode($class->joining_data, true);
             return redirect($meeting_info['start_url']);
@@ -125,6 +125,6 @@ class MyBootcampsController extends Controller
             return redirect()->back();
         }
 
-        return view('class_record.player', compact('class'));
+        return view(theme_path() . 'student.my_bootcamps.class_record', compact('class'));
     }
 }

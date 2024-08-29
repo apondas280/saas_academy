@@ -19,7 +19,7 @@ class BootcampController extends Controller
 {
     public function __construct()
     {
-        date_default_timezone_set('Asia/Dhaka');
+        date_default_timezone_set(get_settings('timezone'));
     }
     public function index($company = "", $type = '')
     {

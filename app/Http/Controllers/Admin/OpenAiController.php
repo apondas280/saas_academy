@@ -3,24 +3,23 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
 use App\Models\Category;
 use App\Models\FileUploader;
 use App\Models\Setting;
+use Illuminate\Http\Request;
 
 class OpenAiController extends Controller
 {
-    function settings()
+    public function settings()
     {
         return view('admin.open_ai.settings');
     }
 
-    function settings_update(Request $request)
+    public function settings_update(Request $request)
     {
         $validated = $request->validate([
-            'open_ai_model' => 'in:gpt-3.5-turbo-0125,gpt-4-0125-preview',
-            'open_ai_max_token' => 'required|numeric|min:0',
+            'open_ai_model'      => 'in:gpt-3.5-turbo-0125,gpt-4-0125-preview',
+            'open_ai_max_token'  => 'required|numeric|min:0',
             'open_ai_secret_key' => 'required|max:255',
         ]);
 
@@ -35,7 +34,7 @@ class OpenAiController extends Controller
         return redirect(route('admin.open.ai.settings'))->with('success', get_phrase('Open ai settings changed successfully'));
     }
 
-    function generate(Request $request)
+    public function generate(Request $request)
     {
         if ($request->service_type == 'Course thumbnail') {
             $prompt = "We have run a online LMS system. Please generate course thumbnails for me. \n Course topic: " . $request->ai_keywords;
@@ -54,11 +53,11 @@ class OpenAiController extends Controller
         }
     }
 
-    function curl_call_to_generate_image_openai($prompt)
+    public function curl_call_to_generate_image_openai($prompt)
     {
         $open_ai_secret_key = get_settings('open_ai_secret_key');
 
-        $curlopt_post = ['prompt' => $prompt, 'model' => 'dall-e-3', 'size' => '1024x1024', 'n' => 1];
+        $curlopt_post     = ['prompt' => $prompt, 'model' => 'dall-e-3', 'size' => '1024x1024', 'n' => 1];
         $curlopt_post_url = 'https://api.openai.com/v1/images/generations';
 
         $ch = curl_init();
@@ -83,24 +82,24 @@ class OpenAiController extends Controller
         }
     }
 
-    function curl_call_to_generate_text_by_openai($instructions, $prompt)
+    public function curl_call_to_generate_text_by_openai($instructions, $prompt)
     {
         $open_ai_secret_key = get_settings('open_ai_secret_key');
-        $open_ai_model = get_settings('open_ai_model');
-        $endpoint = "https://api.openai.com/v1/chat/completions";
+        $open_ai_model      = get_settings('open_ai_model');
+        $endpoint           = "https://api.openai.com/v1/chat/completions";
 
         $data = array(
-            "model" => $open_ai_model,
+            "model"    => $open_ai_model,
             "messages" => array(
                 array(
-                    "role" => "system",
-                    "content" => $instructions
+                    "role"    => "system",
+                    "content" => $instructions,
                 ),
                 array(
-                    "role" => "user",
-                    "content" => "$prompt"
-                )
-            )
+                    "role"    => "user",
+                    "content" => "$prompt",
+                ),
+            ),
         );
 
         $ch = curl_init($endpoint);
@@ -110,7 +109,7 @@ class OpenAiController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             "Content-Type: application/json",
-            "Authorization: Bearer " . $open_ai_secret_key
+            "Authorization: Bearer " . $open_ai_secret_key,
         ));
 
         $response = curl_exec($ch);
