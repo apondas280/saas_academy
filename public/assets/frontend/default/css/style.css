@@ -2105,8 +2105,14 @@ img {
     transition: .3s;
 }
 
+.wish-react .wish-icon.active{
+    background: rgb(255 85 119);
+}
+.wish-react .wish-icon.active svg path{
+    fill: #fff !important;
+}
 .wish-react .wish-icon:hover svg path {
-    fill: red;
+    fill: rgb(255 85 119);
 }
 
 .single-courses .course-details {

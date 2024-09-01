@@ -64,11 +64,10 @@
                             @else
                                 @include('frontend.default.empty')
                             @endif
-                        </div>
+                        </div </div>
                     </div>
                 </div>
             </div>
-        </div>
     </section>
     <!-- My Bootcamp Area End -->
 @endsection

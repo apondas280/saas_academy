@@ -30,12 +30,11 @@ class OfflinePaymentController extends Controller
             $payments->where('status', 0)->orWhere('status', null);
         }
 
-
         $page_data['payments'] = $payments->paginate(10);
         return view('admin.offline_payments.index', $page_data);
     }
 
-    public function download_doc($id)
+    public function download_doc($company = "", $id)
     {
         // validate id
         if (empty($id)) {
@@ -46,7 +45,7 @@ class OfflinePaymentController extends Controller
         // payment details
         $payment_details = OfflinePayment::where('id', $id)->first();
         $filePath        = public_path($payment_details->doc);
-        if (!file_exists($filePath)) {
+        if (! file_exists($filePath)) {
             Session::flash('error', get_phrase('Data not found.'));
             return redirect()->back();
         }
@@ -54,7 +53,7 @@ class OfflinePaymentController extends Controller
         return Response::download($filePath);
     }
 
-    public function accept_payment($id)
+    public function accept_payment($company = "", $id)
     {
         // payment details
         $query = OfflinePayment::where('id', $id)->where('status', 0);
@@ -123,7 +122,7 @@ class OfflinePaymentController extends Controller
         return redirect()->route('admin.offline.payments');
     }
 
-    public function decline_payment($id)
+    public function decline_payment($company = "", $id)
     {
         $offline = OfflinePayment::where('id', $id)->first();
         if (! $offline) {

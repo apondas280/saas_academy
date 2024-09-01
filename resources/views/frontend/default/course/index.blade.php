@@ -41,7 +41,7 @@
                                 <div class="grid-list-navtab">
                                     <ul class="nav nav-pills" id="pills-tab" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link @if ($layout == 'grid') active @endif" id="pills-grid-tab" data-bs-toggle="pill" data-bs-target="#pills-grid" type="button" role="tab" aria-controls="pills-grid" aria-selected="true">
+                                            <button class="nav-link @if ($layout == 'grid') active @endif layout" data-layout="grid" id="pills-grid-tab" data-bs-toggle="pill" data-bs-target="#pills-grid" type="button" role="tab" aria-controls="pills-grid" aria-selected="true">
                                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <g clip-path="url(#clip0_369_960)">
                                                         <path
@@ -66,7 +66,7 @@
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link @if ($layout == 'list') active @endif" id="pills-list-tab" data-bs-toggle="pill" data-bs-target="#pills-list" type="button" role="tab" aria-controls="pills-list" aria-selected="false">
+                                            <button class="nav-link @if ($layout == 'list') active @endif layout" data-layout="list" id="pills-list-tab" data-bs-toggle="pill" data-bs-target="#pills-list" type="button" role="tab" aria-controls="pills-list" aria-selected="false">
                                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <g clip-path="url(#clip0_369_965)">
                                                         <path
@@ -88,18 +88,10 @@
                     </div>
 
                     <div class="grid-list-tab-content">
-                        <div class="tab-content" id="pills-tabContent">
-                            <div class="tab-pane fade @if ($layout == 'grid') show active @endif" id="pills-grid" role="tabpanel" aria-labelledby="pills-grid-tab" tabindex="0">
-                                @include('frontend.default.course.course_grid')
-                            </div>
-                            <div class="tab-pane fade @if ($layout == 'list') show active @endif" id="pills-list" role="tabpanel" aria-labelledby="pills-list-tab" tabindex="0">
-                                @include('frontend.default.course.course_list')
-                            </div>
-
-                            @if (count($courses) > 0)
-                                {{ $courses->links('vendor.pagination.default') }}
-                            @endif
-                        </div>
+                        @include('frontend.default.course.course_' . $layout)
+                        @if (count($courses) > 0)
+                            {{ $courses->links('vendor.pagination.default') }}
+                        @endif
                     </div>
 
                 </div>

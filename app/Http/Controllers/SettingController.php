@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Builder_page;
 use App\Models\FileUploader;
 use App\Models\FrontendSetting;
 use App\Models\HomePageSetting;
@@ -15,12 +14,9 @@ use App\Models\Setting;
 use App\Models\User;
 use App\Models\UserReview;
 use Carbon\Carbon;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class SettingController extends Controller
 {
@@ -342,21 +338,21 @@ class SettingController extends Controller
         return true;
     }
 
-    public function edit_phrase($lan_id)
+    public function edit_phrase($company = "", $lan_id)
     {
         $page_data['phrases']  = Language_phrase::where('language_id', $lan_id)->get();
         $page_data['language'] = Language::where('id', $lan_id)->first();
         return view('admin.setting.edit_phrase', $page_data);
     }
 
-    public function update_phrase(Request $request, $phrase_id)
+    public function update_phrase(Request $request, $company = "", $phrase_id)
     {
         $translated = $request->translated_phrase;
 
         Language_phrase::where('id', $phrase_id)->update(['translated' => $translated, 'updated_at' => date('Y-m-d H:i:s')]);
     }
 
-    public function phrase_import($lan_id)
+    public function phrase_import($company = "", $lan_id)
     {
         $english_lan_id = Language::where('name', 'like', 'English')->first()->id;
         foreach (Language_phrase::where('language_id', $english_lan_id)->get() as $en_lan_phrase) {
@@ -386,7 +382,7 @@ class SettingController extends Controller
         return redirect()->back();
     }
 
-    public function language_delete($id)
+    public function language_delete($company = "", $id)
     {
         Language::where('id', $id)->delete();
         Language_phrase::where('language_id', $id)->delete();

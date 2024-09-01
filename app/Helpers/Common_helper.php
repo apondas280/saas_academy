@@ -4,7 +4,6 @@
 use App\Models\Addon;
 use App\Models\CartItem;
 use App\Models\Wishlist;
-
 use function PHPUnit\Framework\fileExists;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -1468,6 +1467,17 @@ if (! function_exists('wishlist')) {
             ->join('users', 'courses.user_id', 'users.id')
             ->select('wishlists.*', 'courses.*', 'courses.thumbnail as course_thumbnail', 'users.name as user_name', 'users.photo as users_photo')
             ->where('wishlists.user_id', auth()->user()->id)->get();
+        return $items;
+    }
+}
+
+if (! function_exists('in_wishlist')) {
+    function in_wishlist($course_id)
+    {
+        $items = Wishlist::join('courses', 'wishlists.course_id', 'courses.id')
+            ->where('wishlists.course_id', $course_id)
+            ->where('wishlists.user_id', auth()->user()->id)
+            ->exists();
         return $items;
     }
 }

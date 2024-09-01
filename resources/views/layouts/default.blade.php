@@ -63,6 +63,7 @@
     <!-- Custom Js File -->
     <script src="{{ asset('assets/frontend/default/js/script.js') }}"></script>
 
+    @include('frontend.default.scripts')
     @include('frontend.default.toaster')
 </body>
 

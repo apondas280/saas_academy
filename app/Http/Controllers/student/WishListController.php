@@ -19,10 +19,10 @@ class WishListController extends Controller
         $view_path = 'frontend.' . get_frontend_settings('theme') . '.student.wishlist.index';
         return view($view_path, $page_data);
     }
-    public function toggleWishItem(Request $request, $course_id = '')
+    public function toggleWishItem(Request $request, $company = "", $course_id = '')
     {
         $res = [];
-        if (!is_numeric($course_id) && $course_id < 1) {
+        if (! is_numeric($course_id) && $course_id < 1) {
             return response()->json($res);
         }
 
@@ -31,16 +31,20 @@ class WishListController extends Controller
             $query->delete();
             $res = ['toggleStatus' => 'removed'];
 
-            if (!$request->ajax())
+            if (! $request->ajax()) {
                 Session::flash('success', get_phrase('Item removed from wishlist.'));
+            }
+
         } else {
             $data['user_id']   = auth()->user()->id;
             $data['course_id'] = $course_id;
             Wishlist::insert($data);
             $res = ['toggleStatus' => 'added'];
 
-            if (!$request->ajax())
+            if (! $request->ajax()) {
                 Session::flash('success', get_phrase('Item added to wishlist.'));
+            }
+
         }
         return response()->json($res);
     }
