@@ -13,14 +13,13 @@ use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use PDOException;
 
 class ApiController extends Controller
 {
     //register_company
     public function register_company(Request $request)
     {
-        return 'zohan';
         $db_user = 'ctmacademy_creativeitem';
         $db_pass = 'a7#YwR!Ii]^k';
         $db_host = '127.0.0.1';
@@ -171,7 +170,7 @@ class ApiController extends Controller
     }
 
     //
-    public function top_courses($top_course_id = "")
+    public function top_courses($company = "", $top_course_id = "")
     {
         $query = Course::orderBy('id', 'desc')->limit(10)->get();
 

@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\BootcampLiveClassController;
 use App\Http\Controllers\Admin\BootcampModuleController;
 use App\Http\Controllers\Admin\BootcampResourceController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\GroupController;
+use App\Http\Controllers\Admin\GroupTrainingController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\OfflinePaymentController;
 use App\Http\Controllers\Admin\OpenAiController;
@@ -421,6 +423,31 @@ Route::prefix('{company}')->group(function () {
 
             Route::get('get-courses-by-privacy/', 'get_courses')->name('get.courses.by.privacy');
             Route::get('get-courses-price/', 'get_course_price')->name('get.course.price');
+        });
+
+        // group routes
+        Route::controller(GroupController::class)->group(function () {
+            Route::get('groups', 'index')->name('groups');
+            Route::get('groups/create', 'create')->name('groups.create');
+            Route::post('groups/store', 'store')->name('groups.store');
+
+            Route::middleware(['record.exists:groups,id'])->group(function () {
+                Route::get('groups/edit/{id}', 'edit')->name('groups.edit');
+                Route::post('groups/update/{id}', 'update')->name('groups.update');
+                Route::get('groups/delete/{id}', 'delete')->name('groups.delete');
+                Route::get('groups/duplicate/{id}', 'duplicate')->name('groups.duplicate');
+                Route::get('groups/toggle-status/{id}', 'toggle_status')->name('group.toggle.status');
+            });
+        });
+
+        // group training
+        Route::controller(GroupTrainingController::class)->group(function () {
+            Route::get('groups/training/', 'index')->name('groups.training');
+            Route::post('groups/training/store', 'store')->name('groups.training.store');
+
+            Route::middleware(['record.exists:group_trainings,id'])->group(function () {
+                Route::get('groups/training/delete/{id}', 'delete')->name('groups.training.delete');
+            });
         });
 
         Route::get('select-language/{language}', [LanguageController::class, 'select_lng'])->name('select.language');

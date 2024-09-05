@@ -140,6 +140,39 @@
             @endif
 
 
+            @if (has_permission('admin.groups') || has_permission('admin.groups.create') || has_permission('admin.groups.training'))
+                <li class="sidebar-first-li first-li-have-sub {{ $current_route == 'admin.groups' || $current_route == 'admin.groups.create' || $current_route == 'admin.groups.edit' || $current_route == 'admin.groups.training' ? 'active' : '' }}">
+                    <a href="javascript:void(0);">
+                        <span class="icon fi fi-rr-users-medical"></span>
+                        <div class="text">
+                            <span>{{ get_phrase('Private Groups') }}</span>
+                        </div>
+                    </a>
+                    <ul class="first-sub-menu">
+                        <li class="first-sub-menu-title fs-14px mb-18px">{{ get_phrase('Private Groups') }}</li>
+
+                        @if (has_permission('admin.groups'))
+                            <li class="sidebar-second-li {{ $current_route == 'admin.groups' || $current_route == 'admin.groups.edit' ? 'active' : '' }}">
+                                <a href="{{ route('admin.groups') }}">{{ get_phrase('Manage Groups') }}</a>
+                            </li>
+                        @endif
+
+                        @if (has_permission('admin.groups.create'))
+                            <li class="sidebar-second-li {{ $current_route == 'admin.groups.create' ? 'active' : '' }}">
+                                <a href="{{ route('admin.groups.create') }}">{{ get_phrase('Add New Group') }}</a>
+                            </li>
+                        @endif
+
+                        @if (has_permission('admin.groups.training'))
+                            <li class="sidebar-second-li {{ $current_route == 'admin.groups.training' ? 'active' : '' }}">
+                                <a href="{{ route('admin.groups.training') }}">{{ get_phrase('Training Session') }}</a>
+                            </li>
+                        @endif
+                    </ul>
+                </li>
+            @endif
+
+
             @if (has_permission('admin.revenue') || has_permission('admin.instructor.revenue') || has_permission('admin.purchase.history'))
                 <li class="sidebar-first-li first-li-have-sub {{ $current_route == 'admin.revenue' || $current_route == 'admin.instructor.revenue' || $current_route == 'admin.purchase.history' || $current_route == 'admin.purchase.history.invoice' ? 'active' : '' }}">
                     <a href="javascript:void(0);">

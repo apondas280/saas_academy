@@ -302,11 +302,12 @@ if (! function_exists('count_course_by_instructor')) {
     }
 }
 if (! function_exists('progress_bar')) {
-    function progress_bar($course_id = "")
+    function progress_bar($course_id = "", $user_id = null)
     {
         if ($course_id != '') {
+            $user           = $user_id ?? auth()->user()->id;
             $lesson_history = App\Models\Watch_history::where('course_id', $course_id)
-                ->where('student_id', auth()->user()->id)
+                ->where('student_id', $user)
                 ->first();
 
             $progress_result = 0;
