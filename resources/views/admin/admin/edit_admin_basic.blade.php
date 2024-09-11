@@ -9,10 +9,13 @@
 <div class="row mb-3">
     <label for="short_description" class="form-label ol-form-label col-sm-2 col-form-label">{{ get_phrase('Biography') }}</label>
     <div class="col-sm-8">
-        <textarea name="about" rows="3" class="form-control ol-form-control" id="short_description">@isset($admin->about){{ $admin->about }}@endisset</textarea>
+        <textarea name="about" rows="3" class="form-control ol-form-control" id="short_description">
+@isset($admin->about)
+{{ $admin->about }}
+@endisset
+</textarea>
     </div>
 </div>
-ß
 
 <div class="row mb-3">
     <label for="user-phone" class="form-label ol-form-label col-sm-2 col-form-label">{{ get_phrase('Phone') }}</label>

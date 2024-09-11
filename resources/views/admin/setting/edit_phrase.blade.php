@@ -32,10 +32,10 @@
         @foreach ($phrases as $phrase)
             <div class="col-md-4 mb-3">
                 <div class="ol-card p-4">
-                    <div class="ol-card-body">
+                    <div class="ol-card-body translation-fields">
                         <label class="ol-form-label" for="translated_phrase_{{ $phrase->id }}">{{ $phrase->phrase }}</label>
                         <input type="text" id="translated_phrase_{{ $phrase->id }}" value="{{ $phrase->translated }}" class="form-control ol-form-control">
-                        <button type="button" onclick="updatePhrase({{ $phrase->id }})" class="btn ol-btn-primary mt-3">{{ get_phrase('Update') }}</button>
+                        <button type="button" onclick="updatePhrase({{ $phrase->id }})" class="btn ol-btn-primary mt-3 update-translation-fields">{{ get_phrase('Update') }}</button>
                     </div>
                 </div>
             </div>
@@ -45,6 +45,26 @@
 @push('js')
     <script type="text/javascript">
         "use strict";
+
+        function replaceInputData() {
+            $('.translation-fields:not(.added)').each(function(index) {
+                var element = $(this);
+                var translated_text = element.find('label').text();
+                element.find('input').val(translated_text);
+                element.addClass('added');
+                console.log(translated_text)
+            });
+        }
+
+        function replaceInputDataUpdate() {
+            $('.update-translation-fields').each(function(index) {
+                var element = $(this);
+                setTimeout(function() {
+                    element.trigger('click');
+                    element.addClass('d-none');
+                }, index * 1000); // index * 1000 will delay each by 1 second
+            });
+        }
 
         function updatePhrase(phrase_id) {
             var translated_phrase = $('#translated_phrase_' + phrase_id).val();

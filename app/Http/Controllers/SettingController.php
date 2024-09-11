@@ -329,6 +329,7 @@ class SettingController extends Controller
 
     public function manage_language()
     {
+        // return redirect()->back();
         return view('admin.setting.language_setting');
     }
 

@@ -1,6 +1,5 @@
-
 @php
-    $seo_meta_tag = App\Models\SeoField::where('course_id', $bootcamp_details->id)->firstOrNew();
+    $seo_meta_tag = App\Models\SeoField::where('bootcamp_id', $bootcamp_details->id)->firstOrNew();
 @endphp
 <div class="fpb-7 mb-3">
     <label for="meta_title" class="form-label ol-form-label">{{ get_phrase('Meta Title') }}</label>
@@ -25,14 +24,12 @@
 
 <div class="fpb-7 mb-3">
     <label for="canonical_url" class="form-label ol-form-label">{{ get_phrase(' Canonical Url') }}</label>
-    <input type="text" class="form-control ol-form-control" data-role="tagsinput" id = "canonical_url" name="canonical_url" placeholder="https://example.com/courses"
-        value="{{ $seo_meta_tag->canonical_url }}" />
+    <input type="text" class="form-control ol-form-control" data-role="tagsinput" id = "canonical_url" name="canonical_url" placeholder="https://example.com/courses" value="{{ $seo_meta_tag->canonical_url }}" />
 </div>
 
 <div class="fpb-7 mb-3">
     <label for="custom_url" class="form-label ol-form-label">{{ get_phrase(' Custom Url') }}</label>
-    <input type="text" class="form-control ol-form-control" data-role="tagsinput" id = "custom_url" name="custom_url" placeholder="https://example.com/dresses/courses"
-        value="{{ $seo_meta_tag->custom_url }}" />
+    <input type="text" class="form-control ol-form-control" data-role="tagsinput" id = "custom_url" name="custom_url" placeholder="https://example.com/dresses/courses" value="{{ $seo_meta_tag->custom_url }}" />
 </div>
 
 <div class="fpb-7 mb-3">

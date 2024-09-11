@@ -419,6 +419,13 @@ span[class="fi-rr-"]:before {
     border-bottom: 1px solid #dbdfeb;
 }
 
+.cursor-pointer{
+    cursor: pointer;
+}
+.cursor-default{
+    cursor: default;
+}
+
 
 /* Title */
 .title {

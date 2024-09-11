@@ -15,9 +15,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Str;
 
 class UsersController extends Controller
 {
@@ -38,11 +35,11 @@ class UsersController extends Controller
     }
     public function admin_store(Request $request)
     {
-
         $rules = [
             'name'     => "required",
             'email'    => 'required|email|unique:users',
             'password' => "required|min:8",
+            'photo'    => "mimes:jpg,png,jpeg|max:1024",
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -63,8 +60,8 @@ class UsersController extends Controller
         $data['role']     = 'admin';
 
         if (isset($request->photo) && $request->hasFile('photo')) {
-            $path = "assets/upload/users/instructor/" . nice_file_name($request->name, $request->photo->extension());
-            FileUploader::upload($request->photo, $path, 400, null, 200, 200);
+            $path = upload_directory($request->photo, 'profile', $request->name);
+            FileUploader::upload($request->photo, $path);
             $data['photo'] = $path;
         }
 
@@ -78,17 +75,17 @@ class UsersController extends Controller
         return redirect()->route('admin.admins.index');
     }
 
-    public function admin_edit($id)
+    public function admin_edit($company = "", $id)
     {
         $page_data['admin'] = User::where('id', $id)->first();
         return view('admin.admin.edit_admin', $page_data);
     }
-    public function admin_update(Request $request, $id)
+    public function admin_update(Request $request, $company = "", $id)
     {
-
         $rules = [
             'name'  => "required",
             'email' => "required|email|unique:users,email,$id",
+            'photo' => "mimes:jpg,png,jpeg|max:1024",
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -108,10 +105,11 @@ class UsersController extends Controller
         $data['role']     = 'admin';
 
         if (isset($request->photo) && $request->hasFile('photo')) {
-            remove_file(User::where('id', $id)->first()->photo);
-            $path = "assets/upload/users/instructor/" . nice_file_name($request->name, $request->photo->extension());
-            FileUploader::upload($request->photo, $path, 400, null, 200, 200);
+            $path = upload_directory($request->photo, 'profile', $request->name);
+            FileUploader::upload($request->photo, $path);
             $data['photo'] = $path;
+
+            remove_file(User::where('id', $id)->first()->photo);
         }
 
         User::where('id', $request->id)->update($data);
@@ -119,17 +117,17 @@ class UsersController extends Controller
         return redirect()->route('admin.admins.index');
     }
 
-    public function admin_delete($id)
+    public function admin_delete($company = "", $id)
     {
-        $done = User::where('id', $id)->delete();
-        if ($done) {
-            Permission::where('admin_id', $id)->delete();
-        }
+        User::where('id', $id)->delete();
+        Permission::where('admin_id', $id)->delete();
+        remove_file(User::where('id', $id)->first()->photo);
+
         Session::flash('success', get_phrase('Admin delete successfully'));
         return redirect()->back();
     }
 
-    public function admin_permission($user_id)
+    public function admin_permission($company = "", $user_id)
     {
         $page_data['admin'] = User::where('id', $user_id)->firstOrNew();
         return view('admin.admin.permission', $page_data);
@@ -171,17 +169,18 @@ class UsersController extends Controller
     {
         return view('admin.instructor.create_instructor');
     }
-    public function instructor_edit($id = '')
+    public function instructor_edit($company = "", $id = '')
     {
         $page_data['instructor'] = User::where('id', $id)->first();
         return view('admin.instructor.edit_instructor', $page_data);
     }
-    public function instructor_store(Request $request, $id = '')
+    public function instructor_store(Request $request, $company = "", $id = '')
     {
         $rules = [
             'name'     => 'required|max:255',
             'email'    => 'required',
             'password' => 'required',
+            'photo'    => "mimes:jpg,png,jpeg|max:1024",
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -204,8 +203,8 @@ class UsersController extends Controller
         $data['role']     = 'instructor';
 
         if (isset($request->photo) && $request->hasFile('photo')) {
-            $path = "assets/upload/users/instructor/" . nice_file_name($request->name, $request->photo->extension());
-            FileUploader::upload($request->photo, $path, 400, null, 200, 200);
+            $path = upload_directory($request->photo, 'profile', $request->name);
+            FileUploader::upload($request->photo, $path);
             $data['photo'] = $path;
         }
         User::insert($data);
@@ -214,11 +213,12 @@ class UsersController extends Controller
         return redirect()->route('admin.instructor.index');
     }
 
-    public function instructor_update(Request $request, $id = '')
+    public function instructor_update(Request $request, $company = "", $id = '')
     {
         $rules = [
             'name'  => 'required|max:255',
             'email' => "required|email|unique:users,email,$id",
+            'photo' => "mimes:jpg,png,jpeg|max:1024",
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -237,10 +237,11 @@ class UsersController extends Controller
         $data['paymentkeys'] = json_encode($request->paymentkeys);
 
         if (isset($request->photo) && $request->hasFile('photo')) {
-            remove_file(User::where('id', $id)->first()->photo);
-            $path = "assets/upload/users/instructor/" . nice_file_name($request->name, $request->photo->extension());
-            FileUploader::upload($request->photo, $path, 400, null, 200, 200);
+            $path = upload_directory($request->photo, 'profile', $request->name);
+            FileUploader::upload($request->photo, $path);
             $data['photo'] = $path;
+
+            remove_file(User::where('id', $id)->first()->photo);
         }
 
         User::where('id', $id)->update($data);
@@ -248,9 +249,11 @@ class UsersController extends Controller
         return redirect()->route('admin.instructor.index');
     }
 
-    public function instructor_delete($id)
+    public function instructor_delete($company = "", $id)
     {
         User::where('id', $id)->delete();
+        remove_file(User::where('id', $id)->first()->photo);
+
         Session::flash('success', get_phrase('Instructor delete successfully'));
         return redirect()->back();
     }
@@ -288,7 +291,7 @@ class UsersController extends Controller
         return view('admin.instructor.payout', $page_data);
     }
 
-    public function instructor_payout_invoice($id = '')
+    public function instructor_payout_invoice($company = "", $id = '')
     {
         if ($id != '') {
             $page_data['invoice_info'] = Payout::where('status', 1)->first();
@@ -399,7 +402,7 @@ class UsersController extends Controller
     {
         return view('admin.instructor.application');
     }
-    public function instructor_application_approve($id)
+    public function instructor_application_approve($company = "", $id)
     {
         $query         = Application::where('id', $id);
         $update_status = $query->update(['status' => 1]);
@@ -410,13 +413,13 @@ class UsersController extends Controller
         }
         return redirect()->back();
     }
-    public function instructor_application_delete($id)
+    public function instructor_application_delete($company = "", $id)
     {
         Application::where('id', $id)->delete();
         Session::flash('success', get_phrase('Application delete successfully'));
         return redirect()->back();
     }
-    public function instructor_application_download($id)
+    public function instructor_application_download($company = "", $id)
     {
         $path = Application::where('id', $id)->first();
 
@@ -442,17 +445,18 @@ class UsersController extends Controller
     {
         return view('admin.student.create_student');
     }
-    public function student_edit($id = '')
+    public function student_edit($company = "", $id = '')
     {
         $page_data['student'] = User::where('id', $id)->first();
         return view('admin.student.edit_student', $page_data);
     }
-    public function student_store(Request $request, $id = '')
+    public function student_store(Request $request, $company = "", $id = '')
     {
         $rules = [
             'name'     => 'required|max:255',
             'email'    => 'required',
             'password' => 'required',
+            'photo'    => "mimes:jpg,png,jpeg|max:1024",
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -475,8 +479,8 @@ class UsersController extends Controller
         $data['role']     = 'student';
 
         if (isset($request->photo) && $request->hasFile('photo')) {
-            $path = "assets/upload/users/student/" . nice_file_name($request->name, $request->photo->extension());
-            FileUploader::upload($request->photo, $path, 400, null, 200, 200);
+            $path = upload_directory($request->photo, 'profile', $request->name);
+            FileUploader::upload($request->photo, $path);
             $data['photo'] = $path;
         }
 
@@ -486,11 +490,12 @@ class UsersController extends Controller
         return redirect()->route('admin.student.index');
     }
 
-    public function student_update(Request $request, $id = '')
+    public function student_update(Request $request, $company = "", $id = '')
     {
         $rules = [
             'name'  => 'required|max:255',
             'email' => "required|email|unique:users,email,$id",
+            'photo' => "mimes:jpg,png,jpeg|max:1024",
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -509,10 +514,11 @@ class UsersController extends Controller
         $data['paymentkeys'] = json_encode($request->paymentkeys);
 
         if (isset($request->photo) && $request->hasFile('photo')) {
-            remove_file(User::where('id', $id)->first()->photo);
-            $path = "assets/upload/users/student/" . nice_file_name($request->name, $request->photo->extension());
-            FileUploader::upload($request->photo, $path, 400, null, 200, 200);
+            $path = upload_directory($request->photo, 'profile', $request->name);
+            FileUploader::upload($request->photo, $path);
             $data['photo'] = $path;
+
+            remove_file(User::where('id', $id)->first()->photo);
         }
 
         User::where('id', $id)->update($data);
@@ -520,7 +526,7 @@ class UsersController extends Controller
         return redirect()->route('admin.student.index');
     }
 
-    public function student_delete($id)
+    public function student_delete($company = "", $id)
     {
         $query = user::where('id', $id);
         remove_file($query->first()->photo);
@@ -551,7 +557,7 @@ class UsersController extends Controller
                 $data['course_id']  = $request->course_id[$j];
                 $data['entry_date'] = time();
                 $user               = Enrollment::where('user_id', $request->user_id[$i])->where('course_id', $request->course_id[$j])->exists();
-                if (!$user) {
+                if (! $user) {
 
                     Enrollment::insert($data);
                 }
@@ -584,7 +590,7 @@ class UsersController extends Controller
         return view('admin.enroll.enroll_history', $page_data);
     }
 
-    public function enroll_history_delete($id)
+    public function enroll_history_delete($company = "", $id)
     {
 
         Enrollment::where('id', $id)->delete();
@@ -598,7 +604,19 @@ class UsersController extends Controller
     }
     public function manage_profile_update(Request $request)
     {
+        $id = auth()->user()->id;
+
         if ($request->type == 'general') {
+            $rules = [
+                'name'  => 'required|max:255',
+                'email' => "required|email|unique:users,email,$id",
+                'photo' => "mimes:jpg,png,jpeg|max:1024",
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return json_encode(array('validationError' => $validator->getMessageBag()->toArray()));
+            }
+
             $profile['name']      = $request->name;
             $profile['email']     = $request->email;
             $profile['facebook']  = $request->facebook;
@@ -609,15 +627,18 @@ class UsersController extends Controller
 
             if ($request->photo) {
                 if (isset($request->photo) && $request->photo != '') {
-                    $profile['photo'] = "assets/upload/users/admin/" . nice_file_name($request->title, $request->photo->extension());
-                    FileUploader::upload($request->photo, $profile['photo'], 400, null, 200, 200);
+                    $path = upload_directory($request->photo, 'profile', $request->name);
+                    FileUploader::upload($request->photo, $path);
+                    $profile['photo'] = $path;
+
+                    remove_file(User::where('id', auth()->user()->id)->first()->photo);
                 }
             }
             User::where('id', auth()->user()->id)->update($profile);
         } else {
             $old_pass_check = Auth::attempt(['email' => auth()->user()->email, 'password' => $request->current_password]);
 
-            if (!$old_pass_check) {
+            if (! $old_pass_check) {
                 Session::flash('error', get_phrase('Current password wrong.'));
                 return redirect()->back();
             }

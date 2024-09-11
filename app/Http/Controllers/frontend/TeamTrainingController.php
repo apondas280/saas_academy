@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\TeamTrainingPackage;
+use App\Services\SeoService;
 use Illuminate\Http\Request;
 
 class TeamTrainingController extends Controller
@@ -47,7 +48,7 @@ class TeamTrainingController extends Controller
 
     public function show($company = "", $slug)
     {
-        $page_data['package'] = TeamTrainingPackage::join('courses', 'team_training_packages.course_id', 'courses.id')
+        $package = TeamTrainingPackage::join('courses', 'team_training_packages.course_id', 'courses.id')
             ->join('users', 'team_training_packages.user_id', 'users.id')
             ->select(
                 'team_training_packages.*',
@@ -61,9 +62,12 @@ class TeamTrainingController extends Controller
             ->where('team_training_packages.slug', $slug)
             ->first();
 
-        if (! $page_data['package']) {
+        if (! $package) {
             return redirect()->back()->with('error', get_phrase('Data not found.'));
         }
+
+        $page_data['package'] = $package;
+        $page_data['seo']     = SeoService::generateSeo($package, 'team-package');
         return view('frontend.default.team_training.details', $page_data);
     }
 }

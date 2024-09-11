@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Image, DB, Session;
+use Intervention\Image\Facades\Image;
 
 class FileUploader extends Model
 {
@@ -20,12 +18,13 @@ class FileUploader extends Model
         // Explanation: $width and $height => Image width and height
         // Explanation: $optimized_width and $optimized_height ultra optimization, That is stored in optimized folder
 
-        if (!$uploaded_file)
+        if (! $uploaded_file) {
             return;
+        }
 
         //Add public path
         $upload_path = $upload_to;
-        $upload_to = public_path($upload_to);
+        $upload_to   = public_path($upload_to);
 
         $s3_keys = get_settings('amazon_s3', 'object');
         if (empty($s3_keys) || $s3_keys->active != 1) {
@@ -33,9 +32,9 @@ class FileUploader extends Model
                 $file_name = time() . '-' . random(30) . '.' . $uploaded_file->extension();
             } else {
                 $uploaded_path_arr = explode('/', $upload_to);
-                $file_name = end($uploaded_path_arr);
-                $upload_to = str_replace('/' . $file_name, "", $upload_to);
-                if (!is_dir($upload_to)) {
+                $file_name         = end($uploaded_path_arr);
+                $upload_to         = str_replace('/' . $file_name, "", $upload_to);
+                if (! is_dir($upload_to)) {
                     Storage::makeDirectory($upload_to);
                 }
             }

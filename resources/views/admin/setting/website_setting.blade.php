@@ -28,12 +28,12 @@
                                     <span></span>
                                 </button>
                             </li>
-                            <li class="nav-item" role="presentation">
+                            {{-- <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="cMessage-tab" data-bs-toggle="tab" data-bs-target="#cMessage" type="button" role="tab" aria-controls="cMessage" aria-selected="false">
                                     {{ get_phrase('Motivational Speech') }}
                                     <span></span>
                                 </button>
-                            </li>
+                            </li> --}}
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="cSettings-tab" data-bs-toggle="tab" data-bs-target="#cSettings" type="button" role="tab" aria-controls="cSettings" aria-selected="false">
                                     {{ get_phrase('Website FAQS') }}
@@ -65,9 +65,9 @@
                                     @include('admin.setting.frontend_setting')
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="cMessage" role="tabpanel" aria-labelledby="cMessage-tab">
+                            {{-- <div class="tab-pane fade" id="cMessage" role="tabpanel" aria-labelledby="cMessage-tab">
                                 @include('admin.setting.motivational')
-                            </div>
+                            </div> --}}
                             <div class="tab-pane fade" id="cSettings" role="tabpanel" aria-labelledby="cSettings-tab">
                                 @include('admin.setting.webfaqs')
                             </div>

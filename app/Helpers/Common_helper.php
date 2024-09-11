@@ -1,12 +1,11 @@
 <?php
-// import facade
 
 use App\Models\Addon;
 use App\Models\CartItem;
 use App\Models\Wishlist;
-use function PHPUnit\Framework\fileExists;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 // Global Settings
 if (! function_exists('get_src')) {
@@ -1480,5 +1479,40 @@ if (! function_exists('in_wishlist')) {
             ->where('wishlists.user_id', auth()->user()->id)
             ->exists();
         return $items;
+    }
+}
+
+if (! function_exists('upload_directory')) {
+    function upload_directory($file, $path, $user = null)
+    {
+        $company   = request()->route()->parameter('company');
+        $extension = $file->getClientOriginalExtension();
+        $file_name = Str::random(15) . '.' . $extension;
+
+        $user_name    = $user ?? auth()->user()->name;
+        $slugged_user = Str::slug($user_name);
+
+        return "upload/{$company}/users/{$slugged_user}/{$path}/{$file_name}";
+    }
+}
+
+if (! function_exists('get_company_storage_usage')) {
+    function get_company_storage_usage()
+    {
+        $company_path = request()->route()->parameter('company');
+        $files        = File::allFiles(public_path("upload/{$company_path}"));
+        $size         = 0;
+
+        foreach ($files as $file) {
+            $size += $file->getSize();
+        }
+
+        if ($size < 1024 * 1024 * 1024) {
+            return number_format($size / (1024 * 1024), 2) . ' MB';
+        } elseif ($size < 1024 * 1024 * 1024 * 1024) {
+            return number_format($size / (1024 * 1024 * 1024), 2) . ' GB';
+        } else {
+            return number_format($size / (1024 * 1024 * 1024 * 1024), 2) . ' TB';
+        }
     }
 }

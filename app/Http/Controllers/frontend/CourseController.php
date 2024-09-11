@@ -10,6 +10,7 @@ use App\Models\Lesson;
 use App\Models\Section;
 use App\Models\User;
 use App\Models\Wishlist;
+use App\Services\SeoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -104,6 +105,7 @@ class CourseController extends Controller
             $page_data['sections']       = Section::where('course_id', $course_details->id)->orderBy('sort')->get();
             $page_data['total_lesson']   = Lesson::where('course_id', $course_details->id)->count();
             $page_data['enroll']         = Enrollment::where('course_id', $course_details->id)->count('user_id');
+            $page_data['seo']            = SeoService::generateSeo($course_details, 'course');
 
             $view_path = 'frontend.' . get_frontend_settings('theme') . '.course.course_details';
             return view($view_path, $page_data);

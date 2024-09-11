@@ -5,6 +5,7 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Bootcamp;
 use App\Models\BootcampModule;
+use App\Services\SeoService;
 use Illuminate\Support\Facades\Session;
 
 class BootcampController extends Controller
@@ -40,6 +41,7 @@ class BootcampController extends Controller
         $bootcamp_details      = $bootcamp->first();
         $page_data['bootcamp'] = $bootcamp_details;
         $page_data['modules']  = BootcampModule::where('bootcamp_id', $bootcamp_details->id)->get();
+        $page_data['seo']      = SeoService::generateSeo($bootcamp_details, 'bootcamp');
 
         return view(theme_path() . 'bootcamp.details', $page_data);
     }
