@@ -5,8 +5,8 @@
     @include('layouts.seo')
     @stack('meta')
 
-    <link rel="apple-touch-icon" href="{{ asset('assets/images/favicon.svg') }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.svg') }}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{ asset(get_frontend_settings('favicon')) }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset(get_frontend_settings('favicon')) }}" type="image/x-icon">
 
     <!-- Css Files -->
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/bootstrap.min.css') }}">

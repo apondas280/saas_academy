@@ -2,11 +2,10 @@
 @push('title', get_phrase('Purchase History'))
 
 @section('content')
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body py-12px px-20px my-3 py-4">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between flex-md-nowrap flex-wrap gap-3">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     {{ get_phrase('Purchase History') }}
                 </h4>
             </div>

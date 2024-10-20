@@ -4,15 +4,10 @@
 @section('content')
     <div class="row mb-5">
         <div class="col-lg-12">
-            <div class="ol-card radius-8px">
-                <div class="ol-card-body my-3 py-4 px-20px">
-                    <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                        <h4 class="title fs-16px">
-                            <i class="fi-rr-settings-sliders me-2"></i>
-                            {{ get_phrase('Add new Course') }}
-                        </h4>
-                    </div>
-                </div>
+
+
+            <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
+                <h4 class="section-title">{{ get_phrase('Add new Course') }}</h4>
             </div>
             <div class="ol-card p-3">
                 <div class="ol-card-body">

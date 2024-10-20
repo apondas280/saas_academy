@@ -1006,23 +1006,6 @@ i:not(.fas, .fa, .fab) {
     color: #1b84ff;
 }
 
-.first-li-have-sub>a::after {
-    content: "\f155";
-    font-family: uicons-regular-rounded !important;
-    font-style: normal;
-    font-weight: 600 !important;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    background-image: unset;
-    margin-top: 1.5px;
-}
-
-.first-li-have-sub.active>a:after,
-.first-li-have-sub:hover>a:after {
-    background-image: unset;
-}
 
 /* Left Navigation Ended*/
 
@@ -1052,7 +1035,8 @@ input.daterangepicker {
 }
 
 .img-text-select a {
-    width: max-content;
+    width: 100%;
+    padding: 5px 8px;
 }
 
 .category-footer {
@@ -1446,7 +1430,7 @@ input.daterangepicker {
     padding: 0px 25px;
 }
 .sidebar-logo-area .sidebar-logo-lg{
-    height: 40px;
+    width: 150px;
 }
 .text-premium{
     color: #2f57ef !important;

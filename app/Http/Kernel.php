@@ -37,6 +37,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\SetCompanyVariable::class,
+            \App\Http\Middleware\AddonInjectionMiddleware::class,
         ],
 
         'api' => [
@@ -73,5 +74,6 @@ class Kernel extends HttpKernel
         'becomeaninstructor'       => \App\Http\Middleware\Becomeaninstructor::class,
         'ip.detector'              => \App\Http\Middleware\IpDetectorMiddleware::class,
         'record.exists'            => \App\Http\Middleware\RecordVerification::class,
+        'storage.checker'          => \App\Http\Middleware\StorageCheckerMiddleware::class,
     ];
 }

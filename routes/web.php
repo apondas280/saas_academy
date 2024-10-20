@@ -1,23 +1,22 @@
 <?php
 
 use App\Http\Controllers\CommonController;
+use App\Http\Controllers\frontend\HomeController;
 use App\Http\Controllers\InstallController;
 use App\Http\Controllers\ModalController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\frontend\HomeController;
-
 
 //Cache clear route
-Route::get('/clear-cache', function () {
+Route::get('{company}/clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('config:clear');
     Artisan::call('route:clear');
     Artisan::call('view:clear');
 
-    return 'Application cache cleared';
-});
+    return redirect()->back()->with('success', get_phrase('Cache has been cleared.'));
+})->name('clear.cache');
 
 Route::get('/logout', function () {
     Auth::logout();
@@ -49,8 +48,6 @@ Route::get('closed_back_to_mobile_ber', function () {
     session()->forget('app_url');
     return redirect()->back();
 })->name('closed_back_to_mobile_ber');
-
-
 
 //Installation routes
 Route::controller(InstallController::class)->group(function () {

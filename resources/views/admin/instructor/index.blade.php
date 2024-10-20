@@ -9,11 +9,10 @@
 @endpush
 
 @section('content')
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-12px px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     {{ get_phrase('Instructor List') }}
                 </h4>
 
@@ -113,8 +112,7 @@
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('admin.courses', ['instructor' => $row->id]) }}">{{ get_phrase('View courses') }}</a>
+                                                            <a class="dropdown-item" href="{{ route('admin.courses', ['instructor' => $row->id]) }}">{{ get_phrase('View courses') }}</a>
                                                         </li>
 
                                                         <li>
@@ -122,8 +120,7 @@
                                                         </li>
 
                                                         <li>
-                                                            <a class="dropdown-item" onclick="confirmModal('{{ route('admin.instructor.delete', $row->id) }}')"
-                                                                href="javascript:void(0)">{{ get_phrase('Delete') }}</a>
+                                                            <a class="dropdown-item" onclick="confirmModal('{{ route('admin.instructor.delete', $row->id) }}')" href="javascript:void(0)">{{ get_phrase('Delete') }}</a>
                                                         </li>
                                                     </ul>
                                                 </div>

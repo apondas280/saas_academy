@@ -39,10 +39,8 @@ class OfflinePaymentController extends Controller
             $item = $items[0];
         }
 
-        $file      = $request->doc;
-        $file_name = Str::random(20) . '.' . $file->extension();
-        $path      = 'uploads/offline_payment/' . Str::slug(auth()->user()->name) . '/' . $file_name;
-        FileUploader::upload($file, $path, null, null, 300);
+        $file = $request->doc;
+        $path = FileUploader::upload($file, 'offline-payment');
 
         $offline_payment['user_id']      = auth()->user()->id;
         $offline_payment['item_type']    = $request->item_type;

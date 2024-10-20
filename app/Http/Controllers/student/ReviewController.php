@@ -14,6 +14,15 @@ class ReviewController extends Controller
 {
     public function store(Request $request)
     {
+        if (! has_enrolled($request->course_id)) {
+            return redirect()->back()->with('error', get_phrase('You are not enrolled to this course.'));
+        }
+
+        $request->validate([
+            'review' => 'required',
+            'rating' => 'required',
+        ]);
+
         $data['course_id']   = $request->course_id;
         $data['user_id']     = auth()->user()->id;
         $data['review']      = $request->review;
@@ -23,34 +32,32 @@ class ReviewController extends Controller
         Review::insert($data);
 
         // update course rating
-        $query        = Review::where('course_id', $request->course_id)->where('review_type', 'course');
-        $total_rating = $query->sum('rating');
-        $avg_rating   = $total_rating / $query->count();
-        Course::where('id', $request->course_id)->update(['average_rating' => round($avg_rating)]);
+        $this->update_course_rating($request->course_id);
 
-        Session::flash('success', get_phrase('You review has been saved.'));
-        return redirect()->back();
+        return redirect()->back()->with('success', get_phrase('You review has been saved.'));
     }
 
-    public function delete($id)
+    public function delete($company = "", $id)
     {
-        // if user has selected item then delete item else redirect to cart page
-        if (Review::where('id', $id)->where('user_id', auth()->user()->id)->exists()) {
-            Review::where('id', $id)->delete();
-            Session::flash('success', get_phrase('Your review has been deleted.'));
+        $review = Review::where('id', $id)->where('user_id', auth()->user()->id);
+        if ($review->exists()) {
+            $review->delete();
+            return redirect()->back()->with('success', get_phrase('Your review has been deleted.'));
         } else {
-            Session::flash('error', get_phrase('Data not found.'));
+            return redirect()->back()->with('error', get_phrase('Data not found.'));
         }
-        return redirect()->back();
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $company = "", $id)
     {
-        // validate id
-        if (!is_numeric($id) && $id < 1) {
-            Session::flash('error', get_phrase('Data not found.'));
-            return redirect()->back();
+        if (! has_enrolled($request->course_id)) {
+            return redirect()->back()->with('error', get_phrase('You are not enrolled to this course.'));
         }
+
+        $request->validate([
+            'review' => 'required',
+            'rating' => 'required',
+        ]);
 
         $data['course_id']   = $request->course_id;
         $data['user_id']     = auth()->user()->id;
@@ -60,6 +67,9 @@ class ReviewController extends Controller
 
         Review::where('id', $id)->update($data);
 
+        // update course rating
+        $this->update_course_rating($request->course_id);
+
         Session::flash('success', get_phrase('Your review has been updated.'));
         return redirect()->back();
     }
@@ -67,7 +77,7 @@ class ReviewController extends Controller
     public function like($id)
     {
         // validate id
-        if (!is_numeric($id) && $id < 1) {
+        if (! is_numeric($id) && $id < 1) {
             Session::flash('error', get_phrase('Data not found.'));
             return redirect()->back();
         }
@@ -95,7 +105,7 @@ class ReviewController extends Controller
     public function dislike($id)
     {
         // validate id
-        if (!is_numeric($id) && $id < 1) {
+        if (! is_numeric($id) && $id < 1) {
             Session::flash('error', get_phrase('Data not found.'));
             return redirect()->back();
         }
@@ -118,5 +128,13 @@ class ReviewController extends Controller
         }
         Session::flash('success', get_phrase('Your changes has been saved'));
         return redirect()->back();
+    }
+
+    public function update_course_rating($course_id)
+    {
+        $query        = Review::where('course_id', $course_id)->where('review_type', 'course');
+        $total_rating = $query->sum('rating');
+        $avg_rating   = $total_rating / $query->count();
+        Course::where('id', $course_id)->update(['average_rating' => round($avg_rating)]);
     }
 }

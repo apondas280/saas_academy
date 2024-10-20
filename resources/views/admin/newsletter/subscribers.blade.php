@@ -3,11 +3,10 @@
 
 @section('content')
     <!-- Mani section header and breadcrumb -->
-    <div class="ol-card radius-8px print-d-none">
-        <div class="ol-card-body my-3 py-4 px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     <span>{{ get_phrase('Subscribers') }}</span>
                 </h4>
             </div>
@@ -43,8 +42,7 @@
                                 <div class="row">
                                     <div class="col-9">
                                         <div class="search-input">
-                                            <input type="text" name="search" value="{{ request('search') }}"
-                                                placeholder="{{ get_phrase('Search Email') }}" class="ol-form-control form-control" />
+                                            <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ get_phrase('Search Email') }}" class="ol-form-control form-control" />
 
                                         </div>
                                     </div>
@@ -86,8 +84,7 @@
 
                                             <td class="print-d-none">
                                                 <div class="adminTable-action">
-                                                    <button type="button" class="btn ol-btn-light ol-icon-btn" data-bs-toggle="tooltip" title="{{ get_phrase('Delete') }}"
-                                                        onclick="confirmModal('{{ route('admin.subscribed_user.delete', $subscriber->id) }}')">
+                                                    <button type="button" class="btn ol-btn-light ol-icon-btn" data-bs-toggle="tooltip" title="{{ get_phrase('Delete') }}" onclick="confirmModal('{{ route('admin.subscribed_user.delete', $subscriber->id) }}')">
                                                         <i class="fi-rr-trash"></i>
                                                     </button>
                                                 </div>
@@ -102,8 +99,7 @@
                     @endif
                 </div>
                 @if (count($subscribers) > 0)
-                    <div
-                        class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
+                    <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
                         <p class="admin-tInfo">
                             {{ get_phrase('Showing') . ' ' . count($subscribers) . ' ' . get_phrase('of') . ' ' . $subscribers->total() . ' ' . get_phrase('data') }}
                         </p>

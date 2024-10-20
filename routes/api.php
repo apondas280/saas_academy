@@ -28,6 +28,8 @@ Route::post('/register_company', [ApiController::class, 'register_company']);
 
 Route::prefix('{company}')->group(function () {
 
+    Route::post('update/user-subscription', [ApiController::class, 'update_subscription']);
+
     Route::group(['middleware', ['auth:sanctum']], function () {
         Route::get('/top_courses', [ApiController::class, 'top_courses']);
         Route::get('/all_categories', [ApiController::class, 'all_categories']);
@@ -57,5 +59,4 @@ Route::prefix('{company}')->group(function () {
 
         Route::get('payment', [ApiController::class, 'payment']);
     });
-
 });

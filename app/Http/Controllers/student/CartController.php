@@ -27,7 +27,7 @@ class CartController extends Controller
                 Session::flash('error', get_phrase('Ops! coupon is expired.'));
                 return redirect()->back();
             }
-            $discount = $coupon->discount;
+            $discount            = $coupon->discount;
             $page_data['coupon'] = $coupon;
         }
 

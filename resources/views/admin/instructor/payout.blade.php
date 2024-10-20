@@ -4,11 +4,10 @@
 @push('css')@endpush
 @section('content')
 
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-4 px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     {{ get_phrase('Instructor Payout') }}
                 </h4>
             </div>
@@ -22,22 +21,20 @@
                 <div class="col-md-12">
                     <ul class="nav nav-tabs eNav-Tabs-custom eTab" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link @if(!isset($_GET['eDateRange'])) active @endif" id="cHome-tab" data-bs-toggle="tab" data-bs-target="#cHome" type="button" role="tab" aria-controls="cHome"
-                                aria-selected="true">
+                            <button class="nav-link @if (!isset($_GET['eDateRange'])) active @endif" id="cHome-tab" data-bs-toggle="tab" data-bs-target="#cHome" type="button" role="tab" aria-controls="cHome" aria-selected="true">
                                 {{ get_phrase('Pending payouts') }}
                                 <span></span>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link @if(isset($_GET['eDateRange'])) show active @endif" id="cProfile-tab" data-bs-toggle="tab" data-bs-target="#cProfile" type="button" role="tab" aria-controls="cProfile"
-                                aria-selected="false">
+                            <button class="nav-link @if (isset($_GET['eDateRange'])) show active @endif" id="cProfile-tab" data-bs-toggle="tab" data-bs-target="#cProfile" type="button" role="tab" aria-controls="cProfile" aria-selected="false">
                                 {{ get_phrase('Completed payouts') }}
                                 <span></span>
                             </button>
                         </li>
                     </ul>
                     <div class="tab-content eNav-Tabs-content" id="myTabContent">
-                        <div class="tab-pane fade @if(!isset($_GET['eDateRange'])) show active @endif" id="cHome" role="tabpanel" aria-labelledby="cHome-tab">
+                        <div class="tab-pane fade @if (!isset($_GET['eDateRange'])) show active @endif" id="cHome" role="tabpanel" aria-labelledby="cHome-tab">
                             <div class="row print-d-none mt-4">
                                 <div class="col-md-6 pt-2 pt-md-0">
                                     @if (count($instructor_payout_incomplete) > 0)
@@ -63,8 +60,7 @@
                                         <div class="row mb-4">
                                             <div class="col-md-9">
                                                 <div class="mb-3 position-relative position-relative">
-                                                    <input type="text" class="form-control ol-form-control daterangepicker w-100"
-                                                        name="eDateRange"value="{{ date('m/d/Y', $start_date) . ' - ' . date('m/d/Y', $end_date) }}" />
+                                                    <input type="text" class="form-control ol-form-control daterangepicker w-100" name="eDateRange"value="{{ date('m/d/Y', $start_date) . ' - ' . date('m/d/Y', $end_date) }}" />
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
@@ -162,7 +158,7 @@
                                 </div>
                             @endif
                         </div>
-                        <div class="tab-pane fade @if(isset($_GET['eDateRange'])) show active @endif" id="cProfile" role="tabpanel" aria-labelledby="cProfile-tab">
+                        <div class="tab-pane fade @if (isset($_GET['eDateRange'])) show active @endif" id="cProfile" role="tabpanel" aria-labelledby="cProfile-tab">
 
                             <div class="row print-d-none mt-4">
                                 <div class="col-md-6 pt-2 pt-md-0">
@@ -189,8 +185,7 @@
                                         <div class="row mb-4">
                                             <div class="col-md-9">
                                                 <div class="mb-3 position-relative position-relative">
-                                                    <input type="text" class="form-control ol-form-control daterangepicker w-100"
-                                                        name="eDateRange"value="{{ date('m/d/Y', $start_date) . ' - ' . date('m/d/Y', $end_date) }}" />
+                                                    <input type="text" class="form-control ol-form-control daterangepicker w-100" name="eDateRange"value="{{ date('m/d/Y', $start_date) . ' - ' . date('m/d/Y', $end_date) }}" />
                                                 </div>
                                             </div>
                                             <div class="col-md-3">

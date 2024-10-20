@@ -1,24 +1,63 @@
 @extends('layouts.admin')
-@push('title', get_phrase('Enroll History'))
+@push('title', get_phrase('Student '))
 @push('meta')@endpush
 @push('css')@endpush
 @section('content')
 
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-12px px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     {{ get_phrase('Enroll History') }}
                 </h4>
-
-                <a href="{{ route('admin.student.enroll') }}" class="btn ol-btn-outline-secondary d-flex align-items-center cg-10px">
-                    <span class="fi-rr-plus"></span>
-                    <span>{{ get_phrase('Add new enrollment') }}</span>
-                </a>
             </div>
         </div>
     </div>
+
+    @php
+        $course = App\Models\Course::where('status', 'active')->orWhere('status', 'private')->orderBy('title', 'asc')->get();
+        $students = App\Models\User::where('role', 'student')->orderBy('name', 'asc')->get();
+    @endphp
+
+    <div class="ol-card p-4 mb-3">
+        <div class="ol-card-body">
+            <form class="" action="{{ route('admin.student.post') }}" method="post" enctype="multipart/form-data">
+                @csrf
+
+                <div class="row align-items-end">
+                    <div class="col-md-5 mb-3 mb-md-0">
+                        <div class="form-group">
+                            <label class="form-label ol-form-label" for="multiple_user_id">{{ get_phrase('Users') }}<span class="required text-danger">*</span></label>
+                            <select class="ol-select2 select2-hidden-accessible" name="user_id[]" multiple="multiple" required>
+                                @foreach ($students as $student)
+                                    <option value="{{ $student->is }}">{{ $student->name }} ({{ $student->email }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-5 mb-3 mb-md-0">
+                        <div class="form-group">
+                            <label class="form-label ol-form-label" for="multiple_course_id">{{ get_phrase('Course to enrol') }}<span class="text-danger ms-1">*</span></label>
+
+                            <select for='multiple_course_id' class="ol-select2 form-control ol-select2-multiple" data-toggle="select2" multiple="multiple" name="course_id[]" id="multiple_course_id" data-placeholder="Choose ..." required>
+                                <option value="">{{ get_phrase('Select a course') }}</option>
+                                @foreach ($course as $row)
+                                    <option value="{{ $row->id }}">{{ $row->title }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="submit" class="btn ol-btn-primary mt-2">{{ get_phrase('Enroll student') }}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <div class="ol-card">
         <div class="ol-card-body p-3">
@@ -47,8 +86,7 @@
                         <div class="row">
                             <div class="col-9">
                                 <div class="position-relative position-relative">
-                                    <input type="text" class="form-control ol-form-control daterangepicker w-100" name="eDateRange"
-                                        value="{{ date('m/d/Y', $start_date) . ' - ' . date('m/d/Y', $end_date) }}" />
+                                    <input type="text" class="form-control ol-form-control daterangepicker w-100" name="eDateRange" value="{{ date('m/d/Y', $start_date) . ' - ' . date('m/d/Y', $end_date) }}" />
                                 </div>
                             </div>
                             <div class="col-3">
@@ -121,8 +159,7 @@
                                             </td>
                                             <td class="print-d-none">
                                                 <div class="adminTable-action">
-                                                    <button type="button" class="btn ol-btn-light ol-icon-btn" data-bs-toggle="tooltip" title="{{ get_phrase('Delete') }}"
-                                                        onclick="confirmModal('{{ route('admin.enroll.history.delete', $row->id) }}')">
+                                                    <button type="button" class="btn ol-btn-light ol-icon-btn" data-bs-toggle="tooltip" title="{{ get_phrase('Delete') }}" onclick="confirmModal('{{ route('admin.enroll.history.delete', $row->id) }}')">
                                                         <i class="fi-rr-trash"></i>
                                                     </button>
                                                 </div>
@@ -202,7 +239,7 @@
 
             document.body.innerHTML = originalContents;
         }
-    
+
         function update_date_range() {
             var x = $("#selectedValue").html();
             $("#date_range").val(x);

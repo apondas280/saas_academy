@@ -5,11 +5,10 @@
 @section('content')
 
     <!-- Mani section header and breadcrumb -->
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-4 px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     <span>{{ get_phrase('Pending Blog') }}</span>
                 </h4>
             </div>
@@ -45,8 +44,7 @@
                                 <div class="row">
                                     <div class="col-9">
                                         <div class="search-input">
-                                            <input type="text" name="search" value="{{ request('search') }}"
-                                                placeholder="{{ get_phrase('Search Title') }}" class="ol-form-control form-control" />
+                                            <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ get_phrase('Search Title') }}" class="ol-form-control form-control" />
                                         </div>
                                     </div>
                                     <div class="col-3">
@@ -59,8 +57,7 @@
 
                     <!-- Table -->
                     @if (count($blogs) > 0)
-                        <div
-                            class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
+                        <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
                             <p class="admin-tInfo">
                                 {{ get_phrase('Showing') . ' ' . count($blogs) . ' ' . get_phrase('of') . ' ' . $blogs->total() . ' ' . get_phrase('data') }}
                             </p>
@@ -142,8 +139,7 @@
                     @endif
                     <!-- Data info and Pagination -->
                     @if (count($blogs) > 0)
-                        <div
-                            class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
+                        <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
                             <p class="admin-tInfo">
                                 {{ get_phrase('Showing') . ' ' . count($blogs) . ' ' . get_phrase('of') . ' ' . $blogs->total() . ' ' . get_phrase('data') }}
                             </p>

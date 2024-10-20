@@ -8,7 +8,6 @@ use App\Models\FileUploader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class BecomeInstructorController extends Controller
 {
@@ -27,8 +26,8 @@ class BecomeInstructorController extends Controller
         }
 
         $rules = [
-            'phone' => 'required',
-            'document' => 'required|file|mimes:doc,docx,pdf,txt,png,jpg,jpeg|max:3072',
+            'phone'       => 'required',
+            'document'    => 'required|file|mimes:doc,docx,pdf,txt,png,jpg,jpeg|max:3072',
             'description' => 'required',
         ];
 
@@ -38,18 +37,13 @@ class BecomeInstructorController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-
         // process data
-        $application['user_id'] = auth()->user()->id;
-        $application['phone'] = $request->phone;
+        $application['user_id']     = auth()->user()->id;
+        $application['phone']       = $request->phone;
         $application['description'] = $request->description;
 
-        $doc = $request->document;
-        $application['document'] = $doc_name = Str::random(20) . '.' . $doc->extension();
-        $path = 'storage/application/user_' . auth()->user()->id . '/' . $doc_name;
-
-        // upload document
-        FileUploader::upload($doc, $path, null, null, 300);
+        $doc                     = $request->document;
+        $application['document'] = FileUploader::upload($doc, 'application');
 
         // store application
         Application::insert($application);

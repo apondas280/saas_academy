@@ -2,10 +2,10 @@
 @push('title', get_phrase('Edit course'))
 
 @section('content')
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-12px px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px d-flex align-items-center">
+                <h4 class="section-title">
                     <span class="edit-badge py-2 px-3">
                         {{ get_phrase('Editing') }}
                     </span>
@@ -64,7 +64,7 @@
                             </a>
                         </div>
                         <div class="col-sm-4 mt-3 mt-sm-0 d-flex justify-content-start justify-content-sm-end">
-                            <button type="submit" class="btn ol-btn-outline-secondary @if (request('tab') == 'live-class' || request('tab') == 'curriculum') opacity-0 @endif">
+                            <button type="submit" class="btn ol-btn-outline-secondary @if (request('tab') == 'live-class' || request('tab') == 'progress' || request('tab') == 'curriculum') d-none @endif">
                                 {{ get_phrase('Save Changes') }}
                             </button>
                         </div>
@@ -80,48 +80,48 @@
 
                                 <input type="hidden" name="tab" value="{{ $tab }}">
 
-                                <a class="nav-link @if ($tab == 'curriculum' || $tab == '') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'curriculum']) }}">
+                                <a id="curriculum" class="nav-link @if ($tab == 'curriculum' || $tab == '') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'curriculum']) }}">
                                     <span class="fi-rr-edit"></span>
                                     <span>{{ get_phrase('Curriculum') }}</span>
                                 </a>
 
-                                <a class="nav-link @if ($tab == 'progress' || $tab == '') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'progress']) }}">
+                                <a id="progress" class="nav-link @if ($tab == 'progress' || $tab == '') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'progress']) }}">
                                     <span class="fi-rr-edit"></span>
                                     <span>{{ get_phrase('Progress') }}</span>
                                 </a>
 
-                                <a class="nav-link @if ($tab == 'basic') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'basic']) }}">
+                                <a id="basic" class="nav-link @if ($tab == 'basic') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'basic']) }}">
                                     <span class="icon fi-rr-duplicate"></span>
                                     <span>{{ get_phrase('Basic') }}</span>
                                 </a>
 
-                                <a class="nav-link @if ($tab == 'live-class') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'live-class']) }}">
+                                <a id="live" class="nav-link @if ($tab == 'live-class') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'live-class']) }}">
                                     <span class="fi-rr-file-video"></span>
                                     <span>{{ get_phrase('Live Class') }}</span>
                                 </a>
 
-                                <a class="nav-link @if ($tab == 'pricing') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'pricing']) }}">
+                                <a id="pricing" class="nav-link @if ($tab == 'pricing') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'pricing']) }}">
                                     <span class="fi-rr-comment-dollar"></span>
                                     <span>{{ get_phrase('Pricing') }}</span>
                                 </a>
 
-                                <a class="nav-link @if ($tab == 'info') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'info']) }}">
+                                <a id="info" class="nav-link @if ($tab == 'info') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'info']) }}">
                                     <span class="fi-rr-tags"></span>
                                     <span>{{ get_phrase('Info') }}</span>
                                 </a>
 
-                                <a class="nav-link @if ($tab == 'media') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'media']) }}">
+                                <a id="media" class="nav-link @if ($tab == 'media') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'media']) }}">
                                     <span class="fi fi-rr-gallery"></span>
                                     <span>{{ get_phrase('Media') }}</span>
                                 </a>
 
-                                <a class="nav-link @if ($tab == 'seo') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'seo']) }}">
+                                <a id="seo" class="nav-link @if ($tab == 'seo') active @endif" href="{{ route('admin.course.edit', [$param, 'tab' => 'seo']) }}">
                                     <span class="fi-rr-note-medical"></span>
                                     <span>{{ get_phrase('SEO') }}</span>
                                 </a>
                             </div>
                         </div>
-                        <div class="tab-content w-100">
+                        <div class="tab-content w-100" id="course-edit-tabs">
                             @includeWhen($tab == 'curriculum' || $tab == '', 'admin.course.curriculum')
                             @includeWhen($tab == 'progress', 'admin.course.progress')
                             @includeWhen($tab == 'basic', 'admin.course.edit_basic')

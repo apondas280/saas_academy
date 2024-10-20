@@ -53,10 +53,8 @@ class MyProfileController extends Controller
         ]);
 
         // process file
-        $file      = $request->photo;
-        $file_name = Str::random(20) . '.' . $file->extension();
-        $path      = 'assets/upload/users/' . auth()->user()->role . '/' . $file_name;
-        FileUploader::upload($file, $path, null, null, 300);
+        $file = $request->photo;
+        $path = FileUploader::upload($file, 'users');
 
         User::where('id', auth()->user()->id)->update(['photo' => $path]);
         Session::flash('success', get_phrase('Profile picture updated.'));

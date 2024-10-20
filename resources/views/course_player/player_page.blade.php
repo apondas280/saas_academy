@@ -9,28 +9,14 @@
         </div>
         @include('course_player.player_config')
     @elseif($lesson_details->lesson_type == 'system-video')
-        @php
-            $watermark_type = get_player_settings('watermark_type');
-            $lesson_video = $lesson_details->lesson_src;
-            if ($watermark_type == 'ffmpeg') {
-                $origin = dirname($lesson_details->lesson_src);
-                $dir = $origin . '/watermark';
-                $file = str_replace($origin, '', $lesson_details->lesson_src);
-                $lesson_video = "{$dir}{$file}";
-            }
-        @endphp
-
         <div class=" bd-r-10 mb-16 position-relative bg-light custom-system-video">
             <video id="player" playsinline controls>
-                <source src="{{ asset($lesson_video) }}" type="video/mp4">
+                <source src="{{ route('lesson.file', ['course_id' => $lesson_details->course_id, 'lesson_id' => $lesson_details->id]) }}" type="video/mp4">
             </video>
             @include('course_player.player_config')
         </div>
     @elseif($lesson_details->lesson_type == 'image')
-        @php
-            $img = asset('assets/upload/lesson_file/attachment/' . $lesson_details->attachment);
-        @endphp
-        <img width="100%" class="max-w-auto" height="auto" src="{{ $img }}" />
+        <img width="100%" class="max-w-auto" height="auto" src="{{ asset($lesson_details->attachment) }}" />
     @elseif($lesson_details->lesson_type == 'vimeo-url' && $lesson_details->video_type == 'vimeo')
         @php
             $video_url = $lesson_details->lesson_src;
@@ -65,11 +51,11 @@
         @include('course_player.player_config')
     @elseif($lesson_details->lesson_type == 'document_type')
         @if ($lesson_details->attachment_type == 'pdf')
-            <iframe class="embed-responsive-item" width="100%" src="{{ asset('assets/upload/lesson_file/attachment/' . $lesson_details->attachment) }}" allowfullscreen></iframe>
+            <iframe class="embed-responsive-item" width="100%" src="{{ asset($lesson_details->attachment) }}" allowfullscreen></iframe>
         @elseif($lesson_details->attachment_type == 'doc')
-            <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ asset('assets/upload/lesson_file/attachment/' . $lesson_details->attachment) }}" width='100%' frameborder='0'></iframe>
+            <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ asset($lesson_details->attachment) }}" width='100%' frameborder='0'></iframe>
         @elseif($lesson_details->attachment_type == 'txt')
-            <iframe src="{{ asset('assets/upload/lesson_file/attachment/' . $lesson_details->attachment) }}" width='100%' frameborder='0'></iframe>
+            <iframe src="{{ asset($lesson_details->attachment) }}" width='100%' frameborder='0'></iframe>
         @endif
     @elseif($lesson_details->lesson_type == 'quiz')
         @include('course_player.quiz.index')

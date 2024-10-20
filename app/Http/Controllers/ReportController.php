@@ -34,12 +34,12 @@ class ReportController extends Controller
     public function admin_revenue_filter(Request $request)
     {
         if ($request->eDateRange) {
-            $date                            = explode('-', $request->eDateRange);
-            $start_date                      = strtotime($date[0] . ' 00:00:00');
-            $end_date                        = strtotime($date[1] . ' 23:59:59');
-            $page_data['start_date']         = $start_date;
-            $page_data['end_date']           = $end_date;
-            $page_data['reports'] = Payment_history::where('admin_revenue', '!=', '')->where('created_at', '>=', date('Y-m-d H:i:s', $start_date))
+            $date                    = explode('-', $request->eDateRange);
+            $start_date              = strtotime($date[0] . ' 00:00:00');
+            $end_date                = strtotime($date[1] . ' 23:59:59');
+            $page_data['start_date'] = $start_date;
+            $page_data['end_date']   = $end_date;
+            $page_data['reports']    = Payment_history::where('admin_revenue', '!=', '')->where('created_at', '>=', date('Y-m-d H:i:s', $start_date))
                 ->where('created_at', '<=', date('Y-m-d H:i:s', $end_date))
                 ->latest('id')->paginate(10)->appends($request->query());
         } else {
@@ -57,12 +57,12 @@ class ReportController extends Controller
     public function instructor_revenue(Request $request)
     {
         if ($request->eDateRange) {
-            $date                            = explode('-', $request->eDateRange);
-            $start_date                      = strtotime($date[0] . ' 00:00:00');
-            $end_date                        = strtotime($date[1] . ' 23:59:59');
-            $page_data['start_date']         = $start_date;
-            $page_data['end_date']           = $end_date;
-            $page_data['reports'] = Payment_history::where('instructor_revenue', '!=', '')->where('created_at', '>=', date('Y-m-d H:i:s', $start_date))
+            $date                    = explode('-', $request->eDateRange);
+            $start_date              = strtotime($date[0] . ' 00:00:00');
+            $end_date                = strtotime($date[1] . ' 23:59:59');
+            $page_data['start_date'] = $start_date;
+            $page_data['end_date']   = $end_date;
+            $page_data['reports']    = Payment_history::where('instructor_revenue', '!=', '')->where('created_at', '>=', date('Y-m-d H:i:s', $start_date))
                 ->where('created_at', '<=', date('Y-m-d H:i:s', $end_date))
                 ->latest('id')->paginate(10)->appends($request->query());
         } else {
@@ -80,12 +80,12 @@ class ReportController extends Controller
     public function purchase_history(Request $request)
     {
         if ($request->eDateRange) {
-            $date                          = explode('-', $request->eDateRange);
-            $start_date                    = strtotime($date[0] . ' 00:00:00');
-            $end_date                      = strtotime($date[1] . ' 23:59:59');
-            $page_data['start_date']       = $start_date;
-            $page_data['end_date']         = $end_date;
-            $page_data['reports'] = Payment_history::where('created_at', '>=', date('Y-m-d H:i:s', $start_date))
+            $date                    = explode('-', $request->eDateRange);
+            $start_date              = strtotime($date[0] . ' 00:00:00');
+            $end_date                = strtotime($date[1] . ' 23:59:59');
+            $page_data['start_date'] = $start_date;
+            $page_data['end_date']   = $end_date;
+            $page_data['reports']    = Payment_history::where('created_at', '>=', date('Y-m-d H:i:s', $start_date))
                 ->where('created_at', '<=', date('Y-m-d H:i:s', $end_date))
                 ->latest('id')->paginate(10)->appends($request->all());
         } else {
@@ -100,7 +100,7 @@ class ReportController extends Controller
         return view('admin.report.purchase_history', $page_data);
     }
 
-    public function purchase_history_invoice($id = '')
+    public function purchase_history_invoice($company = "", $id = '')
     {
         $page_data['report'] = Payment_history::where('id', $id)->first();
         return view('admin.report.report_invoice', $page_data);

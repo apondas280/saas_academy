@@ -52,8 +52,8 @@
                     </div>
                 @endforeach
                 <!-- <a href="#" class="filter-see-more">Show More</a> -->
-                <div class="filter-see-more" id="see-more">{{ get_phrase('Show More') }}</div>
             </div>
+            <div class="filter-see-more cursor-pointer" id="see-more">{{ get_phrase('Show More') }}</div>
         </div>
         <div class="filter-sidebar-single">
             <h3 class="subtitle">{{ get_phrase('Price') }}</h3>
@@ -130,7 +130,10 @@
                     $(this).css('margin-top', '20px');
                     $(this).text('{{ get_phrase('Show Less') }}');
                 } else {
-                    $('#parent-category').css('height', '400px');
+                    $('#parent-category').css({
+                        'height': '690px',
+                        'overflow': 'hidden',
+                    });
                     $(this).css('margin-top', '0px');
                     $(this).html('{{ get_phrase('Show More') }}');
                 }

@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\FileUploader;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 

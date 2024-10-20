@@ -49,31 +49,30 @@ class CategoryController extends Controller
         $data['updated_at']  = date('Y-m-d H:i:s');
 
         if (isset($request->thumbnail)) {
-            $data['thumbnail'] = "uploads/category-thumbnail/" . nice_file_name($request->title, $request->thumbnail->extension());
-            FileUploader::upload($request->thumbnail, $data['thumbnail'], 500, null, 200, 200);
+            $data['thumbnail'] = FileUploader::upload($request->thumbnail, 'category/thumbnail');
         }
 
         if (isset($request->category_logo)) {
-            $data['category_logo'] = "uploads/category-logo/" . nice_file_name($request->title . ' logo', $request->category_logo->extension());
-            FileUploader::upload($request->category_logo, $data['category_logo'], 400, null, 200, 200);
+            $data['category_logo'] = FileUploader::upload($request->category_logo, 'category/logo');
         }
 
         Category::insert($data);
-
         return redirect(route('admin.categories'))->with('success', get_phrase('Category added successfully'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $company = "", $id)
     {
         $query    = Category::where('id', $id);
         $pre_data = Category::where('id', $id)->first();
 
         $validated = $request->validate([
-            'title'       => 'required|max:255',
-            'parent_id'   => 'required|numeric|min:0',
-            'icon'        => 'required',
-            'keywords'    => 'max:400',
-            'description' => 'max:500',
+            'title'         => 'required|max:255',
+            'parent_id'     => 'required|numeric|min:0',
+            'icon'          => 'required',
+            'keywords'      => 'max:400',
+            'description'   => 'max:500',
+            'thumbnail'     => 'mimes:jpg,png,jpeg|max:2048',
+            'category_logo' => 'mimes:jpg,png,jpeg|max:2048',
         ]);
 
         if (Category::where('slug', slugify($request->title))->where('id', '!=', $id)->count() > 0) {
@@ -88,24 +87,21 @@ class CategoryController extends Controller
         $data['description'] = $request->description;
         $data['updated_at']  = date('Y-m-d H:i:s');
 
-        if (isset($request->thumbnail) && $request->thumbnail != '') {
-            $data['thumbnail'] = "uploads/category-thumbnail/" . nice_file_name($request->title, $request->thumbnail->extension());
-            FileUploader::upload($request->thumbnail, $data['thumbnail'], 500, null, 200, 200);
+        if (isset($request->thumbnail)) {
+            $data['thumbnail'] = FileUploader::upload($request->thumbnail, 'category/thumbnail');
             remove_file($pre_data->thumbnail);
         }
 
         if (isset($request->category_logo)) {
-            $data['category_logo'] = "uploads/category-logo/" . nice_file_name($request->title . '-logo', $request->category_logo->extension());
-            FileUploader::upload($request->category_logo, $data['category_logo'], 400, null, 200, 200);
+            $data['category_logo'] = FileUploader::upload($request->category_logo, 'category/logo');
             remove_file($pre_data->category_logo);
         }
 
         $query->update($data);
-
         return redirect(route('admin.categories'))->with('success', get_phrase('Category updated successfully'));
     }
 
-    public function delete($id)
+    public function delete($company = "", $id)
     {
         $query = Category::where('id', $id);
 

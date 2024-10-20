@@ -3,9 +3,14 @@
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\Student\CoursePlayerController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('{company}')->group(function () {
+
+    Route::controller(CoursePlayerController::class)->middleware(['auth', 'ip.detector'])->group(function () {
+        Route::get('lesson-file', 'streamLessonFile')->name('lesson.file');
+    });
 
     Route::controller(PlayerController::class)->middleware(['auth', 'ip.detector'])->group(function () {
         Route::get('play-course/{slug}/{id?}', 'course_player')->name('course.player');

@@ -87,10 +87,9 @@ class PageBuilderController extends Controller
     {
         return redirect()->back();
         $remove_file_arr     = explode('/', $request->remove_file);
-        $previous_image_path = 'uploads/home-page-builder/' . end($remove_file_arr);
+        $image_path          = FileUploader::upload($request->file, 'homepage-builder');
+        $previous_image_path = 'homepage-builder/' . end($remove_file_arr);
         remove_file($previous_image_path);
-
-        $image_path = FileUploader::upload($request->file, 'uploads/home-page-builder');
         return get_image($image_path);
     }
 

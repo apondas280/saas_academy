@@ -4,11 +4,10 @@
 @push('css')@endpush
 @section('content')
     <!-- Mani section header and breadcrumb -->
-    <div class="ol-card radius-8px print-d-none">
-        <div class="ol-card-body my-3 py-4 px-20px">
+    <div class="row print-d-none">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     <span>{{ get_phrase('Offline payments') }}</span>
                 </h4>
             </div>
@@ -28,14 +27,11 @@
                                 </button>
                                 <ul class="dropdown-list">
                                     <li>
-                                        <a class="dropdown-item" href="#"
-                                            onclick="downloadPDF('.print-table', 'offline-payments')"><i
-                                                class="fi-rr-file-pdf"></i>
+                                        <a class="dropdown-item" href="#" onclick="downloadPDF('.print-table', 'offline-payments')"><i class="fi-rr-file-pdf"></i>
                                             {{ get_phrase('PDF') }}</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#" onclick="window.print();"><i
-                                                class="fi-rr-print"></i> {{ get_phrase('Print') }}</a>
+                                        <a class="dropdown-item" href="#" onclick="window.print();"><i class="fi-rr-print"></i> {{ get_phrase('Print') }}</a>
                                     </li>
                                 </ul>
                             </div>
@@ -49,31 +45,23 @@
                                 </button>
                                 <ul class="dropdown-list w-250px">
                                     <li>
-                                        <form id="filter-dropdown" action="{{ route('admin.offline.payments') }}"
-                                            method="get">
+                                        <form id="filter-dropdown" action="{{ route('admin.offline.payments') }}" method="get">
                                             <div class="filter-option d-flex flex-column gap-3">
                                                 <div>
-                                                    <label for="eDataList"
-                                                        class="form-label ol-form-label">{{ get_phrase('Category') }}</label>
-                                                    <select class="form-control ol-form-control ol-select2"
-                                                        data-toggle="select2" name="status"
-                                                        data-placeholder="Type to search...">
+                                                    <label for="eDataList" class="form-label ol-form-label">{{ get_phrase('Category') }}</label>
+                                                    <select class="form-control ol-form-control ol-select2" data-toggle="select2" name="status" data-placeholder="Type to search...">
                                                         <option value="all">{{ get_phrase('All') }}</option>
-                                                        <option value="pending"
-                                                            @if (isset($_GET['status']) && $_GET['status'] == 'pending') selected @endif>
+                                                        <option value="pending" @if (isset($_GET['status']) && $_GET['status'] == 'pending') selected @endif>
                                                             {{ get_phrase('Pending') }}</option>
-                                                        <option value="approved"
-                                                            @if (isset($_GET['status']) && $_GET['status'] == 'approved') selected @endif>
+                                                        <option value="approved" @if (isset($_GET['status']) && $_GET['status'] == 'approved') selected @endif>
                                                             {{ get_phrase('Approved') }}</option>
-                                                        <option value="suspended"
-                                                            @if (isset($_GET['status']) && $_GET['status'] == 'suspended') selected @endif>
+                                                        <option value="suspended" @if (isset($_GET['status']) && $_GET['status'] == 'suspended') selected @endif>
                                                             {{ get_phrase('Suspended') }}</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="filter-button d-flex justify-content-end align-items-center mt-3">
-                                                <button type="submit"
-                                                    class="ol-btn-primary">{{ get_phrase('Apply') }}</button>
+                                                <button type="submit" class="ol-btn-primary">{{ get_phrase('Apply') }}</button>
                                             </div>
                                         </form>
                                     </li>
@@ -81,8 +69,7 @@
                             </div>
 
                             @if (isset($_GET) && count($_GET) > 0)
-                                <a href="{{ route('admin.offline.payments') }}" class="me-2" data-bs-toggle="tooltip"
-                                    title="{{ get_phrase('Clear') }}"><i class="fi-rr-cross-circle"></i></a>
+                                <a href="{{ route('admin.offline.payments') }}" class="me-2" data-bs-toggle="tooltip" title="{{ get_phrase('Clear') }}"><i class="fi-rr-cross-circle"></i></a>
                             @endif
                         </div>
 
@@ -93,8 +80,7 @@
 
                     <!-- Table -->
                     @if (count($payments) > 0)
-                        <div
-                            class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
+                        <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
                             <p class="admin-tInfo">
                                 {{ get_phrase('Showing') . ' ' . count($payments) . ' ' . get_phrase('of') . ' ' . $payments->total() . ' ' . get_phrase('data') }}
                             </p>
@@ -137,26 +123,17 @@
                                                     <div class="dAdmin_profile_name">
                                                         @php
                                                             if ($payment->item_type == 'course') {
-                                                                $items = App\Models\Course::whereIn(
-                                                                    'id',
-                                                                    json_decode($payment->items, true),
-                                                                )->get();
+                                                                $items = App\Models\Course::whereIn('id', json_decode($payment->items, true))->get();
                                                             } elseif ($payment->item_type == 'bootcamp') {
-                                                                $items = App\Models\Bootcamp::where(
-                                                                    'id',
-                                                                    $payment->items,
-                                                                )->get();
+                                                                $items = App\Models\Bootcamp::where('id', $payment->items)->get();
                                                             }
                                                         @endphp
                                                         @foreach ($items as $item)
                                                             <p class="sub-title text-12px">
-                                                                <a href="{{ route('course.details', Str::slug($item->title)) }}"
-                                                                    class="me-3 text-muted">{{ $item->title }} </a>
+                                                                <a href="{{ route('course.details', Str::slug($item->title)) }}" class="me-3 text-muted">{{ $item->title }} </a>
                                                                 @if ($item->discount_flag)
-                                                                    <del
-                                                                        class="text-muted me-3">{{ currency($item->price) }}</del>
-                                                                    <span
-                                                                        class="text-danger">{{ currency($item->price - $item->discounted_price) }}</span>
+                                                                    <del class="text-muted me-3">{{ currency($item->price) }}</del>
+                                                                    <span class="text-danger">{{ currency($item->price - $item->discounted_price) }}</span>
                                                                 @else
                                                                     <span>{{ currency($item->price) }}</span>
                                                                 @endif
@@ -203,24 +180,20 @@
 
                                             <td class="print-d-none">
                                                 <div class="dropdown ol-icon-dropdown ol-icon-dropdown-transparent">
-                                                    <button class="btn ol-btn-secondary dropdown-toggle" type="button"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <button class="btn ol-btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <span class="fi-rr-menu-dots-vertical"></span>
                                                     </button>
                                                     <ul class="dropdown-menu" style="">
-                                                        <li><a class="dropdown-item"
-                                                                href="{{ route('admin.offline.payment.doc', $payment->id) }}">{{ get_phrase('Download') }}</a>
+                                                        <li><a class="dropdown-item" href="{{ route('admin.offline.payment.doc', $payment->id) }}">{{ get_phrase('Download') }}</a>
                                                         </li>
 
                                                         @if ($payment->status == 0 || $payment->status == 2)
-                                                            <li><a class="dropdown-item" href="#"
-                                                                    onclick="confirmModal('{{ route('admin.offline.payment.accept', $payment->id) }}')">{{ get_phrase('Accept') }}</a>
+                                                            <li><a class="dropdown-item" href="#" onclick="confirmModal('{{ route('admin.offline.payment.accept', $payment->id) }}')">{{ get_phrase('Accept') }}</a>
                                                             </li>
                                                         @endif
 
                                                         @if ($payment->status == 1)
-                                                            <li><a class="dropdown-item" href="#"
-                                                                    onclick="confirmModal('{{ route('admin.offline.payment.decline', $payment->id) }}')">{{ get_phrase('Suspend') }}</a>
+                                                            <li><a class="dropdown-item" href="#" onclick="confirmModal('{{ route('admin.offline.payment.decline', $payment->id) }}')">{{ get_phrase('Suspend') }}</a>
                                                             </li>
                                                         @endif
                                                     </ul>
@@ -237,8 +210,7 @@
                     @endif
                     <!-- Data info and Pagination -->
                     @if (count($payments) > 0)
-                        <div
-                            class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
+                        <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
                             <p class="admin-tInfo">
                                 {{ get_phrase('Showing') . ' ' . count($payments) . ' ' . get_phrase('of') . ' ' . $payments->total() . ' ' . get_phrase('data') }}
                             </p>

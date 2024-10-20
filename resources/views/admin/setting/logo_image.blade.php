@@ -1,6 +1,6 @@
-<div class="row">
+<div class="row g-3 mt-1">
     <div class="col-xl-4 col-lg-6">
-        <div class="ol-card p-4 ol-card p-4-2">
+        <div class="ol-card p-4 border border-light-subtle">
             <div class="ol-card-body">
                 <div class="col-xl-12">
                     <div class="row justify-content-center">
@@ -12,11 +12,11 @@
                                     <div class="box">
                                         <div class="upload-options">
                                             @php
-                                                $bannerData = json_decode(get_frontend_settings('banner_image'));
-                                                $banneractive = get_frontend_settings('home_page');
+                                                $banner_data = json_decode(get_frontend_settings('banner_image'));
+                                                $banner_active = get_frontend_settings('home_page');
 
-                                                if ($bannerData !== null && is_object($bannerData) && property_exists($bannerData, $banneractive)) {
-                                                    $banner = json_decode(get_frontend_settings('banner_image'))->$banneractive;
+                                                if ($banner_data !== null && is_object($banner_data) && property_exists($banner_data, $banner_active)) {
+                                                    $banner = json_decode(get_frontend_settings('banner_image'))->$banner_active;
                                                 } elseif (!get_frontend_settings('home_page')) {
                                                     $banner = get_frontend_settings('banner_image');
                                                 }
@@ -47,7 +47,7 @@
 
 
     <div class="col-xl-4 col-lg-6">
-        <div class="ol-card p-4 ol-card p-4-2">
+        <div class="ol-card p-4 border border-light-subtle">
             <div class="ol-card-body">
                 <div class="col-xl-12">
                     <div class="row justify-content-center">
@@ -80,8 +80,9 @@
         </div>
     </div>
 
+
     <div class="col-xl-4 col-lg-6">
-        <div class="ol-card p-4 ol-card p-4-2">
+        <div class="ol-card p-4 border border-light-subtle">
             <div class="ol-card-body">
                 <div class="col-lg-12">
                     <div class="row justify-content-center">
@@ -114,8 +115,9 @@
         </div>
     </div>
 
+
     <div class="col-xl-4 col-lg-6">
-        <div class="ol-card p-4 ol-card p-4-2">
+        <div class="ol-card p-4 border border-light-subtle">
             <div class="ol-card-body">
                 <div class="col-lg-12">
                     <div class="row justify-content-center">

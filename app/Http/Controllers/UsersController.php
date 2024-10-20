@@ -60,9 +60,7 @@ class UsersController extends Controller
         $data['role']     = 'admin';
 
         if (isset($request->photo) && $request->hasFile('photo')) {
-            $path = upload_directory($request->photo, 'profile', $request->name);
-            FileUploader::upload($request->photo, $path);
-            $data['photo'] = $path;
+            $data['photo'] = FileUploader::upload($request->photo, 'users');
         }
 
         $done = User::insert($data);
@@ -105,10 +103,7 @@ class UsersController extends Controller
         $data['role']     = 'admin';
 
         if (isset($request->photo) && $request->hasFile('photo')) {
-            $path = upload_directory($request->photo, 'profile', $request->name);
-            FileUploader::upload($request->photo, $path);
-            $data['photo'] = $path;
-
+            $data['photo'] = FileUploader::upload($request->photo, 'users');
             remove_file(User::where('id', $id)->first()->photo);
         }
 
@@ -203,9 +198,7 @@ class UsersController extends Controller
         $data['role']     = 'instructor';
 
         if (isset($request->photo) && $request->hasFile('photo')) {
-            $path = upload_directory($request->photo, 'profile', $request->name);
-            FileUploader::upload($request->photo, $path);
-            $data['photo'] = $path;
+            $data['photo'] = FileUploader::upload($request->photo, 'users');
         }
         User::insert($data);
         Session::flash('success', get_phrase('Instructor add successfully'));
@@ -237,10 +230,7 @@ class UsersController extends Controller
         $data['paymentkeys'] = json_encode($request->paymentkeys);
 
         if (isset($request->photo) && $request->hasFile('photo')) {
-            $path = upload_directory($request->photo, 'profile', $request->name);
-            FileUploader::upload($request->photo, $path);
-            $data['photo'] = $path;
-
+            $data['photo'] = FileUploader::upload($request->photo, 'users');
             remove_file(User::where('id', $id)->first()->photo);
         }
 
@@ -479,9 +469,7 @@ class UsersController extends Controller
         $data['role']     = 'student';
 
         if (isset($request->photo) && $request->hasFile('photo')) {
-            $path = upload_directory($request->photo, 'profile', $request->name);
-            FileUploader::upload($request->photo, $path);
-            $data['photo'] = $path;
+            $data['photo'] = FileUploader::upload($request->photo, 'users');
         }
 
         User::insert($data);
@@ -514,10 +502,7 @@ class UsersController extends Controller
         $data['paymentkeys'] = json_encode($request->paymentkeys);
 
         if (isset($request->photo) && $request->hasFile('photo')) {
-            $path = upload_directory($request->photo, 'profile', $request->name);
-            FileUploader::upload($request->photo, $path);
-            $data['photo'] = $path;
-
+            $data['photo'] = FileUploader::upload($request->photo, 'users');
             remove_file(User::where('id', $id)->first()->photo);
         }
 
@@ -627,10 +612,7 @@ class UsersController extends Controller
 
             if ($request->photo) {
                 if (isset($request->photo) && $request->photo != '') {
-                    $path = upload_directory($request->photo, 'profile', $request->name);
-                    FileUploader::upload($request->photo, $path);
-                    $profile['photo'] = $path;
-
+                    $profile['photo'] = FileUploader::upload($request->photo, 'users');
                     remove_file(User::where('id', auth()->user()->id)->first()->photo);
                 }
             }

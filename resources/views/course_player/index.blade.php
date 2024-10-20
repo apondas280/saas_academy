@@ -51,10 +51,7 @@
                 <div class="col-xl-8 col-lg-7">
                     <!-- Video -->
                     <div class="playing-video-area mb-5 position-relative">
-                        @php
-                            $watermark_type = get_player_settings('watermark_type');
-                        @endphp
-                        @if ($watermark_type != 'ffmpeg')
+                        @if (get_player_settings('watermark_type') != 'ffmpeg')
                             @php
                                 $width = get_player_settings('watermark_width');
                                 $height = get_player_settings('watermark_height');
@@ -63,6 +60,7 @@
                                 $logo = get_player_settings('watermark_logo');
                                 $opacity = get_player_settings('watermark_opacity');
                             @endphp
+
                             @if ($lesson_details->lesson_type == 'system-video')
                                 @include('course_player.watermark')
                             @endif

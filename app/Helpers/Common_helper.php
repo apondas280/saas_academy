@@ -2,9 +2,13 @@
 
 use App\Models\Addon;
 use App\Models\CartItem;
+use App\Models\Enrollment;
+use App\Models\Review;
+use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 // Global Settings
@@ -1482,37 +1486,97 @@ if (! function_exists('in_wishlist')) {
     }
 }
 
-if (! function_exists('upload_directory')) {
-    function upload_directory($file, $path, $user = null)
+if (! function_exists('company_path')) {
+    function company_path()
     {
-        $company   = request()->route()->parameter('company');
-        $extension = $file->getClientOriginalExtension();
-        $file_name = Str::random(15) . '.' . $extension;
+        $company = request()->route()->parameter('company');
+        return "upload/{$company}/";
+    }
+}
 
-        $user_name    = $user ?? auth()->user()->name;
-        $slugged_user = Str::slug($user_name);
+// if (! function_exists('get_company_subscription')) {
+//     function get_company_subscription()
+//     {
+//         $product_id = 1;
+//         $email      = User::where('role', 'admin')->value('email');
+//         $response   = Http::get("https://creativeitem.com/api/check-subscription/{$email}/{$product_id}");
 
-        return "upload/{$company}/users/{$slugged_user}/{$path}/{$file_name}";
+//         if ($response->successful()) {
+//             return $response->json();
+//         }
+//         return null;
+//     }
+// }
+
+if (! function_exists('get_company_subscription')) {
+    function get_company_subscription()
+    {
+        $subscription = DB::table('grow_up_lms_subscriptions')->first();
+        return json_decode($subscription->payload);
     }
 }
 
 if (! function_exists('get_company_storage_usage')) {
-    function get_company_storage_usage()
+    function get_company_storage_usage($unit = true)
     {
-        $company_path = request()->route()->parameter('company');
+        $company_path = request()->route('company');
         $files        = File::allFiles(public_path("upload/{$company_path}"));
-        $size         = 0;
+        $size         = array_sum(array_map(fn($file) => $file->getSize(), $files));
 
-        foreach ($files as $file) {
-            $size += $file->getSize();
+        $size /= pow(1024, 2);
+
+        if (! $unit) {
+            return $size;
+        }
+        return measure_unit($size);
+    }
+}
+
+if (! function_exists('get_company_allowed_storage')) {
+    function get_company_allowed_storage($unit = true)
+    {
+        $storage = get_company_subscription()->package->storage;
+        if (! $unit) {
+            return $storage;
         }
 
-        if ($size < 1024 * 1024 * 1024) {
-            return number_format($size / (1024 * 1024), 2) . ' MB';
-        } elseif ($size < 1024 * 1024 * 1024 * 1024) {
-            return number_format($size / (1024 * 1024 * 1024), 2) . ' GB';
-        } else {
-            return number_format($size / (1024 * 1024 * 1024 * 1024), 2) . ' TB';
+        return measure_unit($storage);
+    }
+}
+
+if (! function_exists('get_remaining_storage')) {
+    function get_remaining_storage($unit = true)
+    {
+        $package     = get_company_subscription()->package;
+        $total_usage = get_company_storage_usage(false);
+        $remaining   = $package->storage - $total_usage;
+
+        if (! $unit) {
+            return $remaining;
         }
+
+        return measure_unit($remaining);
+    }
+}
+
+if (! function_exists('measure_unit')) {
+    function measure_unit($size)
+    {
+        if ($size < 1024) {
+            return number_format($size, 2) . ' MB';
+        } elseif ($size < 1024 ** 2) {
+            return number_format(($size / 1024), 2) . ' GB';
+        } elseif ($size < 1024 ** 3) {
+            return number_format(($size / (1024 ** 2)), 2) . ' TB';
+        }
+    }
+}
+
+if (! function_exists('has_enrolled')) {
+    function has_enrolled($course_id)
+    {
+        return Enrollment::where('user_id', auth()->user()->id)
+            ->where('course_id', $course_id)
+            ->exists();
     }
 }

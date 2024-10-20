@@ -4,11 +4,10 @@
 @push('css')@endpush
 @section('content')
     <!-- Mani section header and breadcrumb -->
-    <div class="ol-card radius-8px print-d-none">
-        <div class="ol-card-body my-3 py-4 px-20px">
+    <div class="row print-d-none">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     <span>{{ get_phrase('Contacts') }}</span>
                 </h4>
             </div>
@@ -44,8 +43,7 @@
                                 <div class="row">
                                     <div class="col-9">
                                         <div class="search-input">
-                                            <input type="text" name="search" value="{{ request('search') }}"
-                                                placeholder="{{ get_phrase('Search Contact') }}" class="ol-form-control form-control" />
+                                            <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ get_phrase('Search Contact') }}" class="ol-form-control form-control" />
 
                                         </div>
                                     </div>
@@ -58,8 +56,7 @@
                     </div>
 
                     @if (count($contacts) > 0)
-                        <div
-                            class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
+                        <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
                             <p class="admin-tInfo">
                                 {{ get_phrase('Showing') . ' ' . count($contacts) . ' ' . get_phrase('of') . ' ' . $contacts->total() . ' ' . get_phrase('data') }}
                             </p>
@@ -120,15 +117,12 @@
                                                     <button class="btn ol-btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <span class="fi-rr-menu-dots-vertical"></span>
                                                     </button>
-                                                    <ul class="dropdown-menu" >
+                                                    <ul class="dropdown-menu">
                                                         <li>
-                                                            <a class="dropdown-item"
-                                                                onclick="ajaxModal('{{ route('modal', ['admin.contact.reply', 'user_id' => $contact->id]) }}', '{{ get_phrase('Message Reply') }}')">{{ get_phrase('Reply') }}</a>
+                                                            <a class="dropdown-item" onclick="ajaxModal('{{ route('modal', ['admin.contact.reply', 'user_id' => $contact->id]) }}', '{{ get_phrase('Message Reply') }}')">{{ get_phrase('Reply') }}</a>
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item"
-                                                                onclick="confirmModal('{{ route('admin.contact.delete', $contact->id) }}')"
-                                                                href="javascript:void(0)">{{ get_phrase('Delete') }}</a>
+                                                            <a class="dropdown-item" onclick="confirmModal('{{ route('admin.contact.delete', $contact->id) }}')" href="javascript:void(0)">{{ get_phrase('Delete') }}</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -143,8 +137,7 @@
                     @endif
                     <!-- Data info and Pagination -->
                     @if (count($contacts) > 0)
-                        <div
-                            class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
+                        <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
                             <p class="admin-tInfo">
                                 {{ get_phrase('Showing') . ' ' . count($contacts) . ' ' . get_phrase('of') . ' ' . $contacts->total() . ' ' . get_phrase('data') }}
                             </p>

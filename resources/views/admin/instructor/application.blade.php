@@ -7,11 +7,10 @@
         $pendings = App\Models\Application::where('status', 0)->paginate(10);
         $approved = App\Models\Application::where('status', 1)->paginate(10);
     @endphp
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-4 px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     {{ get_phrase('Instructor Applicationss') }}
                 </h4>
             </div>
@@ -22,15 +21,13 @@
         <div class="ol-card-body">
             <ul class="nav nav-tabs eNav-Tabs-custom eTab" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="cHome-tab" data-bs-toggle="tab" data-bs-target="#cHome" type="button" role="tab" aria-controls="cHome"
-                        aria-selected="true">
+                    <button class="nav-link active" id="cHome-tab" data-bs-toggle="tab" data-bs-target="#cHome" type="button" role="tab" aria-controls="cHome" aria-selected="true">
                         {{ get_phrase('Pending applications') }}
                         <span></span>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="cProfile-tab" data-bs-toggle="tab" data-bs-target="#cProfile" type="button" role="tab" aria-controls="cProfile"
-                        aria-selected="false">
+                    <button class="nav-link" id="cProfile-tab" data-bs-toggle="tab" data-bs-target="#cProfile" type="button" role="tab" aria-controls="cProfile" aria-selected="false">
                         {{ get_phrase('Approved applications') }}
                         <span></span>
                     </button>
@@ -62,8 +59,7 @@
                                             <td>{{ ++$key }}</td>
                                             <td>{{ get_user_info($pending->user_id)->name }}</td>
                                             <td>
-                                                <a href="javascript:void(0);" class="btn ol-btn-primary"
-                                                    onclick="ajaxModal('{{ route('modal', ['admin.instructor.show_document', 'id' => $pending->id]) }}', '{{ get_phrase('Applicant details') }}')">
+                                                <a href="javascript:void(0);" class="btn ol-btn-primary" onclick="ajaxModal('{{ route('modal', ['admin.instructor.show_document', 'id' => $pending->id]) }}', '{{ get_phrase('Applicant details') }}')">
                                                     <i class="fa fa-info-circle"></i>
                                                     {{ get_phrase('Application details') }}
                                                 </a>
@@ -91,13 +87,11 @@
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li>
-                                                            <a class="dropdown-item" href="#"
-                                                                onclick="confirmModal('{{ route('admin.instructor.application.approve', $pending->id) }}')">{{ get_phrase('Approve') }}
+                                                            <a class="dropdown-item" href="#" onclick="confirmModal('{{ route('admin.instructor.application.approve', $pending->id) }}')">{{ get_phrase('Approve') }}
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item" href="#"
-                                                                onclick="confirmModal('{{ route('admin.instructor.application.delete', $pending->id) }}')">{{ get_phrase('Delete') }}
+                                                            <a class="dropdown-item" href="#" onclick="confirmModal('{{ route('admin.instructor.application.delete', $pending->id) }}')">{{ get_phrase('Delete') }}
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -142,15 +136,13 @@
                                             <td>{{ ++$key }}</td>
                                             <td>{{ get_user_info($approve->user_id)->name }}</td>
                                             <td>
-                                                <a href="javascript:void(0);" class="btn ol-btn-primary"
-                                                    onclick="ajaxModal('{{ route('modal', ['admin.instructor.show_document', 'id' => $approve->id]) }}', '{{ get_phrase('Applicant details') }}')">
+                                                <a href="javascript:void(0);" class="btn ol-btn-primary" onclick="ajaxModal('{{ route('modal', ['admin.instructor.show_document', 'id' => $approve->id]) }}', '{{ get_phrase('Applicant details') }}')">
                                                     <i class="fa fa-info-circle"></i>
                                                     {{ get_phrase('Application details') }}
                                                 </a>
                                             </td>
                                             <td>
-                                                <a href="{{ route('admin.instructor.application.download', ['id' => $approve->id]) }}" class="btn ol-btn-light ol-icon-btn"><span
-                                                        class="fi-rr-download"></span></a>
+                                                <a href="{{ route('admin.instructor.application.download', ['id' => $approve->id]) }}" class="btn ol-btn-light ol-icon-btn"><span class="fi-rr-download"></span></a>
                                             </td>
                                             <td>
                                                 @if ($approve->status == 0)

@@ -7,8 +7,8 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Lesson;
+use App\Models\Review;
 use App\Models\Section;
-use App\Models\User;
 use App\Models\Wishlist;
 use App\Services\SeoService;
 use Illuminate\Http\Request;
@@ -84,7 +84,7 @@ class CourseController extends Controller
             $wishlist = Wishlist::where('user_id', auth()->user()->id)->pluck('course_id')->toArray();
         }
 
-        $page_data['courses']          = $query->latest('id')->paginate(10)->appends($request->query());
+        $page_data['courses']          = $query->latest('id')->paginate(12)->appends($request->query());
         $page_data['wishlist']         = $wishlist;
         $page_data['category_details'] = Category::where('slug', $category)->first();
         return view('frontend' . '.' . get_frontend_settings('theme') . '.course.index', $page_data);
@@ -106,6 +106,7 @@ class CourseController extends Controller
             $page_data['total_lesson']   = Lesson::where('course_id', $course_details->id)->count();
             $page_data['enroll']         = Enrollment::where('course_id', $course_details->id)->count('user_id');
             $page_data['seo']            = SeoService::generateSeo($course_details, 'course');
+            $page_data['reviews']        = Review::where('course_id', $course_details->id)->latest('id')->paginate(20);
 
             $view_path = 'frontend.' . get_frontend_settings('theme') . '.course.course_details';
             return view($view_path, $page_data);

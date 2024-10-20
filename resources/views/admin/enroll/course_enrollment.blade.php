@@ -8,11 +8,10 @@
         $students = App\Models\User::where('role', 'student')->orderBy('name', 'asc')->get();
     @endphp
 
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-4 px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     {{ get_phrase('Enroll Students') }}
                 </h4>
             </div>
@@ -22,7 +21,6 @@
     <div class="row">
         <div class="col-md-6">
             <div class="ol-card p-4">
-                <h3 class="title fs-14px mb-3">{{get_phrase('Enroll students')}}</h3>
                 <div class="ol-card-body">
                     <form class="" action="{{ route('admin.student.post') }}" method="post" enctype="multipart/form-data">
                         @csrf
@@ -32,7 +30,7 @@
                             </label>
                             <select class="ol-select2 select2-hidden-accessible" name="user_id[]" multiple="multiple" required>
                                 @foreach ($students as $student)
-                                    <option value="{{$student->is}}">{{$student->name}} ({{$student->email}})</option>
+                                    <option value="{{ $student->is }}">{{ $student->name }} ({{ $student->email }})</option>
                                 @endforeach
                             </select>
                         </div>
@@ -40,8 +38,7 @@
                         <div class="fpb-7 mb-3">
                             <label class="form-label ol-form-label" for="multiple_course_id">{{ get_phrase('Course to enrol') }}<span class="text-danger ms-1">*</span></label>
 
-                            <select for='multiple_course_id' class="ol-select2 form-control ol-select2-multiple" data-toggle="select2" multiple="multiple" name="course_id[]"
-                                id="multiple_course_id" data-placeholder="Choose ..." required>
+                            <select for='multiple_course_id' class="ol-select2 form-control ol-select2-multiple" data-toggle="select2" multiple="multiple" name="course_id[]" id="multiple_course_id" data-placeholder="Choose ..." required>
                                 <option value="">{{ get_phrase('Select a course') }}</option>
                                 @foreach ($course as $row)
                                     <option value="{{ $row->id }}">{{ $row->title }}</option>

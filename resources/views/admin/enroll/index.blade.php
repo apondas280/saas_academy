@@ -4,11 +4,10 @@
 @push('css')@endpush
 @section('content')
 
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-12px px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     {{ get_phrase('Enroll History') }}
                 </h4>
 
@@ -47,8 +46,7 @@
                         <div class="row">
                             <div class="col-9">
                                 <div class="position-relative position-relative">
-                                    <input type="text" class="form-control ol-form-control daterangepicker w-100" name="eDateRange"
-                                        value="{{ date('m/d/Y', $start_date) . ' - ' . date('m/d/Y', $end_date) }}" />
+                                    <input type="text" class="form-control ol-form-control daterangepicker w-100" name="eDateRange" value="{{ date('m/d/Y', $start_date) . ' - ' . date('m/d/Y', $end_date) }}" />
                                 </div>
                             </div>
                             <div class="col-3">
@@ -121,8 +119,7 @@
                                             </td>
                                             <td class="print-d-none">
                                                 <div class="adminTable-action">
-                                                    <button type="button" class="btn ol-btn-light ol-icon-btn" data-bs-toggle="tooltip" title="{{ get_phrase('Delete') }}"
-                                                        onclick="confirmModal('{{ route('admin.enroll.history.delete', $row->id) }}')">
+                                                    <button type="button" class="btn ol-btn-light ol-icon-btn" data-bs-toggle="tooltip" title="{{ get_phrase('Delete') }}" onclick="confirmModal('{{ route('admin.enroll.history.delete', $row->id) }}')">
                                                         <i class="fi-rr-trash"></i>
                                                     </button>
                                                 </div>
@@ -203,11 +200,10 @@
             document.body.innerHTML = originalContents;
         }
 
-    
+
         function update_date_range() {
             var x = $("#selectedValue").html();
             $("#date_range").val(x);
         }
-
     </script>
 @endpush

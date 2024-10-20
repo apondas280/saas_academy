@@ -9,9 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-
 
 class MyProfileController extends Controller
 {
@@ -32,8 +29,7 @@ class MyProfileController extends Controller
 
             if ($request->photo) {
                 if (isset($request->photo) && $request->photo != '') {
-                    $profile['photo'] = "assets/upload/users/admin/" . nice_file_name($request->title, $request->photo->extension());
-                    FileUploader::upload($request->photo, $profile['photo'], 400, null, 200, 200);
+                    $profile['photo'] = FileUploader::upload($request->photo, 'users');
                 }
             }
             User::where('id', auth()->user()->id)->update($profile);

@@ -2,10 +2,10 @@
 @push('title', get_phrase('Edit course'))
 
 @section('content')
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-12px px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px d-flex align-items-center">
+                <h4 class="section-title">
                     <span class="edit-badge py-2 px-3">
                         {{ get_phrase('Editing') }}
                     </span>
@@ -13,13 +13,11 @@
                         {{ $course_details->title }}
                     </span>
                 </h4>
-                <a href="{{ route('instructor.courses') }}"
-                    class="btn ol-btn-outline-secondary d-flex align-items-center cg-10px ms-auto">
+                <a href="{{ route('instructor.courses') }}" class="btn ol-btn-outline-secondary d-flex align-items-center cg-10px ms-auto">
                     <span class="fi-rr-arrow-left"></span>
                     <span>{{ get_phrase('Back') }}</span>
                 </a>
-                <a href="https://creativeitem.com/docs"
-                    class="btn ol-btn-outline-secondary d-flex align-items-center cg-10px" target="_blank">
+                <a href="https://creativeitem.com/docs" class="btn ol-btn-outline-secondary d-flex align-items-center cg-10px" target="_blank">
                     <span class="fi-rr-arrow-up-right-from-square"></span>
                     <span>{{ get_phrase('Help') }}</span>
                 </a>
@@ -28,23 +26,18 @@
     </div>
 
     <div class="col-md-12">
-        <form class="ajaxForm" action="{{ route('instructor.course.update', $course_details->id) }}" method="post"
-            enctype="multipart/form-data">@csrf
+        <form class="ajaxForm" action="{{ route('instructor.course.update', $course_details->id) }}" method="post" enctype="multipart/form-data">@csrf
             <div class="ol-card">
                 <div class="ol-card-body p-20px mb-3">
                     <div class="row mb-3">
                         <div class="col-sm-8">
-                            <a href="{{ route('course.details', $course_details->slug) }}" target="_blank"
-                                class="btn ol-btn-outline-secondary me-3">
+                            <a href="{{ route('course.details', $course_details->slug) }}" target="_blank" class="btn ol-btn-outline-secondary me-3">
                                 {{ get_phrase('Frontend View') }}
                                 <i class="fi-rr-arrow-up-right-from-square"></i>
                             </a>
 
                             @php
-                                $watch_history = App\Models\Watch_history::where(
-                                    'course_id',
-                                    $course_details->course_id,
-                                )
+                                $watch_history = App\Models\Watch_history::where('course_id', $course_details->course_id)
                                     ->where('student_id', auth()->user()->id)
                                     ->first();
 
@@ -64,15 +57,13 @@
                                 }
                             @endphp
 
-                            <a href="{{ route('course.player', $url) }}" target="_blank"
-                                class="btn ol-btn-outline-secondary">
+                            <a href="{{ route('course.player', $url) }}" target="_blank" class="btn ol-btn-outline-secondary">
                                 {{ get_phrase('Course Player') }}
                                 <i class="fi-rr-arrow-up-right-from-square"></i>
                             </a>
                         </div>
                         <div class="col-sm-4 mt-3 mt-sm-0 d-flex justify-content-start justify-content-sm-end">
-                            <button type="submit"
-                                class="btn ol-btn-outline-secondary @if (request('tab') == 'live-class' || request('tab') == 'curriculum') opacity-0 @endif">
+                            <button type="submit" class="btn ol-btn-outline-secondary @if (request('tab') == 'live-class' || request('tab') == 'curriculum') d-none @endif">
                                 {{ get_phrase('Save Changes') }}
                             </button>
                         </div>
@@ -88,44 +79,37 @@
 
                                 <input type="hidden" name="tab" value="{{ $tab }}">
 
-                                <a class="nav-link @if ($tab == 'curriculum' || $tab == '') active @endif"
-                                    href="{{ route('instructor.course.edit', [$param, 'tab' => 'curriculum']) }}">
+                                <a class="nav-link @if ($tab == 'curriculum' || $tab == '') active @endif" href="{{ route('instructor.course.edit', [$param, 'tab' => 'curriculum']) }}">
                                     <span class="fi-rr-edit"></span>
                                     <span>{{ get_phrase('Curriculum') }}</span>
                                 </a>
 
-                                <a class="nav-link @if ($tab == 'basic') active @endif"
-                                    href="{{ route('instructor.course.edit', [$param, 'tab' => 'basic']) }}">
+                                <a class="nav-link @if ($tab == 'basic') active @endif" href="{{ route('instructor.course.edit', [$param, 'tab' => 'basic']) }}">
                                     <span class="icon fi-rr-duplicate"></span>
                                     <span>{{ get_phrase('Basic') }}</span>
                                 </a>
 
-                                <a class="nav-link @if ($tab == 'live-class') active @endif"
-                                    href="{{ route('instructor.course.edit', [$param, 'tab' => 'live-class']) }}">
+                                <a class="nav-link @if ($tab == 'live-class') active @endif" href="{{ route('instructor.course.edit', [$param, 'tab' => 'live-class']) }}">
                                     <span class="fi-rr-file-video"></span>
                                     <span>{{ get_phrase('Live Class') }}</span>
                                 </a>
 
-                                <a class="nav-link @if ($tab == 'pricing') active @endif"
-                                    href="{{ route('instructor.course.edit', [$param, 'tab' => 'pricing']) }}">
+                                <a class="nav-link @if ($tab == 'pricing') active @endif" href="{{ route('instructor.course.edit', [$param, 'tab' => 'pricing']) }}">
                                     <span class="fi-rr-comment-dollar"></span>
                                     <span>{{ get_phrase('Pricing') }}</span>
                                 </a>
 
-                                <a class="nav-link @if ($tab == 'info') active @endif"
-                                    href="{{ route('instructor.course.edit', [$param, 'tab' => 'info']) }}">
+                                <a class="nav-link @if ($tab == 'info') active @endif" href="{{ route('instructor.course.edit', [$param, 'tab' => 'info']) }}">
                                     <span class="fi-rr-tags"></span>
                                     <span>{{ get_phrase('Info') }}</span>
                                 </a>
 
-                                <a class="nav-link @if ($tab == 'media') active @endif"
-                                    href="{{ route('instructor.course.edit', [$param, 'tab' => 'media']) }}">
+                                <a class="nav-link @if ($tab == 'media') active @endif" href="{{ route('instructor.course.edit', [$param, 'tab' => 'media']) }}">
                                     <span class="fi fi-rr-gallery"></span>
                                     <span>{{ get_phrase('Media') }}</span>
                                 </a>
 
-                                <a class="nav-link @if ($tab == 'seo') active @endif"
-                                    href="{{ route('instructor.course.edit', [$param, 'tab' => 'seo']) }}">
+                                <a class="nav-link @if ($tab == 'seo') active @endif" href="{{ route('instructor.course.edit', [$param, 'tab' => 'seo']) }}">
                                     <span class="fi-rr-note-medical"></span>
                                     <span>{{ get_phrase('SEO') }}</span>
                                 </a>

@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\Session;
 
 class MessageController extends Controller
 {
-    public function message($message_thread_code = "")
+    public function message($company = "", $message_thread_code = "")
     {
         $page_data['thread_code']    = $message_thread_code;
         $page_data['thread_details'] = MessageThread::where('code', $message_thread_code)->first();
-        $contact = MessageThread::where('contact_one', auth()->user()->id)->orWhere('contact_two', auth()->user()->id)->count();
+        $contact                     = MessageThread::where('contact_one', auth()->user()->id)->orWhere('contact_two', auth()->user()->id)->count();
 
-        if (!$message_thread_code) {
+        if (! $message_thread_code) {
             $thread = MessageThread::latest('id')->value('code');
 
             if ($contact > 0) {
@@ -72,7 +72,7 @@ class MessageController extends Controller
 
         $thread = $has_thread ? $has_thread->code : random(20);
 
-        if (!$has_thread) {
+        if (! $has_thread) {
             $data['contact_one'] = auth()->user()->id;
             $data['contact_two'] = $request->receiver_id;
             $data['code']        = $thread;

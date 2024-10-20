@@ -3,11 +3,10 @@
 @push('meta')@endpush
 @push('css')@endpush
 @section('content')
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-4 px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     {{ get_phrase('Public Instructor Settings') }}
                 </h4>
             </div>
@@ -55,8 +54,7 @@
                         <div class="fpb-7 mb-3">
                             <label class="form-label ol-form-label" for="instructor_revenue">{{ get_phrase('Instructor revenue percentage') }}</label>
                             <div class="input-group">
-                                <input type="number" name = "instructor_revenue" id = "instructor_revenue" class="form-control ol-form-control"
-                                    onkeyup="calculateAdminRevenue(this.value)" min="0" max="100" value="{{ $instructor_revenue->description }}">
+                                <input type="number" name = "instructor_revenue" id = "instructor_revenue" class="form-control ol-form-control" onkeyup="calculateAdminRevenue(this.value)" min="0" max="100" value="{{ $instructor_revenue->description }}">
                                 <div class="input-group-append">
                                     <span class="input-group-text ol-form-control">%</span>
                                 </div>

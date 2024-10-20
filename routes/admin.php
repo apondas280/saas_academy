@@ -91,8 +91,8 @@ Route::prefix('{company}')->group(function () {
             Route::post('section/sort', 'section_sort')->name('section.sort');
 
             // lesson route
-            Route::post('lesson', 'lesson_store')->name('lesson.store');
-            Route::post('lesson/edit', 'lesson_edit')->name('lesson.edit');
+            Route::post('lesson', 'lesson_store')->name('lesson.store')->middleware('storage.checker');
+            Route::post('lesson/edit', 'lesson_edit')->name('lesson.edit')->middleware('storage.checker');
             Route::get('lesson/delete/{id}', 'lesson_delete')->name('lesson.delete');
             Route::post('lesson/sort', 'lesson_sort')->name('lesson.sort');
         });
@@ -147,7 +147,6 @@ Route::prefix('{company}')->group(function () {
             // course enrolment route
             Route::get('enroll_history', 'enroll_history')->name('enroll.history');
             Route::get('enroll_history/delete/{id}', 'enroll_history_delete')->name('enroll.history.delete');
-            Route::get('enroll_student', 'student_enrol')->name('student.enroll');
             Route::get('get/students', 'student_get')->name('student.get');
             Route::post('post/students', 'student_post')->name('student.post');
         });

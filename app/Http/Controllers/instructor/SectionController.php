@@ -7,7 +7,6 @@ use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-
 class SectionController extends Controller
 {
     public function store(Request $request)
@@ -34,7 +33,6 @@ class SectionController extends Controller
         return redirect()->back();
     }
 
-
     public function update(Request $request)
     {
         // check duplicate
@@ -51,7 +49,7 @@ class SectionController extends Controller
         return redirect()->back();
     }
 
-    public function delete($id)
+    public function delete($company = "", $id)
     {
         Section::where('id', $id)->delete();
         Session::flash('success', get_phrase('Delete successfully'));

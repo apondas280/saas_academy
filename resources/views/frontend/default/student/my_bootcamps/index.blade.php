@@ -1,29 +1,6 @@
 @extends('layouts.default')
 @push('title', get_phrase('My Bootcamps'))
 @section('content')
-    <!-- Top Link Path Area Start -->
-    <section class="top-link-path-section2">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="top-link-path-area2">
-                        <div class="top-link-path-inner2">
-                            <h1 class="title">{{ get_phrase('My Bootcamps') }}</h1>
-                            <div class="top-link-path d-flex align-items-center justify-content-center">
-                                <a href="{{ route('home') }}">
-                                    <img src="{{ asset('assets/frontend/default/images/icons/home-white.svg') }}" alt="">
-                                    {{ get_phrase('Home') }}
-                                </a>
-                                <a href="{{ route('my.bootcamps') }}">{{ get_phrase('My Bootcamps') }}</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Top Link Path Area End -->
-
     <!-- My Bootcamp Area Start -->
     <section>
         <div class="container">
@@ -34,6 +11,8 @@
 
                 <div class="col-xl-9 col-lg-8">
                     <div class="lms1-card">
+                        <h2 class="euclid-title-24px mb-20px">{{ get_phrase('My Live Courses') }}</h2>
+
                         <div class="accordion bootcampitem-accordion" id="bootcamp-item">
 
                             @if (count($my_bootcamps) > 0)

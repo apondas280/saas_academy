@@ -2,18 +2,17 @@
 @push('title', get_phrase('Training Session'))
 
 @section('content')
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-4 px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     {{ get_phrase('Training Session') }}
                 </h4>
             </div>
         </div>
     </div>
 
-    <div class="row g-2 g-sm-3 my-3">
+    <div class="row g-2 g-sm-3 mb-3">
         <div class="col-md-4">
             <div class="ol-card card-hover">
                 <div class="ol-card-body px-20px py-3">

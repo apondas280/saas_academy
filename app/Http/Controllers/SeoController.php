@@ -35,10 +35,7 @@ class SeoController extends Controller
 
             if (isset($request->og_image)) {
                 $originalFileName = $updateSeo->id . '-' . $request->og_image->getClientOriginalName();
-                $destinationPath  = 'public/uploads/seo-og-images/' . $originalFileName;
-
-                // Move the file to the destination path
-                FileUploader::upload($request->og_image, $destinationPath, 600);
+                $destinationPath  = FileUploader::upload($request->og_image, 'og-image');
                 remove_file($updateSeo->og_image);
                 $updateSeo->og_image = $destinationPath;
             }

@@ -4,11 +4,10 @@
 @push('css')@endpush
 @section('content')
     <!-- Mani section header and breadcrumb -->
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-12px px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     {{ get_phrase('Blog') }}
                 </h4>
 
@@ -48,8 +47,7 @@
                                 <div class="row">
                                     <div class="col-9">
                                         <div class="search-input">
-                                            <input type="text" name="search" value="{{ request('search') }}"
-                                                placeholder="{{ get_phrase('Search Title') }}" class="ol-form-control form-control" />
+                                            <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ get_phrase('Search Title') }}" class="ol-form-control form-control" />
 
                                         </div>
                                     </div>
@@ -116,9 +114,7 @@
                                                 <div class="dAdmin_info_name min-w-150px">
                                                     <div class="eSwitches">
                                                         <div class="form-check form-switch">
-                                                            <input class="form-check-input form-switch-medium"
-                                                                onchange="actionTo('{{ route('admin.blog.status', ['id' => $blog->id]) }}');"
-                                                                 type="checkbox" @if($blog->status) checked @endif>
+                                                            <input class="form-check-input form-switch-medium" onchange="actionTo('{{ route('admin.blog.status', ['id' => $blog->id]) }}');" type="checkbox" @if ($blog->status) checked @endif>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -129,7 +125,7 @@
                                                     <button class="btn ol-btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <span class="fi-rr-menu-dots-vertical"></span>
                                                     </button>
-                                                    <ul class="dropdown-menu" >
+                                                    <ul class="dropdown-menu">
                                                         <li><a class="dropdown-item" href="{{ route('admin.blog.edit', ['id' => $blog->id]) }}">{{ get_phrase('Edit') }}</a></li>
                                                         <li><a class="dropdown-item" href="#" onclick="confirmModal('{{ route('admin.blog.delete', $blog->id) }}')">{{ get_phrase('Delete') }}</a></li>
                                                         <li><a class="dropdown-item" href="{{ route('blog.details', Str::slug($blog->title)) }}">{{ get_phrase('View on frontend') }}</a></li>

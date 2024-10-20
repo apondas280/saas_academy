@@ -5,13 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Live_class;
 use App\Models\Setting;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class LiveClassController extends Controller
 {
-
-    public function live_class_start($id)
+    public function live_class_start($company = "", $id)
     {
         $live_class = Live_class::where('id', $id)->first();
 
@@ -27,7 +25,7 @@ class LiveClassController extends Controller
         }
     }
 
-    public function live_class_store(Request $request, $course_id)
+    public function live_class_store(Request $request, $company = "", $course_id)
     {
         $validated = $request->validate([
             'class_topic'         => 'required|max:255',
@@ -55,7 +53,7 @@ class LiveClassController extends Controller
         return redirect(route('admin.course.edit', ['id' => $course_id, 'tab' => 'live-class']))->with('success', get_phrase('Live class added successfully'));
     }
 
-    public function live_class_update(Request $request, $id)
+    public function live_class_update(Request $request, $company = "", $id)
     {
         $previous_meeting_data = Live_class::where('id', $id)->first();
 
@@ -82,7 +80,7 @@ class LiveClassController extends Controller
         return redirect(route('admin.course.edit', ['id' => $previous_meeting_data->course_id, 'tab' => 'live-class']))->with('success', get_phrase('Live class updated successfully'));
     }
 
-    public function live_class_delete($id)
+    public function live_class_delete($company = "", $id)
     {
         $previous_meeting_data = Live_class::where('id', $id)->first();
         $course                = Course::where('id', $previous_meeting_data->course_id)->first();

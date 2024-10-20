@@ -118,8 +118,7 @@ class BootcampController extends Controller
         $data['status']            = 1;
 
         if ($request->thumbnail) {
-            $data['thumbnail'] = "uploads/bootcamp/thumbnail/" . nice_file_name($request->title, $request->thumbnail->extension());
-            FileUploader::upload($request->thumbnail, $data['thumbnail']);
+            $data['thumbnail'] = FileUploader::upload($request->thumbnail, 'bootcamp/thumbnail');
         }
 
         $insert_id = Bootcamp::insertGetId($data);
@@ -206,8 +205,7 @@ class BootcampController extends Controller
             $data['faqs'] = json_encode($faqs);
         } elseif ($request->tab == 'media') {
             if ($request->thumbnail) {
-                $data['thumbnail'] = "uploads/bootcamp/thumbnail/" . nice_file_name($request->title, $request->thumbnail->extension());
-                FileUploader::upload($request->thumbnail, $data['thumbnail']);
+                $data['thumbnail'] = FileUploader::upload($request->thumbnail, 'bootcamp/thumbnail');
                 remove_file($query->first()->thumbnail);
             }
 
@@ -239,10 +237,8 @@ class BootcampController extends Controller
             }
 
             if ($request->og_image) {
-                $originalFileName = $bootcamp_details->id . '-' . $request->og_image->getClientOriginalName();
-                $destinationPath  = 'uploads/seo-og-images/' . $originalFileName;
-                // Move the file to the destination path
-                FileUploader::upload($request->og_image, $destinationPath, 600);
+                $originalFileName     = $bootcamp_details->id . '-' . $request->og_image->getClientOriginalName();
+                $destinationPath      = FileUploader::upload($request->og_image, 'og-image');
                 $seo_data['og_image'] = $destinationPath;
             }
 

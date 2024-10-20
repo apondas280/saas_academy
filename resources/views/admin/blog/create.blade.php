@@ -15,7 +15,7 @@
             overflow: hidden
         }
 
-        img{
+        img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -23,11 +23,10 @@
         }
     </style>
     <!-- Mani section header and breadcrumb -->
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-12px px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     <span>{{ get_phrase('Blog') }}</span>
                 </h4>
                 <a href="{{ route('admin.blogs') }}" class="btn ol-btn-outline-secondary d-flex align-items-center cg-10px">
@@ -47,14 +46,12 @@
                         @csrf
                         <div class="fpb-7 mb-3">
                             <label class="form-label ol-form-label" for="title">{{ get_phrase('Title') }}</label>
-                            <input type="text" class="form-control ol-form-control" name="title" id="title"
-                                placeholder="{{ get_phrase('Enter blog title') }}" required>
+                            <input type="text" class="form-control ol-form-control" name="title" id="title" placeholder="{{ get_phrase('Enter blog title') }}" required>
                         </div>
 
                         <div class="fpb-7 mb-3">
                             <label class="form-label ol-form-label" for="blog_category_id">{{ get_phrase('Category') }}</label>
-                            <select class="form-control ol-form-control ol-select2" data-toggle="select2" name="category_id"
-                                id="blog_category_id" required>
+                            <select class="form-control ol-form-control ol-select2" data-toggle="select2" name="category_id" id="blog_category_id" required>
                                 <option value="">{{ get_phrase('Select a category') }}</option>
                                 @foreach ($category as $row)
                                     <option value="{{ $row->id }}">{{ $row->title }}</option>

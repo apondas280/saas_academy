@@ -8,7 +8,7 @@
                 <div class="header-wrap gap-12px d-flex align-items-center justify-content-between">
                     <div class="logo-area">
                         <a href="{{ route('home') }}">
-                            <img src="{{ asset('assets/frontend/default/images/logo.svg') }}" alt="logo">
+                            <img src="{{ asset(get_frontend_settings('dark_logo')) }}" alt="logo" width="150px">
                         </a>
                     </div>
                     <div class="d-flex align-items-center">
@@ -17,7 +17,7 @@
                             <div class="offcanvas-header">
                                 <div class="offcanvas-logo">
                                     <a href="{{ route('home') }}">
-                                        <img src="{{ asset('assets/frontend/default/images/logo.svg') }}" alt="logo">
+                                        <img src="{{ asset(get_frontend_settings('dark_logo')) }}" alt="logo">
                                     </a>
                                 </div>
                                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasResponsive" aria-label="Close"></button>
@@ -121,7 +121,7 @@
 
 
                                                 <!-- Instructor menu -->
-                                                <li>
+                                                {{-- <li>
                                                     <a href="{{ route('instructors') }}">
                                                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <g id="person_FILL0_wght300_GRAD0_opsz20 1">
@@ -132,7 +132,7 @@
                                                         </svg>
                                                         <span>{{ get_phrase('Instructors') }}</span>
                                                     </a>
-                                                </li>
+                                                </li> --}}
 
                                             </ul>
                                         </nav>
@@ -274,7 +274,7 @@
                                                 <li class="user-dropdown-list">
                                                     <a href="{{ route('my.bootcamps') }}" class="d-flex align-items-center gap-2 user-dropdown-item">
                                                         <i class="fi fi-rr-users-alt"></i>
-                                                        <span>{{ get_phrase('My Bootcamps') }}</span>
+                                                        <span>{{ get_phrase('My Live Courses') }}</span>
                                                     </a>
                                                 </li>
                                                 <li class="user-dropdown-list">

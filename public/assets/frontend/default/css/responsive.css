@@ -78,14 +78,14 @@
     padding: 12px;
     border-radius: 8px;
     margin-bottom: 8px;
-    line-height: 24px; 
+    line-height: 24px;
     letter-spacing: -0.15px;
     width: 291px;
   }
   .nav-area ul li a svg{
     display: block;
   }
-  .nav-area ul li a.active svg path, 
+  .nav-area ul li a.active svg path,
   .nav-area ul li a:hover svg path{
     fill: var(--blueColor);
   }
@@ -99,7 +99,7 @@
   .nav-area ul li.menu-item-has-children.active-submenu > a::before{
     color: var(--blueColor);
   }
-  .nav-area ul li a.active, 
+  .nav-area ul li a.active,
   .nav-area ul li a:hover{
     background: var(--normalBlue);
   }
@@ -245,7 +245,7 @@
     font-size: 44px;
     line-height: 54px;
   }
-  
+
   /* Contact Page */
   .contact-form-title .title {
     font-size: 32px;
@@ -266,7 +266,7 @@
   .about-img-wrap-2{
     justify-content: center !important;
   }
-    
+
   /* My Course Page */
   .student-panel-cover {
     height: 150px;
@@ -424,12 +424,10 @@
     margin: auto;
   }
   .list-course-img {
-    max-width: 100%;
-    height: auto;
+    flex: 0 0 auto;
+    width: 100%;
   }
-  .list-course-img img{
-    height: auto;
-  }
+
   .course-list-leason-stars{
     max-width: 100%;
   }
@@ -748,5 +746,5 @@
 }
 
 @media all and (max-width: 375px){
-	
+
 }

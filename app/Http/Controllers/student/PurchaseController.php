@@ -24,10 +24,10 @@ class PurchaseController extends Controller
         return view($view_path, $page_data);
     }
 
-    public function invoice($company, $id)
+    public function invoice($company = "", $id)
     {
         // validate course id
-        if (!is_numeric($id) && $id < 1) {
+        if (! is_numeric($id) && $id < 1) {
             Session::flash('error', get_phrase('Data not found.'));
             return redirect()->back();
         }
@@ -37,7 +37,7 @@ class PurchaseController extends Controller
             ->join('users', 'payment_histories.user_id', 'users.id')
             ->where('payment_histories.id', $id)
             ->select('payment_histories.*', 'courses.title as course_title', 'users.name as user_name')->first();
-        if (!$payment) {
+        if (! $payment) {
             Session::flash('error', get_phrase('Data not found.'));
             return redirect()->back();
         }
@@ -47,10 +47,10 @@ class PurchaseController extends Controller
         return view($view_path, $page_data);
     }
 
-    public function purchase_course($course_id)
+    public function purchase_course($company = "", $course_id)
     {
         // validate course id
-        if (!is_numeric($course_id) && $course_id < 1) {
+        if (! is_numeric($course_id) && $course_id < 1) {
             Session::flash('error', get_phrase('Data not found.'));
             return redirect()->back();
         }
@@ -72,7 +72,7 @@ class PurchaseController extends Controller
         $course_details = Course::where('id', $course_id)->first();
 
         // if course doesn't exist redirect back
-        if (!$course_details) {
+        if (! $course_details) {
             Session::flash('error', get_phrase('Data not found.'));
             return redirect()->back();
         }
@@ -109,7 +109,7 @@ class PurchaseController extends Controller
         // if order is gift then select gifted user id
         if ($request->gifted_user_email) {
             $gifted_user_id = User::where('role', '!=', 'admin')->where('email', $request->gifted_user_email)->value('id');
-            if (!$gifted_user_id) {
+            if (! $gifted_user_id) {
                 Session::flash('error', get_phrase("User email doesn't exists."));
                 return redirect()->back();
             }

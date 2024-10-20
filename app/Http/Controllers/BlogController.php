@@ -8,7 +8,6 @@ use App\Models\FileUploader;
 use App\Models\FrontendSetting;
 use App\Models\SeoField;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -36,6 +35,8 @@ class BlogController extends Controller
             "title"       => "required|unique:blogs",
             "category_id" => "required",
             "description" => "required",
+            "thumbnail"   => "max:1024",
+            "banner"      => "max:1024",
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -49,12 +50,10 @@ class BlogController extends Controller
         $data['keywords']    = $request->keywords;
         $data['description'] = $request->description;
         if (isset($request->thumbnail) && $request->thumbnail != '') {
-            $data['thumbnail'] = "assets/upload/blog/thumbnail/" . nice_file_name($request->title, $request->thumbnail->extension());
-            FileUploader::upload($request->thumbnail, $data['thumbnail'], 400, null, 200, 200);
+            $data['thumbnail'] = FileUploader::upload($request->thumbnail, 'blog/thumbnail');
         }
         if (isset($request->banner) && $request->banner != '') {
-            $data['banner'] = "assets/upload/blog/banner/" . nice_file_name($request->title, $request->banner->extension());
-            FileUploader::upload($request->banner, $data['banner'], 1400, null, 200, 200);
+            $data['banner'] = FileUploader::upload($request->banner, 'blog/banner');
         }
         $data['is_popular'] = $request->is_popular;
         $data['status']     = 1;
@@ -100,6 +99,8 @@ class BlogController extends Controller
             "title"       => "required",
             "category_id" => "required",
             "description" => "required",
+            "thumbnail"   => "max:1024",
+            "banner"      => "max:1024",
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -113,36 +114,33 @@ class BlogController extends Controller
         $data['keywords']    = $request->keywords;
         $data['description'] = $request->description;
         if (isset($request->thumbnail) && $request->thumbnail != '') {
-            $data['thumbnail'] = "assets/upload/blog/thumbnail/" . nice_file_name($request->title, $request->thumbnail->extension());
-            FileUploader::upload($request->thumbnail, $data['thumbnail'], 400, null, 200, 200);
+            $data['thumbnail'] = FileUploader::upload($request->thumbnail, 'blog/thumbnail');
         }
         if (isset($request->banner) && $request->banner != '') {
-            $data['banner'] = "assets/upload/blog/banner/" . nice_file_name($request->title, $request->banner->extension());
-            FileUploader::upload($request->banner, $data['banner'], 1400, null, 200, 200);
+            $data['banner'] = FileUploader::upload($request->banner, 'blog/banner');
         }
         $data['is_popular'] = $request->is_popular;
         Blog::where('id', $id)->update($data);
 
-
         // Blog SEO
-        $blog_details = Blog::where('id', $id)->first();
-        $SeoField = SeoField::where('name_route', 'blog.details')->where('blog_id', $blog_details->id)->first();
-        $seo_data['blog_id'] = $id;
-        $seo_data['route'] = 'Blog Details';
-        $seo_data['name_route'] = 'blog.details';
-        $seo_data['meta_title'] = $request->meta_title;
+        $blog_details                 = Blog::where('id', $id)->first();
+        $SeoField                     = SeoField::where('name_route', 'blog.details')->where('blog_id', $blog_details->id)->first();
+        $seo_data['blog_id']          = $id;
+        $seo_data['route']            = 'Blog Details';
+        $seo_data['name_route']       = 'blog.details';
+        $seo_data['meta_title']       = $request->meta_title;
         $seo_data['meta_description'] = $request->meta_description;
-        $seo_data['meta_robot'] = $request->meta_robot;
-        $seo_data['canonical_url'] = $request->canonical_url;
-        $seo_data['custom_url'] = $request->custom_url;
-        $seo_data['json_ld'] = $request->json_ld;
-        $seo_data['og_title'] = $request->og_title;
-        $seo_data['og_description'] = $request->og_description;
-        $seo_data['created_at'] = date('Y-m-d H:i:s');
-        $seo_data['updated_at'] = date('Y-m-d H:i:s');
+        $seo_data['meta_robot']       = $request->meta_robot;
+        $seo_data['canonical_url']    = $request->canonical_url;
+        $seo_data['custom_url']       = $request->custom_url;
+        $seo_data['json_ld']          = $request->json_ld;
+        $seo_data['og_title']         = $request->og_title;
+        $seo_data['og_description']   = $request->og_description;
+        $seo_data['created_at']       = date('Y-m-d H:i:s');
+        $seo_data['updated_at']       = date('Y-m-d H:i:s');
 
         $meta_keywords_arr = json_decode($request->meta_keywords, true);
-        $meta_keywords = '';
+        $meta_keywords     = '';
         if (is_array($meta_keywords_arr)) {
             foreach ($meta_keywords_arr as $arr_key => $arr_val) {
                 $meta_keywords .= $meta_keywords == '' ? $arr_val['value'] : ', ' . $arr_val['value'];
@@ -151,10 +149,8 @@ class BlogController extends Controller
         }
 
         if ($request->og_image) {
-            $originalFileName = $blog_details->id . '-' . $request->og_image->getClientOriginalName();
-            $destinationPath = 'uploads/seo-og-images/' . $originalFileName;
-            // Move the file to the destination path
-            FileUploader::upload($request->og_image, $destinationPath, 600);
+            $originalFileName     = $blog_details->id . '-' . $request->og_image->getClientOriginalName();
+            $destinationPath      = FileUploader::upload($request->og_image, 'og-image');
             $seo_data['og_image'] = $destinationPath;
         }
 

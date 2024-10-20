@@ -29,7 +29,9 @@ class BootcampModuleController extends Controller
 
         // check duplicate title for same bootcamp id
         $title = BootcampModule::join('bootcamps', 'bootcamp_modules.bootcamp_id', 'bootcamps.id')
-            ->where('bootcamps.user_id', auth()->user()->id)->where('bootcamp_modules.title', $request->title)->first();
+            ->where('bootcamps.user_id', auth()->user()->id)
+            ->where('bootcamps.id', $request->bootcamp_id)
+            ->where('bootcamp_modules.title', $request->title)->first();
         if ($title) {
             Session::flash('error', get_phrase('This title has been taken.'));
             return redirect()->back();

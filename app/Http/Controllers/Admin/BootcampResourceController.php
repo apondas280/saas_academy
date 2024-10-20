@@ -3,13 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Bootcamp;
-use App\Models\BootcampLiveClass;
 use App\Models\BootcampModule;
 use App\Models\BootcampResource;
 use App\Models\FileUploader;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -48,15 +45,14 @@ class BootcampResourceController extends Controller
             }
             $file_name     = $file->getClientOriginalName();
             $data['title'] = replace_url_symbol($file_name);
-            $data['file']  = 'uploads/bootcamp/resource/' . auth()->user()->name . '/' . $module->bootcamp_title . '/' . $module->title . '/' . $data['title'];
 
             $query = BootcampResource::where('title', $data['title']);
             if ($query->exists()) {
                 Session::flash('error', get_phrase("File already exists."));
                 return redirect()->back();
             }
+            $data['file'] = FileUploader::upload($file, "bootcamp/{$request->upload_type}s");
             $query->insert($data);
-            FileUploader::upload($file, $data['file']);
         }
         Session::flash('success', get_phrase(ucfirst($request->upload_type) . ' has been uploaded.'));
         return redirect()->back();

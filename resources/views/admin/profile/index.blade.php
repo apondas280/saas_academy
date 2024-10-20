@@ -7,11 +7,10 @@
         $auth = auth()->user();
     @endphp
 
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-4 px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     <span>{{ get_phrase('Manage profile') }}</span>
                 </h4>
             </div>
@@ -72,7 +71,7 @@
                             </label>
                             <div class="row align-items-center">
                                 <div class="col-2">
-                                    <img class = "rounded-circle img-thumbnail image-50" src="{{ get_image($auth->photo) }}" >
+                                    <img class = "rounded-circle img-thumbnail image-50" src="{{ get_image($auth->photo) }}">
                                 </div>
                                 <div class="col-10">
                                     <input type="file" class="form-control ol-form-control" name="photo" id="user_image" onchange="changeTitleOfImageUploader(this.id)" accept="image/*">

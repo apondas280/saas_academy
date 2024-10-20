@@ -10,9 +10,11 @@ use App\Models\FileUploader;
 use App\Models\Section;
 use App\Models\SeoField;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class CourseController extends Controller
@@ -163,16 +165,13 @@ class CourseController extends Controller
 
         //Remove empty value by using array filter function
         if (isset($request->requirements) && $request->requirements != '') {
-
             $data['requirements'] = json_encode(array_filter($request->requirements, fn($value) => ! is_null($value) && $value !== ''));
         }
         if (isset($request->outcomes) && $request->outcomes != '') {
-
             $data['outcomes'] = json_encode(array_filter($request->outcomes, fn($value) => ! is_null($value) && $value !== ''));
         }
 
         if (isset($request->faq_title) && $request->faq_title != '') {
-
             $faqs = [];
             foreach ($request->faq_title as $key => $title) {
                 if ($title != '') {
@@ -187,18 +186,15 @@ class CourseController extends Controller
         $data['updated_at']  = date('Y-m-d H:i:s');
 
         if ($request->thumbnail) {
-            $data['thumbnail'] = "uploads/course-thumbnail/" . nice_file_name($request->title, $request->thumbnail->extension());
-            FileUploader::upload($request->thumbnail, $data['thumbnail'], 400, null, 200, 200);
+            $data['thumbnail'] = FileUploader::upload($request->thumbnail, 'course/thumbnail');
         }
 
         if ($request->banner) {
-            $data['banner'] = "uploads/course-banner/" . nice_file_name($request->title, $request->banner->extension());
-            FileUploader::upload($request->banner, $data['banner'], 1400, null, 300, 300);
+            $data['banner'] = FileUploader::upload($request->banner, 'course/banner');
         }
 
         if ($request->preview) {
-            $data['preview'] = "uploads/course-preview/" . nice_file_name($request->title, $request->preview->extension());
-            FileUploader::upload($request->preview, $data['preview']);
+            $data['preview'] = FileUploader::upload($request->preview, 'course/preview');
         }
 
         $course_id = Course::insertGetId($data);
@@ -277,22 +273,19 @@ class CourseController extends Controller
             $data['faqs'] = json_encode($faqs);
         } elseif ($request->tab == 'media') {
             if ($request->thumbnail) {
-                $data['thumbnail'] = "uploads/course-thumbnail/" . nice_file_name($request->title, $request->thumbnail->extension());
-                FileUploader::upload($request->thumbnail, $data['thumbnail'], 400, null, 200, 200);
+                $data['thumbnail'] = FileUploader::upload($request->thumbnail, 'course/thumbnail');
                 remove_file($query->first()->thumbnail);
             }
 
             if ($request->banner) {
-                $data['banner'] = "uploads/course-banner/" . nice_file_name($request->title, $request->banner->extension());
-                FileUploader::upload($request->banner, $data['banner'], 1400, null, 300, 300);
+                $data['banner'] = FileUploader::upload($request->banner, 'course/banner');
                 remove_file($query->first()->banner);
             }
 
             if ($request->preview_video_provider == 'link') {
                 $data['preview'] = $request->preview_link;
             } elseif ($request->preview_video_provider == 'file' && $request->preview) {
-                $data['preview'] = "uploads/course-preview/" . nice_file_name($request->title, $request->preview->extension());
-                FileUploader::upload($request->preview, $data['preview']);
+                $data['preview'] = FileUploader::upload($request->preview, 'course/preview');
                 remove_file($query->first()->preview);
             }
 
@@ -324,10 +317,8 @@ class CourseController extends Controller
             }
 
             if ($request->og_image) {
-                $originalFileName = $course_details->id . '-' . $request->og_image->getClientOriginalName();
-                $destinationPath  = 'uploads/seo-og-images/' . $originalFileName;
-                // Move the file to the destination path
-                FileUploader::upload($request->og_image, $destinationPath, 600);
+                $originalFileName     = $course_details->id . '-' . $request->og_image->getClientOriginalName();
+                $destinationPath      = FileUploader::upload($request->og_image, 'og-image');
                 $seo_data['og_image'] = $destinationPath;
             }
 
@@ -352,7 +343,6 @@ class CourseController extends Controller
 
         //For ajax form submission
         return ['success' => get_phrase('Course updated successfully')];
-
     }
 
     public function status($company = "", $type, $id)
@@ -405,26 +395,41 @@ class CourseController extends Controller
     public function duplicate($company = "", $id)
     {
         $course = Course::where('id', $id);
-        if (auth()->user()->role != 'admin') {
-            $course = $course->where('user_id', auth()->user()->id);
-        }
-
-        // check course existence
-        if ($course->doesntExist()) {
-            Session::flash('error', get_phrase('Data not found.'));
+        if (! $course->exists()) {
+            Session::flash('success', get_phrase('Data not found.'));
             return redirect()->back();
         }
 
-        // collect course and remove unnecessary fields
-        $data = $course->first()->toArray();
-        if (auth()->user()->role == 'admin') {
-            $data['user_id'] = auth()->user()->id;
+        $course            = $course->first()->toArray();
+        $course['title']   = $course['title'] . ' copy';
+        $course['slug']    = Str::slug($course['title']);
+        $course['user_id'] = auth()->user()->id;
+        $course['status']  = 'active';
+        unset($course['id'], $course['created_at'], $course['updated_at']);
+
+        // manage thumbnail, banner, preview
+        foreach (['thumbnail', 'banner', 'preview'] as $file) {
+            if (isset($course[$file]) && file_exists(public_path($course[$file]))) {
+                $file_name = Str::random(20) . '.' . File::extension($course[$file]);
+
+                $source          = public_path($course[$file]);
+                $destination_dir = public_path(company_path() . "course/{$file}/");
+
+                // Ensure the destination directory exists
+                if (! File::exists($destination_dir)) {
+                    File::makeDirectory($destination_dir, 0755, true);
+                }
+
+                $destination = $destination_dir . $file_name;
+                File::copy($source, $destination);
+
+                $course[$file] = str_replace(public_path() . '\\', '', $destination);
+            }
         }
-        unset($data['id'], $data['created_at'], $data['updated_at']);
 
         // insert as new course
-        $course_id = Course::insertGetId($data);
-        Course::where('id', $course_id)->update(['slug' => slugify($data['title']) . '-' . $course_id]);
+        $course_id = Course::insertGetId($course);
+        Course::where('id', $course_id)->update(['slug' => slugify($course['title']) . '-' . $course_id]);
 
         // go to edit
         Session::flash('success', get_phrase('Course duplicated.'));

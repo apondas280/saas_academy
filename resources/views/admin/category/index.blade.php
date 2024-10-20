@@ -2,22 +2,11 @@
 
 @push('title', get_phrase('Categories'))
 
-@push('meta')
-@endpush
-
-@push('css')
-@endpush
-
-
-
 @section('content')
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-12px px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
-                    {{ get_phrase('All Category') }} <span class="text-muted">({{ $categories->count() }})</span>
-                </h4>
+                <h4 class="section-title">{{ get_phrase('All Category') }}</h4>
 
                 <a onclick="ajaxModal('{{ route('admin.category.create') }}', '{{ get_phrase('Add new category') }}')" href="#" class="btn ol-btn-outline-secondary d-flex align-items-center cg-10px">
                     <span class="fi-rr-plus"></span>
@@ -28,7 +17,7 @@
     </div>
 
 
-    <div class="row g-4 all-category-list">
+    <div class="row g-4 all-category-list mb-4">
         @foreach ($categories as $category)
             <div class="col-md-6 col-lg-4 col-xl-3">
                 <div class="ol-card category-card radious-10px h-100">
@@ -46,7 +35,8 @@
                                             <i class="{{ $child_category->icon }}"></i> <span class="text-12px">{{ $child_category->title }}</span>
                                         </div>
                                         <div class="col-auto ms-auto d-flex subcategory-actions">
-                                            <a onclick="ajaxModal('{{ route('modal', ['admin.category.edit', 'id' => $child_category->id]) }}', '{{ get_phrase('Edit category') }}')" class="mx-1" data-bs-toggle="tooltip" title="{{ get_phrase('Edit') }}" href="#"><i class="fi fi-rr-pen-clip"></i></a>
+                                            <a onclick="ajaxModal('{{ route('modal', ['admin.category.edit', 'id' => $child_category->id]) }}', '{{ get_phrase('Edit category') }}')" class="mx-1" data-bs-toggle="tooltip" title="{{ get_phrase('Edit') }}" href="#"><i
+                                                    class="fi fi-rr-pen-clip"></i></a>
                                             <a onclick="confirmModal('{{ route('admin.category.delete', $child_category->id) }}')" class="mx-1" data-bs-toggle="tooltip" title="{{ get_phrase('Delete') }}" href="#"><i class="fi fi-rr-trash"></i></a>
                                         </div>
                                     </div>

@@ -5,11 +5,10 @@
 @push('css')
 @endpush
 @section('content')
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-12px px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title">
                     {{ get_phrase('Admin List') }}
                 </h4>
 
@@ -110,8 +109,7 @@
                                                         </button>
                                                         <ul class="dropdown-menu">
                                                             <li>
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('admin.admins.permission', ['user_id' => $row->id]) }}">{{ get_phrase('Assign permission') }}</a>
+                                                                <a class="dropdown-item" href="{{ route('admin.admins.permission', ['user_id' => $row->id]) }}">{{ get_phrase('Assign permission') }}</a>
                                                             </li>
 
                                                             <li>
@@ -119,8 +117,7 @@
                                                             </li>
 
                                                             <li>
-                                                                <a class="dropdown-item" onclick="confirmModal('{{ route('admin.admins.delete', $row->id) }}')"
-                                                                    href="javascript:void(0)">{{ get_phrase('Delete') }}</a>
+                                                                <a class="dropdown-item" onclick="confirmModal('{{ route('admin.admins.delete', $row->id) }}')" href="javascript:void(0)">{{ get_phrase('Delete') }}</a>
                                                             </li>
                                                         </ul>
                                                     </div>

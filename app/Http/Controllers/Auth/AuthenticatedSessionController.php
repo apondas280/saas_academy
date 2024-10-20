@@ -8,6 +8,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -30,6 +31,12 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $company = $request->route('company');
+
+        $company_storage = public_path("upload/{$company}");
+        if (! is_dir($company_storage)) {
+            File::makeDirectory($company_storage, 0777, true, true);
+        }
+
         return redirect()->to('/' . $company . '/dashboard');
 
         // return redirect()->intended(RouteServiceProvider::HOME);
@@ -46,6 +53,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect(route('login'));
+        $company = $request->route('company');
+        return redirect()->to('/' . $company);
     }
 }

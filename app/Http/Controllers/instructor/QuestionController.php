@@ -50,7 +50,7 @@ class QuestionController extends Controller
         ]);
     }
 
-    public function delete($id)
+    public function delete($company = "", $id)
     {
         $question = Question::where('id', $id)->first();
         if (! $question) {
@@ -63,7 +63,7 @@ class QuestionController extends Controller
         return redirect()->back();
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $company = "", $id)
     {
         $question = Question::where('id', $id)->first();
         if (! $question) {

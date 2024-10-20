@@ -20,7 +20,7 @@ class BootcampPurchaseController extends Controller
 
         // check course owner
         if ($bootcamp->user_id == auth()->user()->id) {
-            Session::flash('error', get_phrase('You own this item.'));
+            Session::flash('error', get_phrase('You cannot join your own bootcamp.'));
             return redirect()->back();
         }
 

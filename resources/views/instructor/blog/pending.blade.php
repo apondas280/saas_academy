@@ -3,12 +3,12 @@
 @push('meta')@endpush
 @push('css')@endpush
 @section('content')
-    <div class="ol-card radius-8px print-d-none">
-        <div class="ol-card-body my-3 py-12px px-20px">
-            <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
-                    {{ get_phrase('Manage Blogs') }}
+
+    <div class="row print-d-none">
+        <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between flex-md-nowrap flex-wrap gap-3">
+                <h4 class="section-title">
+                    {{ get_phrase('Pending Blogs') }}
                 </h4>
                 <a href="{{ route('instructor.blog.create') }}" class="btn ol-btn-outline-secondary d-flex align-items-center cg-10px">
                     <span class="fi-rr-plus"></span>

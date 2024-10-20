@@ -4,64 +4,50 @@
 @push('css')
 @endpush
 @section('content')
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-4 px-20px">
-            <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
-                    {{ get_phrase('Dashboard') }}
-                </h4>
-            </div>
+    <div class="row">
+        <div class="col-12">
+            <h4 class="section-title">{{ get_phrase('Dashboard') }}</h4>
         </div>
     </div>
 
-    <div class="row g-2 g-sm-3 my-3 row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+    <div class="row g-2 g-sm-3 mb-3 row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
         <div class="col">
             <div class="ol-card card-hover">
                 <div class="ol-card-body px-20px py-3">
-                    <p class="title card-title-hover fs-18px my-2">
-                        {{ count_course_by_instructor(auth()->user()->id) }}
-                    </p>
-                    <p class="sub-title fs-14px">{{ get_phrase('Number of Courses') }}</p>
+                    <p class="sub-title fs-14px">{{ get_phrase('Total Courses') }}</p>
+                    <p class="title card-title-hover fs-18px my-2">{{ count_course_by_instructor(auth()->user()->id) }}</p>
                 </div>
             </div>
         </div>
         <div class="col">
             <div class="ol-card card-hover">
                 <div class="ol-card-body px-20px py-3">
-                    <p class="title card-title-hover fs-18px my-2">
-                        {{ count_instructor_lesson(auth()->user()->id) }}
-                    </p>
-                    <p class="sub-title fs-14px">{{ get_phrase('Number of Lessons') }}</p>
+                    <p class="sub-title fs-14px">{{ get_phrase('Total Lessons') }}</p>
+                    <p class="title card-title-hover fs-18px my-2">{{ count_instructor_lesson(auth()->user()->id) }}</p>
                 </div>
             </div>
         </div>
         <div class="col">
             <div class="ol-card card-hover">
                 <div class="ol-card-body px-20px py-3">
-                    <p class="title card-title-hover fs-18px my-2">
-                        {{ count_student_by_instructor(auth()->user()->id) }}
-                    </p>
-                    <p class="sub-title fs-14px">{{ get_phrase('Number of Enrollment') }}</p>
+                    <p class="sub-title fs-14px">{{ get_phrase('Total Enrollments') }}</p>
+                    <p class="title card-title-hover fs-18px my-2">{{ count_student_by_instructor(auth()->user()->id) }}</p>
                 </div>
             </div>
         </div>
         <div class="col">
             <div class="ol-card card-hover">
                 <div class="ol-card-body px-20px py-3">
-                    <p class="title card-title-hover fs-18px my-2">
-                        {{ total_enrolled() }}
-                    </p>
-                    <p class="sub-title fs-14px">{{ get_phrase('Number of Students') }}</p>
+                    <p class="sub-title fs-14px">{{ get_phrase('Total Students') }}</p>
+                    <p class="title card-title-hover fs-18px my-2">{{ total_enrolled() }}</p>
                 </div>
             </div>
         </div>
         <div class="col">
             <div class="ol-card card-hover">
                 <div class="ol-card-body px-20px py-3">
-                    <p class="title card-title-hover fs-18px my-2">
-                        {{ App\Models\User::where('role', 'instructor')->count() }}</p>
-                    <p class="sub-title fs-14px">{{ get_phrase('Number of Instructor') }}</p>
+                    <p class="sub-title fs-14px">{{ get_phrase('Total Instructors') }}</p>
+                    <p class="title card-title-hover fs-18px my-2">{{ App\Models\User::where('role', 'instructor')->count() }}</p>
                 </div>
             </div>
         </div>

@@ -2,11 +2,10 @@
 @push('title', get_phrase('Invoice'))
 
 @section('content')
-    <div class="ol-card radius-8px print-d-none">
-        <div class="ol-card-body my-3 py-4 py-12px px-20px">
+    <div class="row print-d-none">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+                <h4 class="section-title ">
                     {{ get_phrase('Invoice') }}
                 </h4>
             </div>
@@ -51,20 +50,15 @@
                                 <h4 class="title fs-18px text-capitalize mb-20px">{{ get_phrase('Payment Details') }}</h4>
                                 <ul class="ol-list-group-2 w-100">
                                     <li>
-                                        <span
-                                            class="title fs-16px fw-normal text-capitalize">{{ get_phrase('Total') }}</span>
-                                        <span
-                                            class="title2 fs-16px">{{ currency(number_format($invoice->price, 2)) }}</span>
+                                        <span class="title fs-16px fw-normal text-capitalize">{{ get_phrase('Total') }}</span>
+                                        <span class="title2 fs-16px">{{ currency(number_format($invoice->price, 2)) }}</span>
                                     </li>
                                     <li>
-                                        <span
-                                            class="title fs-16px fw-normal text-capitalize">{{ get_phrase('Due') }}</span>
-                                        <span
-                                            class="title2 fs-16px">{{ currency(number_format($invoice->price, 2)) }}</span>
+                                        <span class="title fs-16px fw-normal text-capitalize">{{ get_phrase('Due') }}</span>
+                                        <span class="title2 fs-16px">{{ currency(number_format($invoice->price, 2)) }}</span>
                                     </li>
                                     <li>
-                                        <span
-                                            class="title fs-16px fw-normal text-capitalize">{{ get_phrase('Payment Method') }}</span>
+                                        <span class="title fs-16px fw-normal text-capitalize">{{ get_phrase('Payment Method') }}</span>
                                         <span class="title2 fs-16px text-capitalize">{{ $invoice->payment_method }}</span>
                                     </li>
                                 </ul>
@@ -95,8 +89,7 @@
                         </tbody>
                     </table>
                 </div>
-                <a href="#" onclick="window.print();"
-                    class="btn ol-btn-light-primary ol-btn-rounded print-d-none">{{ get_phrase('Print') }}</a>
+                <a href="#" onclick="window.print();" class="btn ol-btn-light-primary ol-btn-rounded print-d-none">{{ get_phrase('Print') }}</a>
             </div>
         </div>
     </div>

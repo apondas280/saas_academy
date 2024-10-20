@@ -2105,12 +2105,14 @@ img {
     transition: .3s;
 }
 
-.wish-react .wish-icon.active{
+.wish-react .wish-icon.active {
     background: rgb(255 85 119);
 }
-.wish-react .wish-icon.active svg path{
+
+.wish-react .wish-icon.active svg path {
     fill: #fff !important;
 }
+
 .wish-react .wish-icon:hover svg path {
     fill: rgb(255 85 119);
 }
@@ -2744,13 +2746,14 @@ img {
 .course-author-area .courser-author-cover {
     max-width: 750px;
     width: 100%;
-    height: auto;
+    height: 500px;
 }
 
 .course-author-area .courser-author-cover img {
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
+    object-position: center;
     border-radius: 20px;
 }
 
@@ -3622,6 +3625,8 @@ img {
     display: flex;
     flex-direction: column;
     row-gap: 24px;
+    height: 690px;
+    overflow: hidden;
 }
 
 .form-check-sub {
@@ -3787,12 +3792,10 @@ img {
     top: 0;
 }
 
-.list-course-img {
-    max-width: 242px;
-    width: 100%;
-    /* height: 183px; */
-    height: 100%;
-}
+.list-course-img{
+    flex: 0 0 242px;
+    aspect-ratio: 242 / 184;
+  }
 
 .list-course-img img {
     border-radius: 10px;
@@ -5468,7 +5471,7 @@ img {
     line-height: normal;
 }
 
-.student-panel-nav a i{
+.student-panel-nav a i {
     font-size: 18px;
 }
 
@@ -5973,16 +5976,16 @@ img {
 }
 
 .bootcampitem-img {
-    width: 140px;
-    flex: 0 0 140px;
-    height: 100px;
+    width: 200px;
+    flex: 0 0 200px;
+    height: 120px;
 }
 
 .bootcampitem-img>img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 8px;
 }
 
 .lh-normal {
@@ -6662,9 +6665,22 @@ textarea.lms1-form-control {
     background: #FFF;
 }
 
-.lms2-card-img>img {
+.lms2-card a{
+    display: block;
+}
+
+.lms2-card-img,.course-img {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+}
+
+.lms2-card-img>img,.course-img img {
     border-radius: 10px 10px 0px 0px;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .lms2-card-body {
@@ -7288,3 +7304,283 @@ team training start
 /*=============================
 team training end
 ==============================*/
+
+.option-menu {
+    position: relative;
+    cursor: pointer;
+}
+
+.option-menu .icon {
+    padding: 5px;
+    border-radius: 50px;
+    display: inline-flex;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -ms-border-radius: 50px;
+    -o-border-radius: 50px;
+}
+
+.option-menu .option-dropdown-menu {
+    border-radius: 10px;
+    background: var(--whiteColor);
+    box-shadow: 0px 8px 38px 0px rgba(16, 16, 16, 0.08);
+    padding: 8px;
+    min-width: 115px;
+    left: -50%;
+    transform: translateX(-10%);
+    display: none;
+    transition: .3s;
+    -webkit-transition: .3s;
+    -moz-transition: .3s;
+    -ms-transition: .3s;
+    -o-transition: .3s;
+    position: absolute;
+    top: 28px;
+    left: -76px;
+}
+
+.option-menu .option-dropdown-menu.active {
+    display: block;
+}
+
+.option-menu .option-dropdown-menu .menu-item {
+    color: var(--grayColor);
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding: 8px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.option-menu .option-dropdown-menu .menu-item:hover {
+    background-color: var(--normalBlue);
+    color: var(--blueColor);
+}
+
+.btn:active {
+    border-color: transparent !important;
+}
+
+
+/* Buttons Css Start ***
+**********************/
+.ol-btn-primary {
+    border-radius: 8px;
+    padding: 10.5px 24px;
+    background: var(--skinColor);
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    color: var(--whiteColor);
+    transition: .3s;
+    border: none;
+    text-align: center;
+    width: max-content;
+}
+
+.ol-btn-primary:active,
+.ol-btn-primary:hover {
+    color: var(--whiteColor) !important;
+    background-color: #005fcf !important;
+}
+
+/* Light button  */
+.ol-btn-light {
+    border-radius: 8px;
+    padding: 10.5px 24px;
+    background: #f4f7fe;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    color: var(--grayColor);
+    transition: .3s;
+    border: none;
+    text-align: center;
+    width: max-content;
+}
+
+.ol-btn-light:active,
+.ol-btn-light:hover {
+    background: var(--skinColor) !important;
+    color: var(--whiteColor) !important;
+}
+
+.ol-btn-outline-secondary {
+    background: #fff;
+    border: 1px solid var(--borderColor);
+    border-radius: 8px;
+    padding: 9.5px 23px;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    color: var(--darkColor);
+    transition: .3s;
+    width: max-content;
+}
+
+.ol-btn-outline-secondary:active,
+.ol-btn-outline-secondary:hover {
+    border-color: var(--skinColor) !important;
+    color: var(--skinColor) !important;
+    background: #fff;
+}
+
+.btn-outline-gray-small {
+    border: 1px solid #e0e5f3;
+    border-radius: 4px;
+    padding: 7px 9px;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    color: #6f7a98;
+    transition: .3s;
+    position: relative;
+    z-index: 1;
+    width: max-content;
+}
+
+.btn-outline-gray-small:active,
+.btn-outline-gray-small:hover {
+    border: 1px solid var(--skinColor) !important;
+    color: var(--skinColor) !important;
+}
+
+.ol-btn-light-primary {
+    border: none;
+    border-radius: 8px;
+    padding: 8px 20px;
+    background: rgba(40, 139, 254, 0.11);
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--skinColor);
+    transition: .3s;
+    width: max-content;
+}
+
+.ol-btn-light-primary:active,
+.ol-btn-light-primary:hover {
+    color: var(--whiteColor) !important;
+    background-color: var(--skinColor) !important;
+}
+
+/* Small button  */
+.ol-btn-light-primary.ol-btn-sm {
+    padding: 6px 16px;
+}
+
+.ol-btn-sm {
+    font-size: 12px;
+    border-radius: 4px;
+    padding: 7px 16px;
+}
+
+/* Rounded */
+.ol-btn-rounded {
+    border-radius: 99px;
+}
+
+
+/* Ony Icon btn */
+.ol-icon-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ol-icon-btn ::before {
+    display: block;
+    font-size: 20px;
+}
+
+.ol-icon-btn-sm {
+    min-width: 31.67px;
+    width: 31.67px;
+    height: 31.67px;
+    border-radius: 4px;
+}
+
+.ol-icon-btn-sm ::before {
+    font-size: 12px;
+    margin-bottom: -1px !important;
+}
+
+/* For icon */
+.ol-btn-light-primary ::before,
+.ol-btn-light ::before,
+.ol-btn-outline-secondary ::before,
+.ol-btn-primary ::before {
+    display: block;
+    margin-bottom: -1.5px;
+}
+
+.ol-btn-secondary {
+    border-radius: 8px;
+    padding: 10.5px 24px;
+    background: #5d6c7d;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    color: var(--whiteColor);
+    transition: .3s;
+    border: none;
+    text-align: center;
+    width: max-content;
+}
+
+.ol-btn-success {
+    border-radius: 8px;
+    padding: 10.5px 24px;
+    background: #17b06d;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    color: var(--whiteColor);
+    transition: .3s;
+    border: none;
+    text-align: center;
+    width: max-content;
+}
+
+.title {
+    font-weight: 600;
+    color: var(--darkColor);
+}
+
+.icon.icon-confirm {
+    font-size: 30px;
+    margin: 20px 0px;
+}
+
+.max-w-100{
+    max-width: 100% !important;
+}
+
+.form-control:focus{
+    box-shadow: none !important;
+}
+
+.write-review textarea{
+    font-weight: 500;
+    color: var(--grayColor) !important;
+    padding: 12px;
+}
+
+.review-actions{
+    display: none;
+    transition: .3s;
+}
+
+.review-actions button{
+    color: var(--grayColor);
+}
+
+.single-feedback-review:hover .review-actions{
+    display: block;
+}
+/* Buttons Css End ***
+*********************/

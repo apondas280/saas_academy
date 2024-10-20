@@ -4,16 +4,12 @@
 @section('content')
     <div class="row mb-5">
         <div class="col-lg-12">
-            <div class="ol-card radius-8px">
-                <div class="ol-card-body px-20px my-3 py-4">
-                    <div class="d-flex align-items-center justify-content-between flex-md-nowrap flex-wrap gap-3">
-                        <h4 class="title fs-16px">
-                            <i class="fi-rr-settings-sliders me-2"></i>
-                            {{ get_phrase('Add New Package') }}
-                        </h4>
-                    </div>
-                </div>
+            <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
+                <h4 class="section-title">
+                    {{ get_phrase('Add Team Package') }}
+                </h4>
             </div>
+
             <div class="ol-card p-3">
                 <div class="ol-card-body">
                     <form action="{{ route('instructor.team.packages.store') }}" method="post" enctype="multipart/form-data">

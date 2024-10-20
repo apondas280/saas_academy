@@ -5,7 +5,6 @@ namespace App\Http\Controllers\instructor;
 use App\Http\Controllers\Controller;
 use App\Models\Lesson;
 use App\Models\Question;
-use App\Models\Quiz;
 use App\Models\QuizSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -75,7 +74,7 @@ class QuizController extends Controller
         Session::flash('success', get_phrase('Quiz has been created.'));
         return redirect()->back();
     }
-    public function update(Request $request, $id)
+    public function update(Request $request, $company = "", $id)
     {
         $validator = Validator::make($request->all(), [
             'title'      => 'required',

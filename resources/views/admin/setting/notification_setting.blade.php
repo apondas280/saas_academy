@@ -3,12 +3,11 @@
 @push('meta')@endpush
 @push('css')@endpush
 @section('content')
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-4 px-20px">
+    <div class="row">
+        <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
-                    {{ get_phrase('Payment Settings') }}
+                <h4 class="section-title">
+                    {{ get_phrase('SMTP Settings') }}
                 </h4>
             </div>
         </div>
@@ -17,7 +16,6 @@
     <div class="row ">
         <div class="col-md-8">
             <div class="ol-card p-4">
-                <h3 class="title text-14px mb-3">{{ get_phrase('SMTP Settings') }}</h3>
                 <div class="ol-card-body">
                     @include('admin.setting.smtp_settings')
                 </div>

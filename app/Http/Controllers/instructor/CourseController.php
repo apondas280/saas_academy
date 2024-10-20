@@ -9,11 +9,9 @@ use App\Models\FileUploader;
 use App\Models\Section;
 use App\Models\SeoField;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Yajra\DataTables\Facades\DataTables;
 
 class CourseController extends Controller
 {
@@ -162,11 +160,11 @@ class CourseController extends Controller
         //Remove empty value by using array filter function
         if (isset($request->requirements) && $request->requirements != '') {
 
-            $data['requirements'] = json_encode(array_filter($request->requirements, fn ($value) => !is_null($value) && $value !== ''));
+            $data['requirements'] = json_encode(array_filter($request->requirements, fn($value) => ! is_null($value) && $value !== ''));
         }
         if (isset($request->outcomes) && $request->outcomes != '') {
 
-            $data['outcomes'] = json_encode(array_filter($request->outcomes, fn ($value) => !is_null($value) && $value !== ''));
+            $data['outcomes'] = json_encode(array_filter($request->outcomes, fn($value) => ! is_null($value) && $value !== ''));
         }
 
         if (isset($request->faq_title) && $request->faq_title != '') {
@@ -185,18 +183,15 @@ class CourseController extends Controller
         $data['updated_at']  = date('Y-m-d H:i:s');
 
         if ($request->thumbnail) {
-            $data['thumbnail'] = "uploads/course-thumbnail/" . nice_file_name($request->title, $request->thumbnail->extension());
-            FileUploader::upload($request->thumbnail, $data['thumbnail'], 400, null, 200, 200);
+            $data['thumbnail'] = FileUploader::upload($request->thumbnail, 'course/thumbnail');
         }
 
         if ($request->banner) {
-            $data['banner'] = "uploads/course-banner/" . nice_file_name($request->title, $request->banner->extension());
-            FileUploader::upload($request->banner, $data['banner'], 400, null, 200, 200);
+            $data['banner'] = FileUploader::upload($request->banner, 'course/banner');
         }
 
         if ($request->preview) {
-            $data['preview'] = "uploads/course-preview/" . nice_file_name($request->title, $request->preview->extension());
-            FileUploader::upload($request->preview, $data['preview']);
+            $data['preview'] = FileUploader::upload($request->preview, 'course/preview');
         }
 
         $course_id = Course::insertGetId($data);
@@ -208,14 +203,14 @@ class CourseController extends Controller
         ];
     }
 
-    public function edit($course_id = "", Request $request)
+    public function edit($company = "", $course_id = "", Request $request)
     {
         $data['course_details'] = Course::where('id', $course_id)->first();
         $data['sections']       = Section::where('course_id', $course_id)->orderBy('sort')->get();
         return view('instructor.course.edit', $data);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $company = "", $id)
     {
         $query = Course::where('id', $id);
 
@@ -264,8 +259,8 @@ class CourseController extends Controller
             ];
 
             //Remove empty value by using array filter function
-            $data['requirements'] = json_encode(array_filter($request->requirements, fn ($value) => !is_null($value) && $value !== ''));
-            $data['outcomes']     = json_encode(array_filter($request->outcomes, fn ($value) => !is_null($value) && $value !== ''));
+            $data['requirements'] = json_encode(array_filter($request->requirements, fn($value) => ! is_null($value) && $value !== ''));
+            $data['outcomes']     = json_encode(array_filter($request->outcomes, fn($value) => ! is_null($value) && $value !== ''));
 
             $faqs = [];
             foreach ($request->faq_title as $key => $title) {
@@ -276,45 +271,41 @@ class CourseController extends Controller
             $data['faqs'] = json_encode($faqs);
         } elseif ($request->tab == 'media') {
             if ($request->thumbnail) {
-                $data['thumbnail'] = "uploads/course-thumbnail/" . nice_file_name($request->title, $request->thumbnail->extension());
-                FileUploader::upload($request->thumbnail, $data['thumbnail'], 400, null, 200, 200);
+                $data['thumbnail'] = FileUploader::upload($request->thumbnail, 'course/thumbnail');
                 remove_file($query->first()->thumbnail);
             }
 
             if ($request->banner) {
-                $data['banner'] = "uploads/course-banner/" . nice_file_name($request->title, $request->banner->extension());
-                FileUploader::upload($request->banner, $data['banner'], 1400, null, 300, 300);
+                $data['banner'] = FileUploader::upload($request->banner, 'course/banner');
                 remove_file($query->first()->banner);
             }
 
             if ($request->preview_video_provider == 'link') {
                 $data['preview'] = $request->preview_link;
             } elseif ($request->preview_video_provider == 'file' && $request->preview) {
-                $data['preview'] = "uploads/course-preview/" . nice_file_name($request->title, $request->preview->extension());
-                FileUploader::upload($request->preview, $data['preview']);
+                $data['preview'] = FileUploader::upload($request->preview, 'course/preview');
                 remove_file($query->first()->preview);
             }
         } elseif ($request->tab == 'seo') {
             $course_details = $query->first();
-            $SeoField = SeoField::where('name_route', 'course.details')->where('course_id', $course_details->id)->first();
+            $SeoField       = SeoField::where('name_route', 'course.details')->where('course_id', $course_details->id)->first();
 
-            $seo_data['course_id'] = $id;
-            $seo_data['route'] = 'Course Details';
-            $seo_data['name_route'] = 'course.details';
-            $seo_data['meta_title'] = $request->meta_title;
+            $seo_data['course_id']        = $id;
+            $seo_data['route']            = 'Course Details';
+            $seo_data['name_route']       = 'course.details';
+            $seo_data['meta_title']       = $request->meta_title;
             $seo_data['meta_description'] = $request->meta_description;
-            $seo_data['meta_robot'] = $request->meta_robot;
-            $seo_data['canonical_url'] = $request->canonical_url;
-            $seo_data['custom_url'] = $request->custom_url;
-            $seo_data['json_ld'] = $request->json_ld;
-            $seo_data['og_title'] = $request->og_title;
-            $seo_data['og_description'] = $request->og_description;
-            $seo_data['created_at'] = date('Y-m-d H:i:s');
-            $seo_data['updated_at'] = date('Y-m-d H:i:s');
-
+            $seo_data['meta_robot']       = $request->meta_robot;
+            $seo_data['canonical_url']    = $request->canonical_url;
+            $seo_data['custom_url']       = $request->custom_url;
+            $seo_data['json_ld']          = $request->json_ld;
+            $seo_data['og_title']         = $request->og_title;
+            $seo_data['og_description']   = $request->og_description;
+            $seo_data['created_at']       = date('Y-m-d H:i:s');
+            $seo_data['updated_at']       = date('Y-m-d H:i:s');
 
             $meta_keywords_arr = json_decode($request->meta_keywords, true);
-            $meta_keywords = '';
+            $meta_keywords     = '';
             if (is_array($meta_keywords_arr)) {
                 foreach ($meta_keywords_arr as $arr_key => $arr_val) {
                     $meta_keywords .= $meta_keywords == '' ? $arr_val['value'] : ', ' . $arr_val['value'];
@@ -322,12 +313,9 @@ class CourseController extends Controller
                 $seo_data['meta_keywords'] = $meta_keywords;
             }
 
-
             if ($request->og_image) {
-                $originalFileName = $course_details->id . '-' . $request->og_image->getClientOriginalName();
-                $destinationPath = 'uploads/seo-og-images/' . $originalFileName;
-                // Move the file to the destination path
-                FileUploader::upload($request->og_image, $destinationPath, 600);
+                $originalFileName     = $course_details->id . '-' . $request->og_image->getClientOriginalName();
+                $destinationPath      = FileUploader::upload($request->og_image, 'og-image');
                 $seo_data['og_image'] = $destinationPath;
             }
 
@@ -356,7 +344,7 @@ class CourseController extends Controller
         //for normal form submission
     }
 
-    public function delete($id)
+    public function delete($company = "", $id)
     {
         $query = Course::where('id', $id);
         remove_file($query->first()->thumbnail);
@@ -366,7 +354,7 @@ class CourseController extends Controller
         return redirect(route('instructor.courses'))->with('success', get_phrase('Course deleted successfully'));
     }
 
-    public function status($type, $id)
+    public function status($company = "", $type, $id)
     {
         if ($type == 'active') {
             Course::where('id', $id)->update(['status' => 'active']);
@@ -385,10 +373,10 @@ class CourseController extends Controller
         return redirect(route('admin.courses'))->with('success', get_phrase('Course status changed successfully'));
     }
 
-    public function draft($id)
+    public function draft($company = "", $id)
     {
         $course = Course::where('id', $id)->first();
-        if (!$course) {
+        if (! $course) {
             $response = [
                 'error' => get_phrase('Data not found.'),
             ];
@@ -403,7 +391,7 @@ class CourseController extends Controller
         return json_encode($response);
     }
 
-    public function duplicate($id)
+    public function duplicate($company = "", $id)
     {
         $course = Course::where('id', $id);
         if (auth()->user()->role != 'admin') {
@@ -425,8 +413,8 @@ class CourseController extends Controller
         $data['status'] = 'pending';
 
         // insert as new course
-        $course_id  = Course::insertGetId($data);
-        Course::where('id', $course_id)->update(['slug' => slugify($data['title']).'-'.$course_id]);
+        $course_id = Course::insertGetId($data);
+        Course::where('id', $course_id)->update(['slug' => slugify($data['title']) . '-' . $course_id]);
 
         // go to edit
         Session::flash('success', get_phrase('Course duplicated.'));

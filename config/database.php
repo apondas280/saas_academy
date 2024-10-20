@@ -5,7 +5,7 @@ use Illuminate\Support\Str;
 $db_user = 'root';
 $db_pass = '';
 $db_host = 'localhost';
-$db_name = 'eativeit_creativeitem';
+$db_name = 'creativeitem';
 
 $app_variable = str_replace('index.php', '', $_SERVER['SCRIPT_NAME']);
 $app_variable = str_replace($app_variable, '', $_SERVER['REQUEST_URI']);

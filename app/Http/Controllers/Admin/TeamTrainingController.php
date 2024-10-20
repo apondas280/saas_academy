@@ -75,8 +75,7 @@ class TeamTrainingController extends Controller
 
         unset($package['thumbnail']);
         if ($request->thumbnail) {
-            $package['thumbnail'] = "uploads/team_training/thumbnail/" . nice_file_name($request->title, $request->thumbnail->extension());
-            FileUploader::upload($request->thumbnail, $package['thumbnail']);
+            $package['thumbnail'] = FileUploader::upload($request->thumbnail, 'team-training/thumbnail');
         }
 
         $package['user_id']  = auth()->user()->id;
@@ -142,8 +141,7 @@ class TeamTrainingController extends Controller
 
         unset($package['thumbnail']);
         if ($request->thumbnail) {
-            $package['thumbnail'] = "uploads/team_training/thumbnail/" . nice_file_name($request->title, $request->thumbnail->extension());
-            FileUploader::upload($request->thumbnail, $package['thumbnail']);
+            $package['thumbnail'] = FileUploader::upload($request->thumbnail, 'team-training/thumbnail');
         }
 
         $package['user_id'] = auth()->user()->id;

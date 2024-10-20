@@ -4,11 +4,10 @@
 @push('css')@endpush
 @section('content')
     <!-- start page title -->
-    <div class="ol-card radius-8px">
-        <div class="ol-card-body my-3 py-4 px-20px">
-            <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
-                <h4 class="title fs-16px">
-                    <i class="fi-rr-settings-sliders me-2"></i>
+    <div class="row print-d-none">
+        <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between flex-md-nowrap flex-wrap gap-3">
+                <h4 class="section-title">
                     {{ get_phrase('Sales report') }}
                 </h4>
             </div>

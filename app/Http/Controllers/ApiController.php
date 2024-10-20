@@ -12,6 +12,8 @@ use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use PDOException;
 
@@ -631,4 +633,37 @@ class ApiController extends Controller
 
         return redirect(route('payment'));
     }
+
+    public function update_subscription(Request $request)
+    {
+        // Validate the request payload
+        $validate = $request->validate([
+            'payload' => 'required|array',
+        ]);
+
+        $data = ['payload' => json_encode($validate['payload'])];
+
+        $table = DB::table('grow_up_lms_subscriptions');
+        if ($table->exists()) {
+            $table->update($data);
+            $message = 'Subscription updated successfully.';
+        } else {
+            $table->insert($data);
+            $message = 'Subscription created successfully.';
+        }
+
+        // make a company storage folder
+        $company         = $request->route('company');
+        $company_storage = public_path("upload/{$company}");
+        if (! is_dir($company_storage)) {
+            File::makeDirectory($company_storage, 0777, true, true);
+        }
+
+        // Return a JSON response
+        return response()->json([
+            'message' => $message,
+            'success' => true,
+        ]);
+    }
+
 }

@@ -46,7 +46,6 @@ class BootcampResourceController extends Controller
 
             $file_name     = $file->getClientOriginalName();
             $data['title'] = replace_url_symbol($file_name);
-            $data['file']  = 'uploads/bootcamp/resource/' . auth()->user()->name . '/' . $module->bootcamp_title . '/' . $module->title . '/' . $data['title'];
 
             $query = BootcampResource::join('bootcamp_modules', 'bootcamp_resources.module_id', 'bootcamp_modules.id')
                 ->join('bootcamps', 'bootcamp_modules.bootcamp_id', 'bootcamps.id')
@@ -58,8 +57,8 @@ class BootcampResourceController extends Controller
                 return redirect()->back();
             }
 
+            $data['file'] = FileUploader::upload($file, "bootcamp/{$request->upload_type}s");
             $query->insert($data);
-            FileUploader::upload($file, $data['file']);
         }
         Session::flash('success', get_phrase(ucfirst($request->upload_type) . ' has been uploaded.'));
         return redirect()->back();

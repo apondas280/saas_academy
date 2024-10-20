@@ -253,4 +253,47 @@
         console.log(x);
         $(preview).attr('src', x);
     }
+
+    // Function to validate total file size for file inputs
+    function validateTotalFileSize(targetForm) {
+        const fileInputs = targetForm.querySelectorAll('input[type="file"]');
+        let totalFileSizeInBytes = 0;
+        const allowedSpace = parseFloat("{{ get_remaining_storage(false) }}");
+
+        // Loop through each file input and their files
+        fileInputs.forEach(input => {
+            Array.from(input.files).forEach(file => {
+                totalFileSizeInBytes += file.size;
+            });
+        });
+
+        // Convert total file size to MB and validate
+        const totalFileSizeInMB = (totalFileSizeInBytes / (1024 * 1024)).toFixed(2);
+        return {
+            status: totalFileSizeInMB <= allowedSpace,
+            fileSize: totalFileSizeInMB
+        };
+    }
+
+    // Attach event listener to all forms on the page
+    document.addEventListener('DOMContentLoaded', function() {
+        const allForms = document.querySelectorAll('form');
+
+        allForms.forEach(singleForm => {
+            singleForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                // Call the validation function
+                const upload = validateTotalFileSize(singleForm);
+                const allowedSpace = parseFloat("{{ get_remaining_storage(false) }}");
+
+                // If validation passes, submit the form else throw validation err
+                if (upload.status) {
+                    singleForm.submit();
+                } else {
+                    error(`{{ get_phrase('Please upgrade your plan. Total file size: ') }} ${upload.fileSize} MB {{ get_phrase(' exceeds the allowed space of ') }} ${allowedSpace} MB.`);
+                }
+            });
+        });
+    });
 </script>

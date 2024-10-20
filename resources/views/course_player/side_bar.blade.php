@@ -40,15 +40,8 @@
                                                 <span class="progress"><span class="number">{{ ++$key }}</span></span>
                                                 <span class="name">{{ $lesson->title }}</span>
                                             </span>
-                                            {{-- <span class="lock">
-                                                <img src="{{ asset('assets/frontend/default/images/icons/lock-black.svg') }}" alt="">
-                                            </span>
-                                            <span class="unlock">
-                                                <img src="{{ asset('assets/frontend/default/images/icons/unlock-gray.svg') }}" alt="">
-                                            </span> --}}
                                             <input class="form-check-input flexCheckChecked mt-0" @if (in_array($lesson->id, $completed_lesson)) checked @endif type="checkbox" id="{{ $lesson->id }}">
                                         </a>
-
                                     </li>
                                 @endforeach
                             </ul>
@@ -60,8 +53,7 @@
     </div>
 </div>
 
-<form action="{{ route('set.watch.history') }}" method="post" id="watch_history_form">
-    @csrf
+<form action="{{ route('set.watch.history') }}" method="post" id="watch_history_form">@csrf
     <input type="hidden" class="course_id" name="course_id" value="{{ $course_details->id }}">
     <input type="hidden" class="lesson_id" name="lesson_id">
 </form>

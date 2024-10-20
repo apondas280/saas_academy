@@ -32,8 +32,8 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'unique:users,email'],
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'string', 'email', 'unique:users,email'],
             'password' => ['required', Rules\Password::defaults()],
         ]);
 
@@ -42,9 +42,9 @@ class RegisteredUserController extends Controller
         }
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'role' => 'student',
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'role'     => 'student',
             'password' => Hash::make($request->password),
         ]);
 
@@ -52,6 +52,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect(request()->route('company') . RouteServiceProvider::HOME);
     }
 }

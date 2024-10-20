@@ -22,7 +22,6 @@ class SettingController extends Controller
 {
     public function system_settings()
     {
-
         return view("admin.setting.system_setting");
     }
 
@@ -41,20 +40,20 @@ class SettingController extends Controller
 
     public function website_settings()
     {
-
         return view("admin.setting.website_setting");
     }
     public function website_settings_update(Request $request)
     {
         $data = $request->all();
         array_shift($data);
-        if ($request->type == 'frontend_settings') {
 
+        if ($request->type == 'frontend_settings') {
             foreach ($data as $key => $item) {
                 FrontendSetting::where('key', $key)->update(['value' => $item]);
             }
             Session::flash('success', get_phrase('Frontend settings update successfully'));
         }
+
         if ($request->type == 'motivational_speech') {
             array_shift($data);
 
@@ -113,7 +112,6 @@ class SettingController extends Controller
             }
             Session::flash('success', get_phrase('Contact information update successfully'));
         }
-
         if ($request->type == 'recaptcha_settings') {
             array_shift($data);
 
@@ -123,17 +121,11 @@ class SettingController extends Controller
 
             Session::flash('success', get_phrase('Recaptcha setting update successfully'));
         }
-
         if ($request->type == 'banner_image') {
             array_shift($data);
 
             if (isset($request->banner_image) && $request->banner_image != '') {
-
-                $banner = $request->banner_image->extension();
-
-                $data = "assets/upload/banner_image/" . nice_file_name('banner_image', $banner);
-                FileUploader::upload($request->banner_image, $data);
-
+                $data = FileUploader::upload($request->banner_image, 'banner');
                 if (get_frontend_settings('home_page')) {
                     $active_banner = array(
                         get_frontend_settings('home_page') => $data,
@@ -142,7 +134,6 @@ class SettingController extends Controller
                 } else {
                     FrontendSetting::where('key', $request->type)->update(['value' => $data]);
                 }
-
                 Session::flash('success', get_phrase('Banner image update successfully'));
             }
         }
@@ -150,10 +141,7 @@ class SettingController extends Controller
             array_shift($data);
 
             if (isset($request->light_logo) && $request->light_logo != '') {
-
-                $data = "assets/upload/light_logo/" . nice_file_name('light_logo', $request->light_logo->extension());
-                FileUploader::upload($request->light_logo, $data, 400, null, 200, 200);
-
+                $data = FileUploader::upload($request->light_logo, 'logo');
                 FrontendSetting::where('key', $request->type)->update(['value' => $data]);
                 Session::flash('success', get_phrase('Light logo update successfully'));
             }
@@ -162,10 +150,7 @@ class SettingController extends Controller
             array_shift($data);
 
             if (isset($request->dark_logo) && $request->dark_logo != '') {
-
-                $data = "assets/upload/dark_logo/" . nice_file_name('dark_logo', $request->dark_logo->extension());
-                FileUploader::upload($request->dark_logo, $data, 400, null, 200, 200);
-
+                $data = FileUploader::upload($request->dark_logo, 'logo');
                 FrontendSetting::where('key', $request->type)->update(['value' => $data]);
                 Session::flash('success', get_phrase('Dark logo update successfully'));
             }
@@ -174,10 +159,7 @@ class SettingController extends Controller
             array_shift($data);
 
             if (isset($request->small_logo) && $request->small_logo != '') {
-
-                $data = "assets/upload/small_logo/" . nice_file_name('small_logo', $request->small_logo->extension());
-                FileUploader::upload($request->small_logo, $data, 400, null, 200, 200);
-
+                $data = FileUploader::upload($request->small_logo, 'logo');
                 FrontendSetting::where('key', $request->type)->update(['value' => $data]);
                 Session::flash('success', get_phrase('Small logo update successfully'));
             }
@@ -186,10 +168,7 @@ class SettingController extends Controller
             array_shift($data);
 
             if (isset($request->favicon) && $request->favicon != '') {
-
-                $data = "assets/upload/favicon/" . nice_file_name('favicon', $request->favicon->extension());
-                FileUploader::upload($request->favicon, $data, 400, null, 200, 200);
-
+                $data = FileUploader::upload($request->favicon, 'favicon');
                 FrontendSetting::where('key', $request->type)->update(['value' => $data]);
                 Session::flash('success', get_phrase('Favicon logo update successfully'));
             }
@@ -199,13 +178,11 @@ class SettingController extends Controller
 
     public function drip_content_settings()
     {
-
         return view("admin.setting.drip_content_setting");
     }
 
     public function drip_content_settings_update(Request $request)
     {
-
         $alldata = $request->all();
         array_shift($alldata);
         $data['value'] = json_encode($alldata);
@@ -216,7 +193,6 @@ class SettingController extends Controller
 
     public function payment_settings()
     {
-
         return view("admin.setting.payment_setting");
     }
     public function payment_settings_update(Request $request)
@@ -329,7 +305,6 @@ class SettingController extends Controller
 
     public function manage_language()
     {
-        // return redirect()->back();
         return view('admin.setting.language_setting');
     }
 
@@ -609,7 +584,6 @@ class SettingController extends Controller
 
     public function api_configuration_update(Request $request, $type = "")
     {
-
         if (Setting::where('type', $type)->count()) {
             Setting::where('type', $type)->update(['description' => $request->$type]);
             Session::flash('success', get_phrase('API updated successfully'));
@@ -634,10 +608,10 @@ class SettingController extends Controller
 
         if ($row->count() > 0) {
             remove_file(get_settings('certificate_template'));
-            $path = FileUploader::upload($request->certificate_template, 'uploads/certificate-template', 1000);
+            $path = FileUploader::upload($request->certificate_template, 'certificate-template');
             Setting::where('type', 'certificate_template')->update(['description' => $path]);
         } else {
-            $path = FileUploader::upload($request->certificate_template, 'uploads/certificate-template', 1000);
+            $path = FileUploader::upload($request->certificate_template, 'certificate-template');
             Setting::insert(['type' => 'certificate_template', 'description' => $path]);
         }
 
@@ -959,8 +933,7 @@ class SettingController extends Controller
 
             unset($watermark['watermark_logo']);
             if (isset($request->watermark_logo) && $request->watermark_logo != '') {
-                $watermark['watermark_logo'] = "upload/watermark/" . nice_file_name('watermark', $request->watermark_logo->extension());
-                FileUploader::upload($request->watermark_logo, $watermark['watermark_logo']);
+                $watermark['watermark_logo'] = FileUploader::upload($request->watermark_logo, 'watermark');
             }
 
             foreach ($watermark as $key => $data) {

@@ -24,7 +24,7 @@
             <li>
                 <a href="{{ route('my.bootcamps') }}" class="svg-stroke-color @if ($current_route == 'my.bootcamps' || $current_route == 'my.bootcamp.details') active @endif">
                     <i class="fi fi-rr-users-alt"></i>
-                    <span>{{ get_phrase('My Bootcamps') }}</span>
+                    <span>{{ get_phrase('My Live Courses') }}</span>
                 </a>
             </li>
             <li>
@@ -66,9 +66,9 @@
         </ul>
     </div>
     @if (auth()->user()->role == 'student')
-        <a href="{{ route('become.instructor') }}" class="lms2-btn-primary d-flex align-items-center gap-2 w-100 justify-content-center">
+        {{-- <a href="{{ route('become.instructor') }}" class="lms2-btn-primary d-flex align-items-center gap-2 w-100 justify-content-center">
             <span>{{ get_phrase('Become An Instructors') }}</span>
             <i class="fa-solid fa-arrow-right"></i>
-        </a>
+        </a> --}}
     @endif
 </div>
