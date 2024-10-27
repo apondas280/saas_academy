@@ -812,17 +812,7 @@
 
 /*End toaster*/
 
-.category-card .card-img-top {
-    border-radius: 10px 10px 0px 0px;
-}
 
-.subcategory-actions a {
-    display: none;
-}
-
-.category-card li.list-group-item:hover a {
-    display: inline-block;
-}
 
 
 /*Flat icons*/
@@ -977,18 +967,6 @@ i:not(.fas, .fa, .fab) {
 }
 
 
-/*Category*/
-.category-card .card-img-top {
-    border-radius: 10px 10px 0px 0px;
-}
-
-.subcategory-actions a {
-    display: none;
-}
-
-.category-card li.list-group-item:hover a {
-    display: inline-block;
-}
 
 /*Category End*/
 
@@ -1039,13 +1017,6 @@ input.daterangepicker {
     padding: 5px 8px;
 }
 
-.category-footer {
-    visibility: hidden;
-}
-
-.category-card:hover .category-footer {
-    visibility: visible;
-}
 
 .ol-btn-secondary {
     border-radius: 8px;

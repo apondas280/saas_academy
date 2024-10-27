@@ -75,5 +75,6 @@ class Kernel extends HttpKernel
         'ip.detector'              => \App\Http\Middleware\IpDetectorMiddleware::class,
         'record.exists'            => \App\Http\Middleware\RecordVerification::class,
         'storage.checker'          => \App\Http\Middleware\StorageCheckerMiddleware::class,
+        'check.onboarding.process' => \App\Http\Middleware\CheckOnboardingProcessMiddleware::class,
     ];
 }

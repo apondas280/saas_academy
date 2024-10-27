@@ -16,10 +16,10 @@
 
         function initializeSummernote() {
             $('textarea#summernote').summernote({
-                height: 180, // set editor height
-                minHeight: null, // set minimum height of editor
-                maxHeight: null, // set maximum height of editor
-                focus: true, // set focus to editable area after initializing summernote
+                height: 180,
+                minHeight: null,
+                maxHeight: null,
+                focus: true,
                 toolbar: [
                     ['color', ['color']],
                     ['font', ['bold', 'italic', 'underline', 'clear']],

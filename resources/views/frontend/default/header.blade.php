@@ -100,7 +100,7 @@
                                                                     fill="#6B7385" />
                                                             </g>
                                                         </svg>
-                                                        <span>{{ get_phrase('Bootcamps') }}</span>
+                                                        <span>{{ get_phrase('Live Courses') }}</span>
                                                     </a>
                                                 </li>
 
@@ -208,8 +208,8 @@
                                                                 </div>
                                                             </a>
                                                         </li>
-                                                        <a href="{{ route('cart') }}" class="btn lms1-btn-primary w-100">{{ get_phrase('Check Out') }}</a>
                                                     @endforeach
+                                                    <a href="{{ route('cart') }}" class="btn lms1-btn-primary w-100">{{ get_phrase('Check Out') }}</a>
                                                 @else
                                                     <li class="pop-subtitle-15px2 text-center">{{ get_phrase('Cart is empty') }}</li>
                                                 @endif

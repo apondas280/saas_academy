@@ -11,8 +11,8 @@
     <meta name="author" content="" />
     <link rel="shortcut icon" href="{{ asset(get_frontend_settings('favicon')) }}" />
 
-    <link rel="apple-touch-icon" href="{{ asset('assets/frontend/default/images/favicon.svg') }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ asset('assets/frontend/default/images/favicon.svg') }}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{ asset(get_frontend_settings('favicon')) }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset(get_frontend_settings('favicon')) }}" type="image/x-icon">
 
     <!-- Css Files -->
     <link rel="stylesheet" href="{{ asset('assets/frontend/default/css/bootstrap.min.css') }}">
@@ -43,12 +43,13 @@
 
     <!-- Course Playing Area Start -->
     <section>
+        <div class="course-header-bar mb-3">
+            @include('course_player.header')
+        </div>
+
         <div class="container">
             <div class="row mrg-30 padding-bottom-110">
-                <div class="col-md-12">
-                    @include('course_player.header')
-                </div>
-                <div class="col-xl-8 col-lg-7">
+                <div class="col-lg-8" id="player_content">
                     <!-- Video -->
                     <div class="playing-video-area mb-5 position-relative">
                         @if (get_player_settings('watermark_type') != 'ffmpeg')
@@ -70,7 +71,7 @@
                     <!-- Tabs -->
                     @include('course_player.tab_bar')
                 </div>
-                <div class="col-xl-4 col-lg-5">
+                <div class="col-lg-4" id="player_side_bar">
                     <div class="player-right-sidebar">
                         @include('course_player.side_bar')
                     </div>

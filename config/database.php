@@ -12,7 +12,7 @@ $app_variable = str_replace($app_variable, '', $_SERVER['REQUEST_URI']);
 $app_variable = explode('/', $app_variable);
 
 if (isset($_POST['action']) && $_POST['action'] != 'create_company') {
-    $db_name = 'eativeit_creativeitem';
+    $db_name = 'creativeitem';
 } else if (isset($app_variable[0])) {
     $company_name = $app_variable[0];
 
@@ -42,7 +42,7 @@ if (isset($_POST['action']) && $_POST['action'] != 'create_company') {
         echo "Error: " . $e->getMessage();
     }
 } else {
-    $db_name = 'eativeit_creativeitem';
+    $db_name = 'creativeitem';
 }
 
 return [

@@ -7,6 +7,7 @@ use App\Services\ImageProcessingService;
 use App\Services\VideoProcessingService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -44,7 +45,7 @@ class FileUploader extends Model
     {
         // ensure directory exists for upload path
         if (! is_dir(public_path($company_upload_path))) {
-            Storage::makeDirectory(public_path($company_upload_path));
+            File::makeDirectory(public_path($company_upload_path), 0777, true, true);
         }
 
         // generate unique file name

@@ -1,42 +1,16 @@
 @extends('layouts.default')
 @push('title', get_phrase('Cart'))
-@push('meta')@endpush
-@push('css')@endpush
+
 @section('content')
-
-    <!-- Top Link Path Area Start -->
-    <section class="top-link-path-section2">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="top-link-path-area2">
-                        <div class="top-link-path-inner2">
-                            <h1 class="title">{{ get_phrase('Shopping cart') }}</h1>
-                            <div class="top-link-path d-flex align-items-center justify-content-center">
-                                <a href="{{ route('home') }}">
-                                    <img src="{{ asset('assets/frontend/default/images/icons/home-white.svg') }}" alt="">
-                                    {{ get_phrase('Home') }}
-                                </a>
-                                <a href="#">{{ get_phrase('Shopping cart') }}</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Top Link Path Area End -->
-
     <!-- Grid List View Area Start -->
     <section>
         <div class="container">
             <div class="row mrg-30 mcg-30 padding-top-30 padding-bottom-110">
                 <div class="col-lg-8">
                     <div class="lms3-card">
-                        <h1 class="euclid-title-20px mb-12px">{{ get_phrase('Cart items') }}</h1>
                         @php $count_items_price = 0; @endphp
                         @if (count($cart_items) > 0)
-                            <div class="table-responsive">
+                            <div class="table-responsive cart-items">
                                 <table class="table lms3-table-borderless table-borderless">
                                     <thead class="lms3-table-head">
                                         <tr>
@@ -52,7 +26,7 @@
                                         @foreach ($cart_items as $course)
                                             <tr>
                                                 <td>
-                                                    <div class="d-flex gap-2 align-items-start min-w-450px">
+                                                    <div class="d-flex gap-2 align-items-start min-w-450px cart-item">
                                                         <a href="{{ route('course.details', $course->slug) }}">
                                                             <div class="cart-list-banner">
                                                                 <img src="{{ get_image($course->thumbnail) }}" alt="course-thumbnail">
@@ -60,7 +34,7 @@
                                                         </a>
                                                         <div>
                                                             <a href="{{ route('course.details', $course->slug) }}" class="euclid-title-15px mb-2">{{ $course->title }}</a>
-                                                            <p class="pop-subtitle-13px2">{{ $course->short_description }}</p>
+                                                            <p class="pop-subtitle-13px2 ellipsis-2">{{ $course->short_description }}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -116,8 +90,13 @@
                         </form>
                     </div>
                     <form action="{{ route('payout') }}" method="post">
+                        @php
+                            $coupon_discount = $count_items_price * ($discount / 100);
+                            $tax = (get_settings('course_selling_tax') / 100) * ($count_items_price - $coupon_discount);
+                        @endphp
+
                         @csrf
-                        <input type="hidden" name="payable" value="{{ $payable }}">
+                        <input type="hidden" name="payable" value="{{ $count_items_price }}">
                         <input type="hidden" name="coupon_code" value="{{ request()->query('coupon') }}">
                         <input type="hidden" name="coupon_discount" value="{{ $coupon_discount }}">
                         <input type="hidden" name="tax" value="{{ $tax }}">
@@ -131,11 +110,6 @@
                                     <p class="pop-subtitle-15px2">{{ get_phrase('Sub total') }}</p>
                                     <p class="pop-subtitle-15px2">{{ currency(number_format($count_items_price, 2)) }}</p>
                                 </li>
-
-                                @php
-                                    $coupon_discount = $count_items_price * ($discount / 100);
-                                    $tax = (get_settings('course_selling_tax') / 100) * ($count_items_price - $coupon_discount);
-                                @endphp
 
                                 @if ($discount)
                                     <li class="d-flex justify-content-between gap-2 flex-wrap">
@@ -157,7 +131,7 @@
                                     <p class="pop-title-20px">{{ currency(number_format($payable, 2)) }}</p>
                                 </li>
                             </ul>
-                            <a href="#" class="btn lms2-btn-primary p-10px w-100">{{ get_phrase('Check Out') }}</a>
+                            <button type="submit" class="btn lms2-btn-primary p-10px w-100">{{ get_phrase('Check Out') }}</button>
                         </div>
                     </form>
                 </div>

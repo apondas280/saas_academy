@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\GroupTrainingController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\OfflinePaymentController;
+use App\Http\Controllers\Admin\OnboardingController;
 use App\Http\Controllers\Admin\OpenAiController;
 use App\Http\Controllers\Admin\PageBuilderController;
 use App\Http\Controllers\Admin\QuestionController;
@@ -46,7 +47,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('{company}')->group(function () {
 
-    Route::name('admin.')->prefix('admin')->middleware(['admin'])->group(function () {
+    Route::controller(OnboardingController::class)->group(function () {
+        Route::get('onboarding/step/{sequence}', 'show')->name('onboarding.step');
+        Route::post('onboarding/step/{sequence}', 'store')->name('onboarding.step');
+    });
+
+    Route::name('admin.')->prefix('admin')->middleware(['admin', 'check.onboarding.process'])->group(function () {
 
         //dashboard
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
