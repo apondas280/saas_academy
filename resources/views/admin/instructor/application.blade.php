@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap flex-md-nowrap">
                 <h4 class="section-title">
-                    {{ get_phrase('Instructor Applicationss') }}
+                    {{ get_phrase('Instructor Applications') }}
                 </h4>
             </div>
         </div>
@@ -35,22 +35,27 @@
             </ul>
             <div class="tab-content eNav-Tabs-content mt-4" id="myTabContent">
                 <div class="tab-pane fade show active" id="cHome" role="tabpanel" aria-labelledby="cHome-tab">
-                    @if (count($pendings) > 0)
-                        <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
-                            <p class="admin-tInfo">
-                                {{ get_phrase('Showing') . ' ' . count($pendings) . ' ' . get_phrase('of') . ' ' . $pendings->total() . ' ' . get_phrase('data') }}
-                            </p>
+                    <div class="row">
+                        <div class="col-md-4 d-md-flex align-items-center mb-3 ">
+                            <div class="admin-tInfo-pagi">
+                                <p class="admin-tInfo">
+                                    {{ get_phrase('Showing') . ' ' . count($pendings) . ' ' . get_phrase('of') . ' ' . $pendings->total() . ' ' . get_phrase('data') }}
+                                </p>
+                            </div>
                         </div>
+                    </div>
+
+                    @if (count($pendings) > 0)
                         <div class="table-responsive">
                             <table id="pending-application" class="table eTable">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>{{ get_phrase('Name') }}</th>
-                                        <th>{{ get_phrase('Document') }}</th>
-                                        <th>{{ get_phrase('Details') }}</th>
-                                        <th>{{ get_phrase('Status') }}</th>
-                                        <th>{{ get_phrase('Action') }}</th>
+                                        <th class="text-center">{{ get_phrase('Document') }}</th>
+                                        <th class="text-center">{{ get_phrase('Details') }}</th>
+                                        <th class="text-center">{{ get_phrase('Status') }}</th>
+                                        <th class="text-center">{{ get_phrase('Action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -59,29 +64,29 @@
                                             <td>{{ ++$key }}</td>
                                             <td>{{ get_user_info($pending->user_id)->name }}</td>
                                             <td>
-                                                <a href="javascript:void(0);" class="btn ol-btn-primary" onclick="ajaxModal('{{ route('modal', ['admin.instructor.show_document', 'id' => $pending->id]) }}', '{{ get_phrase('Applicant details') }}')">
-                                                    <i class="fa fa-info-circle"></i>
-                                                    {{ get_phrase('Application details') }}
-                                                </a>
+                                                <div class="d-flex justify-content-center">
+                                                    <a href="javascript:void(0);" class="btn ol-btn-primary" onclick="ajaxModal('{{ route('modal', ['admin.instructor.show_document', 'id' => $pending->id]) }}', '{{ get_phrase('Applicant details') }}')">
+                                                        <i class="fa fa-info-circle"></i>
+                                                        {{ get_phrase('Application details') }}
+                                                    </a>
+                                                </div>
                                             </td>
                                             <td>
-                                                <a href="{{ route('admin.instructor.application.download', ['id' => $pending->id]) }}" data-bs-toggle="tooltip" title="{{ get_phrase('Download') }}" class="btn ol-btn-light ol-icon-btn">
-                                                    <span class="fi-rr-download"></span></a>
+                                                <div class="d-flex justify-content-center">
+                                                    <a href="{{ route('admin.instructor.application.download', ['id' => $pending->id]) }}" data-bs-toggle="tooltip" title="{{ get_phrase('Download') }}" class="btn ol-btn-light ol-icon-btn">
+                                                        <span class="fi-rr-download"></span>
+                                                    </a>
+                                                </div>
                                             </td>
-                                            <td>
+                                            <td class="text-center">
                                                 @if ($pending->status == 0)
-                                                    <div class="badge bg-danger">
-                                                        {{ get_phrase('Pending') }}
-                                                    </div>
+                                                    <span class="badge rounded-pill text-bg-danger">{{ get_phrase('Pending') }}</span>
                                                 @else
-                                                    <div class="badge bg-success">
-                                                        {{ get_phrase('Approved') }}
-                                                    </div>
+                                                    <span class="badge rounded-pill text-bg-success">{{ get_phrase('Approved') }}</span>
                                                 @endif
-
                                             </td>
                                             <td>
-                                                <div class="dropdown ol-icon-dropdown ol-icon-dropdown-transparent">
+                                                <div class="dropdown ol-icon-dropdown ol-icon-dropdown-transparent d-flex justify-content-center">
                                                     <button class="btn ol-btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <span class="fi-rr-menu-dots-vertical"></span>
                                                     </button>
@@ -113,21 +118,25 @@
                     @endif
                 </div>
                 <div class="tab-pane fade" id="cProfile" role="tabpanel" aria-labelledby="cProfile-tab">
-                    @if (count($approved))
-                        <div class="admin-tInfo-pagi d-flex justify-content-md-between justify-content-center align-items-center flex-wrap gr-15">
-                            <p class="admin-tInfo">
-                                {{ get_phrase('Showing') . ' ' . count($approved) . ' ' . get_phrase('of') . ' ' . $approved->total() . ' ' . get_phrase('data') }}
-                            </p>
+                    <div class="row">
+                        <div class="col-md-4 d-md-flex align-items-center mb-3 ">
+                            <div class="admin-tInfo-pagi">
+                                <p class="admin-tInfo">
+                                    {{ get_phrase('Showing') . ' ' . count($approved) . ' ' . get_phrase('of') . ' ' . $approved->total() . ' ' . get_phrase('data') }}
+                                </p>
+                            </div>
                         </div>
+                    </div>
+                    @if (count($approved))
                         <div class="table-responsive">
                             <table id="approved-application" class="table eTable">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>{{ get_phrase('Name') }}</th>
-                                        <th>{{ get_phrase('Document') }}</th>
-                                        <th>{{ get_phrase('Details') }}</th>
-                                        <th>{{ get_phrase('Status') }}</th>
+                                        <th class="text-center">{{ get_phrase('Document') }}</th>
+                                        <th class="text-center">{{ get_phrase('Details') }}</th>
+                                        <th class="text-center">{{ get_phrase('Status') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -136,23 +145,23 @@
                                             <td>{{ ++$key }}</td>
                                             <td>{{ get_user_info($approve->user_id)->name }}</td>
                                             <td>
-                                                <a href="javascript:void(0);" class="btn ol-btn-primary" onclick="ajaxModal('{{ route('modal', ['admin.instructor.show_document', 'id' => $approve->id]) }}', '{{ get_phrase('Applicant details') }}')">
-                                                    <i class="fa fa-info-circle"></i>
-                                                    {{ get_phrase('Application details') }}
-                                                </a>
+                                                <div class="d-flex justify-content-center">
+                                                    <a href="javascript:void(0);" class="btn ol-btn-primary" onclick="ajaxModal('{{ route('modal', ['admin.instructor.show_document', 'id' => $approve->id]) }}', '{{ get_phrase('Applicant details') }}')">
+                                                        <i class="fa fa-info-circle"></i>
+                                                        {{ get_phrase('Application details') }}
+                                                    </a>
+                                                </div>
                                             </td>
                                             <td>
-                                                <a href="{{ route('admin.instructor.application.download', ['id' => $approve->id]) }}" class="btn ol-btn-light ol-icon-btn"><span class="fi-rr-download"></span></a>
+                                                <div class="d-flex justify-content-center">
+                                                    <a href="{{ route('admin.instructor.application.download', ['id' => $approve->id]) }}" class="btn ol-btn-light ol-icon-btn"><span class="fi-rr-download"></span></a>
+                                                </div>
                                             </td>
-                                            <td>
+                                            <td class="text-center">
                                                 @if ($approve->status == 0)
-                                                    <div class="badge bg-danger">
-                                                        {{ get_phrase('Pending') }}
-                                                    </div>
+                                                    <span class="badge rounded-pill text-bg-danger">{{ get_phrase('Pending') }}</span>
                                                 @else
-                                                    <div class="badge bg-success">
-                                                        {{ get_phrase('Approved') }}
-                                                    </div>
+                                                    <span class="badge rounded-pill text-bg-success">{{ get_phrase('Approved') }}</span>
                                                 @endif
                                             </td>
                                         </tr>
