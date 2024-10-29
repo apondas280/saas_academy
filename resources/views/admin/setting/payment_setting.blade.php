@@ -26,24 +26,18 @@
                 <div class="ol-card-body p-4">
                     <div class="d-flex gap-3 flex-wrap flex-md-nowrap">
                         <div class="ol-sidebar-tab">
-                            <div class="nav flex-column nav-pills" id="myv-pills-tab" role="tablist" aria-orientation="vertical">
+                            <div class="nav flex-column nav-pills border-0" id="myv-pills-tab" role="tablist" aria-orientation="vertical">
                                 <button class="nav-link active" id="v-pills-currency-tab" data-bs-toggle="pill" data-bs-target="#v-pills-currency" type="button" role="tab" aria-controls="v-pills-currency" aria-selected="true">
                                     <span>{{ get_phrase('Currency Settings') }}</span>
                                 </button>
 
-                                <hr>
-
                                 @foreach ($payment_gateways as $payment_gateway)
-                                    @php
-                                        if ($payment_gateway->identifier == 'offline') {
-                                            continue;
-                                        }
-                                    @endphp
-
-                                    <button class="nav-link" id="v-pills-{{ $payment_gateway->identifier }}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-{{ $payment_gateway->identifier }}" type="button" role="tab" aria-controls="v-pills-{{ $payment_gateway->identifier }}"
-                                        aria-selected="true">
-                                        <span>{{ $payment_gateway->title }}</span>
-                                    </button>
+                                    @if ($payment_gateway->identifier != 'offline')
+                                        <button class="nav-link" id="v-pills-{{ $payment_gateway->identifier }}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-{{ $payment_gateway->identifier }}" type="button" role="tab" aria-controls="v-pills-{{ $payment_gateway->identifier }}"
+                                            aria-selected="true">
+                                            <span>{{ $payment_gateway->title }}</span>
+                                        </button>
+                                    @endif
                                 @endforeach
                             </div>
                         </div>

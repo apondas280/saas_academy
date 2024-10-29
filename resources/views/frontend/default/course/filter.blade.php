@@ -131,7 +131,7 @@
                     $(this).text('{{ get_phrase('Show Less') }}');
                 } else {
                     $('#parent-category').css({
-                        'height': '690px',
+                        'height': '710px',
                         'overflow': 'hidden',
                     });
                     $(this).css('margin-top', '0px');

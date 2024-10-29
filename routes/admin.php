@@ -57,6 +57,9 @@ Route::prefix('{company}')->group(function () {
         //dashboard
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+        // subscription details
+        Route::view('subscription-details', 'admin.subscription.index')->name('subscription.details');
+
         //Category
         Route::get('categories', [CategoryController::class, 'index'])->name('categories');
         Route::get('category/create', [CategoryController::class, 'create'])->name('category.create');
