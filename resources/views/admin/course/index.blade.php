@@ -147,7 +147,7 @@
                             </div>
 
                             <div class="custom-dropdown dropdown-filter @if (!isset($_GET) || (isset($_GET) && count($_GET) == 0))  @endif">
-                                <button class="dropdown-header btn ol-btn-light">
+                                <button class="dropdown-header btn ol-btn-light d-flex align-items-center gap-2">
                                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M3.29197 2.5H12.5L6.10668 9.33759C4.16073 7.64114 2.78504 5.59952 2.50578 3.34573C2.44821 2.88116 2.82888 2.5 3.29197 2.5Z" />
                                         <path opacity="0.5"
@@ -155,8 +155,8 @@
                                     </svg>
                                     {{ get_phrase('Filter') }}
 
-                                    @if (isset($_GET) && count($_GET))
-                                        <span class="text-12px">({{ count($_GET) }})</span>
+                                    @if (isset($_GET) && count($_GET) && !request()->query('search'))
+                                        <a href="{{ route('admin.courses') }}" class="event-propagation" data-bs-toggle="tooltip" title="{{ get_phrase('Clear') }}"><i class="fi-rr-cross-circle"></i></a>
                                     @endif
                                 </button>
                                 <ul class="dropdown-list w-250px">

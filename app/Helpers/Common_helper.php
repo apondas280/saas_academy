@@ -766,10 +766,10 @@ if (! function_exists('currency')) {
 }
 
 if (! function_exists('addon_status')) {
-    function addon_status($unique_identifier = '')
+    function addon_status($identifier = '')
     {
 
-        $result = DB::table('addons')->where('unique_identifier', $unique_identifier);
+        $result = DB::table('addons')->where('identifier', $identifier);
         if ($result->count() > 0) {
             $result = $result->first();
             return $result['status'];
@@ -839,10 +839,10 @@ if (! function_exists('get_settings')) {
     }
 }
 if (! function_exists('addon_status')) {
-    function addon_status($unique_identifier = '')
+    function addon_status($identifier = '')
     {
 
-        $result = Addon::where(array('unique_identifier' => $unique_identifier));
+        $result = Addon::where(array('identifier' => $identifier));
         if ($result->count() > 0) {
             $result = $result->get();
             return $result['status'];

@@ -1,6 +1,10 @@
 <script>
     "use strict";
 
+    $('.event-propagation').click(function(e) {
+        e.stopPropagation()
+    });
+
     $(function() {
         $('a[href="#"]').on('click', function(event) {
             event.preventDefault();

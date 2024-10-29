@@ -151,9 +151,9 @@
                                         </td>
                                         <td>
                                             @if ($payout->status == 1)
-                                                <span class="badge bg-success">{{ get_phrase('Paid') }}</span>
+                                                <span class="badge rounded-pill text-bg-success">{{ get_phrase('Paid') }}</span>
                                             @else
-                                                <span class="badge bg-warning">{{ get_phrase('Pending') }}</span>
+                                                <span class="badge rounded-pill text-bg-warning">{{ get_phrase('Pending') }}</span>
                                             @endif
                                         </td>
                                     </tr>
