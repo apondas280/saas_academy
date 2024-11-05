@@ -1580,3 +1580,34 @@ if (! function_exists('has_enrolled')) {
             ->exists();
     }
 }
+
+if (! function_exists('removeScripts')) {
+    function removeScripts($text)
+    {
+        if (! $text) {
+            return;
+        }
+
+        // Remove <script> tags and their content
+        $pattern_script = '/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/is';
+        $cleanText      = preg_replace($pattern_script, '', $text);
+
+        // Remove inline event handlers (e.g., onclick, onmouseover)
+        $pattern_inline = '/\s*on\w+="[^"]*"/i';
+        $cleanText      = preg_replace($pattern_inline, '', $cleanText);
+
+        // Remove JavaScript: URIs
+        $pattern_js_uri = '/\s*href="javascript:[^"]*"/i';
+        $cleanText      = preg_replace($pattern_js_uri, '', $cleanText);
+
+        // Remove other potentially dangerous tags (e.g., <iframe>, <object>, <embed>)
+        $pattern_dangerous_tags = '/<(iframe|object|embed|applet|meta|link|style|base|form)\b[^<]*(?:(?!<\/\1>)<[^<]*)*<\/\1>/is';
+        $cleanText              = preg_replace($pattern_dangerous_tags, '', $cleanText);
+
+        // Remove any remaining dangerous attributes (e.g., srcset on <img>)
+        $pattern_dangerous_attributes = '/\s*(src|srcset|data)="[^"]*"/i';
+        $cleanText                    = preg_replace($pattern_dangerous_attributes, '', $cleanText);
+
+        return $cleanText;
+    }
+}

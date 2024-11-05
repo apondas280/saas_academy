@@ -1,6 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 $db_user = 'root';
 $db_pass = '';
@@ -17,28 +22,22 @@ if (isset($_POST['action']) && $_POST['action'] != 'create_company') {
     $company_name = $app_variable[0];
 
     try {
-        // Establish database connection
-        $pdo = new PDO("mysql:host=$db_host;dbname=$db_name", $db_user, $db_pass);
-
-        // Prepare SQL statement with a WHERE clause
-        $stmt = $pdo->prepare("SELECT * FROM saas_companies WHERE company_slug = :value");
-
-        // Bind parameter value
+        $pdo   = new PDO("mysql:host=$db_host;dbname=$db_name", $db_user, $db_pass);
+        $stmt  = $pdo->prepare("SELECT * FROM saas_companies WHERE company_slug = :value");
         $value = $company_name;
         $stmt->bindParam(':value', $value);
-
-        // Execute the query
         $stmt->execute();
 
         // Fetch the result
-        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $db_name = $result[0]['db_name'];
-        $db_user = 'root';
-        $db_pass = '';
-        $db_host = 'localhost';
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        if (! $result) {
+            header("Location: https://creativeitem.com/growup-lms/pricing");
+            exit;
+        }
+
+        $db_name = $result[0]['db_name'];
     } catch (PDOException $e) {
-        // Handle errors
         echo "Error: " . $e->getMessage();
     }
 } else {

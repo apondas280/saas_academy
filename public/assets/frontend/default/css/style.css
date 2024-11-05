@@ -1,9 +1,191 @@
-/****** Google fonts *******/
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/poppins/Poppins-Thin.woff2') format('woff2'),
+        url('../fonts/poppins/Poppins-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
 
-/****** Custom fonts *******/
-@import url('../fonts/euclid-circular/stylesheet.css');
-/* font-family: 'Euclid Circular A'; */
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/poppins/Poppins-ExtraLight.woff2') format('woff2'),
+        url('../fonts/poppins/Poppins-ExtraLight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/poppins/Poppins-Light.woff2') format('woff2'),
+        url('../fonts/poppins/Poppins-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/poppins/Poppins-Regular.woff2') format('woff2'),
+        url('../fonts/poppins/Poppins-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/poppins/Poppins-Medium.woff2') format('woff2'),
+        url('../fonts/poppins/Poppins-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/poppins/Poppins-SemiBold.woff2') format('woff2'),
+        url('../fonts/poppins/Poppins-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/poppins/Poppins-Bold.woff2') format('woff2'),
+        url('../fonts/poppins/Poppins-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/poppins/Poppins-ExtraBold.woff2') format('woff2'),
+        url('../fonts/poppins/Poppins-ExtraBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/poppins/Poppins-Black.woff2') format('woff2'),
+        url('../fonts/poppins/Poppins-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular A';
+    src: url('../fonts/euclid-circular/EuclidCircularA-Regular.woff2') format('woff2'),
+         url('../fonts/euclid-circular/EuclidCircularA-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular A';
+    src: url('../fonts/euclid-circular/EuclidCircularA-Bold.woff2') format('woff2'),
+         url('../fonts/euclid-circular/EuclidCircularA-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular A';
+    src: url('../fonts/euclid-circular/EuclidCircularA-Italic.woff2') format('woff2'),
+         url('../fonts/euclid-circular/EuclidCircularA-Italic.woff') format('woff');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular A';
+    src: url('../fonts/euclid-circular/EuclidCircularA-BoldItalic.woff2') format('woff2'),
+         url('../fonts/euclid-circular/EuclidCircularA-BoldItalic.woff') format('woff');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular A';
+    src: url('../fonts/euclid-circular/EuclidCircularA-Light.woff2') format('woff2'),
+         url('../fonts/euclid-circular/EuclidCircularA-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular A';
+    src: url('../fonts/euclid-circular/EuclidCircularA-LightItalic.woff2') format('woff2'),
+         url('../fonts/euclid-circular/EuclidCircularA-LightItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular A';
+    src: url('../fonts/euclid-circular/EuclidCircularA-Medium.woff2') format('woff2'),
+         url('../fonts/euclid-circular/EuclidCircularA-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular A';
+    src: url('../fonts/euclid-circular/EuclidCircularA-MediumItalic.woff2') format('woff2'),
+         url('../fonts/euclid-circular/EuclidCircularA-MediumItalic.woff') format('woff');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular A';
+    src: url('../fonts/euclid-circular/EuclidCircularA-SemiBold.woff2') format('woff2'),
+         url('../fonts/euclid-circular/EuclidCircularA-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular A';
+    src: url('../fonts/euclid-circular/EuclidCircularA-SemiBoldItalic.woff2') format('woff2'),
+         url('../fonts/euclid-circular/EuclidCircularA-SemiBoldItalic.woff') format('woff');
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular A';
+    src: url('../fonts/euclid-circular/EuclidCircularA-ExtraBold.woff2') format('woff2'),
+         url('../fonts/euclid-circular/EuclidCircularA-ExtraBold.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Euclid Circular A';
+    src: url('../fonts/euclid-circular/EuclidCircularA-Black.woff2') format('woff2'),
+         url('../fonts/euclid-circular/EuclidCircularA-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
 
 
 /* Default Css Start ***
@@ -15,7 +197,7 @@
 }
 
 html {
-    /* overflow: hidden; */
+    scroll-behavior: smooth;
 }
 
 :root {
@@ -5937,6 +6119,7 @@ img {
     background: #FFF;
     box-shadow: 0px 8px 38px 0px rgba(16, 16, 16, 0.08);
     padding: 20px;
+    height: 730px;
 }
 
 .sml-icontext1 {
@@ -6412,8 +6595,8 @@ textarea.lms1-form-control {
 }
 
 .message-list-area {
-    width: 231px;
-    flex: 0 0 231px;
+    width: 270px;
+    flex: 0 0 270px;
 }
 
 .messenger-wraper-area {
@@ -6494,7 +6677,17 @@ textarea.lms1-form-control {
 .messenger-message-area {
     padding: 20px;
     border-radius: 8px;
-    background: #EDF0F7;
+    background: #edf0f787;
+}
+
+.user-message-listitem{
+    padding: 8px;
+    border-radius: 8px;
+    transition: .3s;
+}
+.user-message-listitem:hover,
+.user-message-listitem.active {
+    background: #f4f7fd !important;
 }
 
 .messenger-message-date {
@@ -6524,7 +6717,16 @@ textarea.lms1-form-control {
     border-radius: 10px 10px 10px 0px;
     background: var(--whiteColor);
     padding: 6px 10px;
+    width: fit-content;
 }
+
+.message-upload-image{
+    width: 400px;
+}
+.message-upload-image img{
+    width: 100%;
+}
+
 
 .message-time {
     text-align: right;
@@ -6557,7 +6759,7 @@ textarea.lms1-form-control {
 
 .message-form-control {
     width: 100%;
-    padding: 11px 95px 9px 10px;
+    padding: 11px 35px 11px 10px;
     color: var(--grayColor);
     font-size: 12px;
     font-style: normal;
@@ -6566,6 +6768,7 @@ textarea.lms1-form-control {
     border: none;
     border-radius: 8px;
     background: var(--whiteColor);
+    resize: none;
 }
 
 .message-form-control:focus {
@@ -6617,13 +6820,30 @@ textarea.lms1-form-control {
 }
 
 .messenger-messages-wrap-scroll {
-    height: 298px;
-    overflow-y: scroll;
+    height: 524px;
+    overflow: auto;
 }
 
 .messenger-messages-wrap-scroll::-webkit-scrollbar {
     width: 0em;
     height: 0em
+}
+
+.count-files {
+    position: absolute;
+    bottom: 90px;
+    background: #fff;
+    padding: 8px;
+    right: 16px;
+    border-radius: 8px;
+    color: var(--color-2);
+    font-weight: 500;
+    box-shadow: 1px 1px 20px #0000001a;
+}
+
+#type-msg::-webkit-scrollbar {
+    width: 0px;
+    background-color: #F5F5F5;
 }
 
 /* ===================================================================

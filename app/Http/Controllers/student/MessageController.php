@@ -30,64 +30,61 @@ class MessageController extends Controller
 
         // if url has any thread then get all conversations by that thread
         $conversations = [];
-        if (request()->has('inbox') && !empty(request()->query('inbox'))) {
+        if (request()->has('inbox') && ! empty(request()->query('inbox'))) {
             $thread        = request()->query('inbox');
             $conversations = Message::join('message_threads', 'messages.thread_id', '=', 'message_threads.id')
                 ->select('messages.*', 'message_threads.code')
                 ->where('message_threads.code', $thread)
                 ->get();
-        } elseif (request()->has('instructor') && !empty(request()->query('instructor'))) {
-            $new_thread = Str::random(25);
-            $instructor_id = request()->query('instructor');
+        } elseif (request()->has('user') && ! empty(request()->query('user'))) {
+            $new_thread    = Str::random(25);
+            $user_id = request()->query('user');
 
-            $check_thread = MessageThread::where(function ($query) use ($instructor_id) {
-                $query->where('contact_one', auth()->user()->id)->where('contact_two', $instructor_id);
+            $check_thread = MessageThread::where(function ($query) use ($user_id) {
+                $query->where('contact_one', auth()->user()->id)->where('contact_two', $user_id);
             })
-                ->orWhere(function ($query) use ($instructor_id) {
-                    $query->where('contact_two', auth()->user()->id)->where('contact_one', $instructor_id);
+                ->orWhere(function ($query) use ($user_id) {
+                    $query->where('contact_two', auth()->user()->id)->where('contact_one', $user_id);
                 })->count();
-
 
             if ($check_thread == 0) {
                 // create a new thread and redirect
                 $data['code']        = $new_thread;
                 $data['contact_one'] = auth()->user()->id;
-                $data['contact_two'] = request()->query('instructor');
+                $data['contact_two'] = request()->query('user');
                 MessageThread::insert($data);
 
-                return redirect(route('message', ['inbox' => $new_thread, 'instructor' => $instructor_id]));
+                return redirect(route('message', ['inbox' => $new_thread, 'user' => $user_id]));
             }
         }
 
-
-
         $enrollments    = Enrollment::where('user_id', auth()->user()->id)->get();
-        $my_instructors = array();
-        foreach ($enrollments as $enrollment) :
+        $my_users = array();
+        foreach ($enrollments as $enrollment):
             $course_details = Course::where('id', $enrollment->course_id)->first();
-            foreach (json_decode($course_details->instructors, true) ?? array() as $instructor_id) {
-                if (!in_array($instructor_id, $my_instructors)) {
-                    $my_instructors[] = $instructor_id;
+            foreach (json_decode($course_details->users, true) ?? array() as $user_id) {
+                if (! in_array($user_id, $my_users)) {
+                    $my_users[] = $user_id;
                 }
             }
-            if (!in_array($course_details->user_id, $my_instructors)) {
-                $my_instructors[] = $course_details->user_id;
+            if (! in_array($course_details->user_id, $my_users)) {
+                $my_users[] = $course_details->user_id;
             }
         endforeach;
-        $page_data['my_instructor_ids'] = $my_instructors;
+        $page_data['my_user_ids'] = $my_users;
 
-        $page_data['contacts']      = array_keys($contacts);
+        $page_data['contacts'] = array_keys($contacts);
 
-        $page_data['message_threads']      = MessageThread::where('contact_one', auth()->user()->id)->where('contact_two', auth()->user()->id)->get();
-        $page_data['conversations'] = $conversations;
-        $view_path                  = 'frontend.' . get_frontend_settings('theme') . '.student.message.index';
+        $page_data['message_threads'] = MessageThread::where('contact_one', auth()->user()->id)->where('contact_two', auth()->user()->id)->get();
+        $page_data['conversations']   = $conversations;
+        $view_path                    = 'frontend.' . get_frontend_settings('theme') . '.student.message.index';
         return view($view_path, $page_data);
     }
 
     public function store(Request $request)
     {
-        if (empty($request->message) && !$request->media_files) {
-            return redirect()->back();
+        if (empty($request->message) && ! $request->media_files) {
+            return redirect()->back()->with('error', get_phrase('Message box is empty.'));
         }
 
         $data['sender_id']   = auth()->user()->id;
@@ -109,11 +106,8 @@ class MessageController extends Controller
                 $file_type = $mimeType[0];
 
                 if (in_array($file_type, ['image', 'video'])) {
-                    $file_name = Str::random(20) . '.' . $file->extension();
-                    FileUploader::upload($file, 'storage/message/' . $thread_code . '/' . $file_name, null, null, 300);
-
                     $media['chat_id']   = $conversation->id;
-                    $media['file_name'] = $file_name;
+                    $media['file_name'] = FileUploader::upload($file, 'message');
                     $media['file_type'] = $file_type;
 
                     MediaFile::insert($media);
@@ -137,7 +131,7 @@ class MessageController extends Controller
         return view($view_path, $page_data);
     }
 
-    public function inbox($user_id)
+    public function inbox($company="", $user_id)
     {
         // check if any thread code exists or not
         $auth       = auth()->user()->id;
@@ -152,7 +146,7 @@ class MessageController extends Controller
         $thread = $has_thread ? $has_thread->code : Str::random(20);
 
         // create a new thread and redirect
-        if (!$has_thread) {
+        if (! $has_thread) {
             $data['code']        = $thread;
             $data['contact_one'] = $auth;
             $data['contact_two'] = $user_id;

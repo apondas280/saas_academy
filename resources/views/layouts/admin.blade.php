@@ -101,6 +101,13 @@
 
     <script src="{{ asset('assets/backend/js/script.js') }}"></script>
 
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
     @include('admin.toaster')
     @include('admin.common_scripts')
     @include('admin.init')

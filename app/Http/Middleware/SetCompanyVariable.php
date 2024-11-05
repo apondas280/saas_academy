@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 
 class SetCompanyVariable
 {
@@ -26,4 +25,3 @@ class SetCompanyVariable
         return $next($request);
     }
 }
-

@@ -58,7 +58,7 @@ class CouponController extends Controller
         return redirect()->back();
     }
 
-    public function delete($id)
+    public function delete($company="", $id)
     {
         // check user data exists or not
         $query = Coupon::where('id', $id)->where('user_id', auth()->user()->id);
@@ -73,7 +73,7 @@ class CouponController extends Controller
         return redirect()->back();
     }
 
-    public function edit($id)
+    public function edit($company="", $id)
     {
         // check user data exists or not
         $query = Coupon::where('id', $id)->where('user_id', auth()->user()->id);
@@ -86,7 +86,7 @@ class CouponController extends Controller
         return view('admin.coupon.edit', $page_data);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $company="", $id)
     {
         // check user data exists or not
         $query = Coupon::where('id', $id)->where('user_id', auth()->user()->id);
@@ -125,7 +125,7 @@ class CouponController extends Controller
         return redirect()->back();
     }
 
-    public function status($id)
+    public function status($company="", $id)
     {
         // check user data exists or not
         $query = Coupon::where('id', $id)->where('user_id', auth()->user()->id);

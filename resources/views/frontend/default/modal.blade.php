@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title text-16" id="ajaxModalLabel"></h6>
-                <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close"><i class="fi fi-br-cross-small text-20 text-white"></i></button>
+                <button type="button" class="btn p-0" data-bs-dismiss="modal" aria-label="Close"><i class="fi fi-br-cross-small"></i></button>
             </div>
             <div class="modal-body">
                 <div class="w-100 text-center py-5">
@@ -11,9 +11,6 @@
                         <span class="visually-hidden"></span>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="eBtn gradient border-none" data-bs-dismiss="modal">{{ get_phrase('Close') }}</button>
             </div>
         </div>
     </div>
