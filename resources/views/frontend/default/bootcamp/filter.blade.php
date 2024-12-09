@@ -5,7 +5,7 @@
 
 <div class="lms1-card">
     <div class="d-flex justify-content-between">
-        <h1 class="pop-title-18px mb-20px pb-12px lms-border-bottom">{{ get_phrase('Category') }}</h1>
+        <h1 class="pop-title-18px mb-20px pb-12px lms-border-bottom w-100">{{ get_phrase('Category') }}</h1>
         @isset($active_category)
             <a href="{{ route('bootcamps') }}">{{ get_phrase('Clear') }}</a>
         @endisset

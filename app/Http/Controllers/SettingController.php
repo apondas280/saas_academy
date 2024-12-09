@@ -67,7 +67,7 @@ class SettingController extends Controller
                 if ($_FILES['images']['name'][$key] != "") {
 
                     $image_name = random(20) . '.png';
-                    move_uploaded_file($_FILES['images']['tmp_name'][$key], public_path('assets/upload/motivational_speech/') . $image_name);
+                    // move_uploaded_file($_FILES['images']['tmp_name'][$key], public_path('assets/upload/motivational_speech/') . $image_name);
                     $motivations[$key]['image'] = $image_name;
                 } else {
                     $motivations[$key]['image'] = $data['previous_images'][$key];
@@ -703,7 +703,7 @@ class SettingController extends Controller
             if ($request->hasFile('image')) {
                 $image      = $request->file('image');
                 $image_name = $image->getClientOriginalName();
-                $image->move(public_path('assets/upload/home_page_image/cooking/'), $image_name);
+                // $image->move(public_path('assets/upload/home_page_image/cooking/'), $image_name);
                 $speech['image'] = $image_name;
 
                 // Unlink the previous image if it exists
@@ -721,7 +721,7 @@ class SettingController extends Controller
 
             if ($request->hasFile('image')) {
                 $image_name = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
-                $request->file('image')->move(public_path('assets/upload/home_page_image/university/'), $image_name);
+                // $request->file('image')->move(public_path('assets/upload/home_page_image/university/'), $image_name);
                 $previous_image  = $request->input('previous_image');
                 $speech['image'] = $image_name;
                 if (! empty($previous_image)) {
@@ -738,7 +738,7 @@ class SettingController extends Controller
 
             if ($request->hasFile('faq_image')) {
                 $image_names = uniqid() . '.' . $request->file('faq_image')->getClientOriginalExtension();
-                $request->file('faq_image')->move(public_path('assets/upload/home_page_image/university/'), $image_names);
+                // $request->file('faq_image')->move(public_path('assets/upload/home_page_image/university/'), $image_names);
                 $speech['faq_image'] = $image_names;
                 $previous_images     = $request->input('previous_faq_image');
                 if (! empty($previous_images)) {
@@ -765,7 +765,7 @@ class SettingController extends Controller
             if ($request->hasFile('image')) {
                 $image      = $request->file('image');
                 $image_name = uniqid() . '.' . $image->getClientOriginalName();
-                $image->move(public_path('assets/upload/home_page_image/development/'), $image_name);
+                // $image->move(public_path('assets/upload/home_page_image/development/'), $image_name);
                 $speech['image'] = $image_name;
 
                 // Unlink the previous image if it exists
@@ -788,7 +788,7 @@ class SettingController extends Controller
             if ($request->hasFile('image')) {
                 $image      = $request->file('image');
                 $image_name = uniqid() . '.' . $image->getClientOriginalName();
-                $image->move(public_path('assets/upload/home_page_image/kindergarden/'), $image_name);
+                // $image->move(public_path('assets/upload/home_page_image/kindergarden/'), $image_name);
                 $speech['image'] = $image_name;
 
                 // Unlink the previous image if it exists
@@ -813,7 +813,7 @@ class SettingController extends Controller
             if ($request->hasFile('image')) {
                 $image      = $request->file('image');
                 $image_name = uniqid() . '.' . $image->getClientOriginalName();
-                $image->move(public_path('assets/upload/home_page_image/marketplace/'), $image_name);
+                // $image->move(public_path('assets/upload/home_page_image/marketplace/'), $image_name);
                 $instructor['image'] = $image_name;
 
                 // Unlink the previous image if it exists
@@ -839,7 +839,7 @@ class SettingController extends Controller
         } elseif ($home_page == 'meditation') {
             if ($request->hasFile('big_image')) {
                 $image_name = uniqid() . '.' . $request->file('big_image')->getClientOriginalExtension();
-                $request->file('big_image')->move(public_path('assets/upload/home_page_image/meditation/'), $image_name);
+                // $request->file('big_image')->move(public_path('assets/upload/home_page_image/meditation/'), $image_name);
                 $previous_image      = $request->input('big_previous_image');
                 $speech['big_image'] = $image_name;
                 if (! empty($previous_image)) {
@@ -868,7 +868,7 @@ class SettingController extends Controller
                 if ($request->hasFile($meditation_image_field)) {
                     $image      = $request->file($meditation_image_field);
                     $image_name = uniqid() . '.' . $image->getClientOriginalName();
-                    $image->move(public_path('assets/upload/home_page_image/meditation/'), $image_name);
+                    // $image->move(public_path('assets/upload/home_page_image/meditation/'), $image_name);
                     $old_image     = $request->input('old_image');
                     $previous_path = public_path('assets/upload/home_page_image/meditation/') . $old_image;
                     if (file_exists('assets/upload/home_page_image/meditation/' . $old_image)) {

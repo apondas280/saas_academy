@@ -113,4 +113,43 @@ class PaymentController extends Controller
         $transaction->getResponseMessage(); //Get Response Message If Available
 
     }
+
+    public function webRedirectToPayFee(Request $request)
+    {
+        // Check if the 'auth' query parameter is present
+        if (! $request->has('auth')) {
+            return redirect()->route('login')->withErrors([
+                'email' => 'Authentication token is missing.',
+            ]);
+        }
+        // Remove the 'Basic ' prefix
+        $base64Credentials = substr($request->query('auth'), 6);
+
+        // Decode the base64-encoded string
+        $credentials = base64_decode($base64Credentials);
+
+        // Split the decoded string into email, password, and timestamp
+        list($email, $password, $timestamp) = explode(':', $credentials);
+
+        // Get the current timestamp
+        $timestamp1 = strtotime(date('Y-m-d'));
+
+        // Calculate the difference
+        $difference = $timestamp1 - $timestamp;
+
+        if ($difference < 86400) {
+            if (auth()->attempt(['email' => $email, 'password' => $password])) {
+                // Authentication passed...
+                return redirect(route('cart'));
+            }
+
+            return redirect()->route('login')->withErrors([
+                'email' => 'Invalid email or password',
+            ]);
+        } else {
+            return redirect()->route('login')->withErrors([
+                'email' => 'Token expired!',
+            ]);
+        }
+    }
 }

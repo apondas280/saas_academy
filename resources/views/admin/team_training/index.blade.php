@@ -138,7 +138,7 @@
                                                 </div>
                                             </td>
                                             <td class="print-d-none">
-                                                <span class="badge bg-{{ $package->status ? 'active' : 'inactive' }}">{{ get_phrase($package->status ? 'Active' : 'Inactive') }}</span>
+                                                <span class="badge rounded-pill text-bg-{{ $package->status ? 'success' : 'danger' }}">{{ get_phrase($package->status ? 'Active' : 'Inactive') }}</span>
                                             </td>
                                             <td>
                                                 <div class="dAdmin_info_name min-w-150px">

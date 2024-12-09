@@ -151,7 +151,7 @@
                     </div>
                 </div>
                 <ul class="mb-12px pb-3 ol-border-bottom-2">
-                    <li class="dropdown-list-1 mb-1"><a class="dropdown-item-1" href="#">{{ get_phrase('Free') }} {{ get_remaining_storage() . ' ' . get_phrase('of') . ' ' . get_company_allowed_storage() }}</a></li>
+                    <li class="dropdown-list-1 mb-1"><a class="dropdown-item-1" href="{{ route('admin.subscription.details') }}">{{ get_phrase('Free') }} {{ get_remaining_storage() . ' ' . get_phrase('of') . ' ' . get_company_allowed_storage() }}</a></li>
 
                     <div class="user-details w-100">
                         <div class="course-progress mb-0">

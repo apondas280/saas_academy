@@ -8,6 +8,7 @@ class ImageProcessingService
 {
     public static function optimize($file, $output, $width = null, $height = null, $optimized_width = null, $optimized_height = null)
     {
+        return null;
         $file_name = Str::random(20) . '.' . $file->getClientOriginalExtension();
         $output    = "{$output}/{$file_name}";
 

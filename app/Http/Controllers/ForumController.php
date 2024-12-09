@@ -19,6 +19,7 @@ class ForumController extends Controller
             ->get();
         return view('course_player.forum.question_body', $page_data);
     }
+
     public function create(Request $request)
     {
         $page_data['course_id']          = $request->course_id;
@@ -63,7 +64,7 @@ class ForumController extends Controller
         return view('course_player.forum.edit_question', $page_data);
     }
 
-    public function delete($id)
+    public function delete($company = "", $id)
     {
         $query = Forum::where('user_id', auth()->user()->id)->where('id', $id);
         if ($query->doesntExist()) {
@@ -75,7 +76,7 @@ class ForumController extends Controller
         return redirect()->back();
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $company = "", $id)
     {
         $rules = [
             'title'       => 'required',
@@ -101,7 +102,7 @@ class ForumController extends Controller
         return redirect()->back();
     }
 
-    public function likes($id)
+    public function likes($company = "", $id)
     {
         $question = Forum::where('id', $id)->first();
         $user_id  = auth()->user()->id;
@@ -127,7 +128,7 @@ class ForumController extends Controller
         return redirect()->back();
     }
 
-    public function dislikes($id)
+    public function dislikes($company = "", $id)
     {
         $question = Forum::where('id', $id)->first();
         $user_id  = auth()->user()->id;

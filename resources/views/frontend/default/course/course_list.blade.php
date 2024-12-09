@@ -19,7 +19,7 @@
                 <div class="list-course-img">
                     <img src="{{ get_image($course->thumbnail) }}" alt="course-thumbnail">
                 </div>
-                <div class="list-course-details">
+                <div class="list-course-details w-100">
                     <div class="course-price-bookmark d-flex align-items-center justify-content-between">
                         <div class="list-course-price d-flex">
                             @if (isset($course->discount_flag) && $course->discount_flag == 1)
@@ -50,15 +50,15 @@
                         <h3 class="title">{{ ucfirst($course->title) }}</h3>
                         <p class="info card_preview_text">{{ $course->short_description }} </p>
                     </div>
-                    <div class="course-list-leason-stars d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center justify-content-between">
                         <div class="course-list-leasons d-flex align-items-center">
                             <img src="{{ asset('assets/frontend/default/images/menu_book.svg') }}" alt="leason">
                             <h4 class="leasons">{{ lesson_count($course->id) }} {{ get_phrase('lesson') }}</h4>
                         </div>
                         <div class="course-list-stars d-flex align-items-center">
-                            <h4 class="average">4.8</h4>
-                            <img src="{{ asset('assets/frontend/default/images/yellow-star.svg') }}" alt="star">
-                            <h4 class="stars">({{ course_enrollments($course->id) }})</h4>
+                            @for ($i = 1; $i <= $average_rating; $i++)
+                                <img class="m-0" src="{{ asset('assets/frontend/default/images/yellow-star.svg') }}" alt="star">
+                            @endfor
                         </div>
                     </div>
                 </div>

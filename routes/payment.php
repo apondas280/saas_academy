@@ -5,7 +5,7 @@ use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('{company}')->group(function () {
-        
+
     Route::controller(PaymentController::class)->group(function () {
         Route::get('payment', 'index')->name('payment');
         Route::get('payment/show_payment_gateway_by_ajax/{identifier}', 'show_payment_gateway_by_ajax')->name('payment.show_payment_gateway_by_ajax');
@@ -19,5 +19,7 @@ Route::prefix('{company}')->group(function () {
         Route::post('payment/make/order/{identifier}', 'payment_paytm')->name('make.order');
         Route::get('payment/make/{identifier}/status', 'paytm_paymentCallback')->name('payment.status');
     });
+
+    Route::get('payment/web_redirect_to_pay_fee', [PaymentController::class, 'webRedirectToPayFee'])->name('payment.web_redirect_to_pay_fee');
 
 });

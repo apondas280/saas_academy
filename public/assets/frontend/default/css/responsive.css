@@ -121,7 +121,7 @@
   .nav-area ul li.menu-item-has-children .menu-dropdown{
     display: none;
     transition: 0s;
-    padding-left: 30px;
+    padding-left: 16px;
   }
   .nav-area ul li.menu-item-has-children > a:hover::before{
     color: var(--blueColor);
@@ -136,10 +136,10 @@
     box-shadow: none;
   }
   .edu-offcanvas .offcanvas-header{
-    padding: 37px 24px 32px 24px;
+    padding: 16px;
   }
   .edu-offcanvas .offcanvas-body{
-    padding: 0px 24px 24px 24px;
+    padding: 0px 16px;
   }
   .edu-offcanvas.offcanvas-lg.offcanvas-end{
     width: 339px;
@@ -180,7 +180,7 @@
   }
   .item-have-submenu > a:after {
     content: "\f078";
-    right: 8px;
+    right: 12px;
     top: 6px;
   }
   .item-have-submenu.child-submenu > a::after{
@@ -308,7 +308,7 @@
     margin-top: 20px;
   }
   .edu-offcanvas .offcanvas-header {
-    padding: 24px 24px 32px 24px;
+    padding: 16px;
   }
   .header-wrap {
     padding: 16px 0;

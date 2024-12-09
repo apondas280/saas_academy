@@ -4,15 +4,25 @@
     <input type="hidden" name="item_type" value="{{ $payment_details['custom_field']['item_type'] }}">
     <input type="hidden" name="coupon" value="{{ $payment_details['coupon'] ?? null }}">
 
-    <div class="mb-3">
-        <label for="amount" class="form-label">{{ get_phrase('Payable amount') }}</label>
-        <input type="text" min="{{ $amount }}" max="{{ $amount }}" name="amount" id="amount" class="form-control" value="{{ $amount }}" />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="amount" class="form-label">{{ get_phrase('Payable amount') }}</label>
+                <input type="text" min="{{ $amount }}" max="{{ $amount }}" name="amount" id="amount" class="form-control" value="{{ $amount }}" />
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="phone_no" class="form-label">{{ get_phrase('Phone number') }}</label>
+                <input type="tel" name="phone_no" id="phone_no" class="form-control" />
+            </div>
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label for="phone_no" class="form-label">{{ get_phrase('Phone number') }}</label>
-        <input type="tel" name="phone_no" id="phone_no" class="form-control" />
-    </div>
+
+
+
 
     <div class="mb-3">
         <label for="bank_no" class="form-label">{{ get_phrase('Bank info') }}</label>
@@ -27,5 +37,7 @@
         <input type="file" name="doc" class="form-control" required>
     </div>
 
-    <input type="submit" class="btn btn-primary" value="{{ get_phrase('Pay offline') }}">
+    <div class="d-flex justify-content-center">
+        <input type="submit" class="btn btn-primary" value="{{ get_phrase('Pay offline') }}">
+    </div>
 </form>

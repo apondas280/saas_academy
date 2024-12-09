@@ -6048,15 +6048,9 @@ input[type=time]::-webkit-calendar-picker-indicator {
   gap: 57px;
 }
 
-.payment_modalTab {
-  gap: 30px;
-}
-
 .payment_modalTab .tabItem {
-  padding: 20px;
-  border: 1px dashed #cfd1dc;
+  padding: 12px;
   border-radius: 5px;
-  background-color: #fff;
   cursor: pointer;
 }
 
@@ -6066,8 +6060,8 @@ input[type=time]::-webkit-calendar-picker-indicator {
   }
 }
 
-.payment_modalTab .tabItem.active {
-  background-color: #f1faff;
+.tabItem.active .logo {
+  background-color: #1b84ff30;
 }
 
 .payment_modalTab .tabItem.active .payment_gateway_option .logo {
@@ -6079,15 +6073,19 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 
 .payment_gateway_option .logo {
-  width: 177px;
-  height: 65px;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #efeff3;
+    height: 65px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: #217ce90f;
+    transition: .3s;
 }
 
+.main-content{
+    border-radius: 20px;
+}
 .payment_gateway_option .info .card_no {
   font-size: 16px;
   font-weight: 500;
@@ -6124,4 +6122,3 @@ input[type=time]::-webkit-calendar-picker-indicator {
 .payment_table .table {
   margin-bottom: 0;
 }
-

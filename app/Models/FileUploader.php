@@ -22,6 +22,7 @@ class FileUploader extends Model
 
     public static function upload($file, $upload_path, $width = 300, $height = 300, $optimized_width = 250, $optimized_height = null)
     {
+        return null;
         if (! $file) {
             return;
         }

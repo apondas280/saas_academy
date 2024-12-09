@@ -44,9 +44,9 @@
                                 <h4 class="text-13">{{ lesson_count($course->id) }} {{ get_phrase('lesson') }}</h4>
                             </div>
                             <div class="course-stars d-flex align-items-center">
-                                <h4 class="text-13">4.8</h4>
-                                <img src="{{ asset('assets/frontend/default/images/yellow-star.svg') }}" alt="star">
-                                <h4 class="text-13">({{ course_enrollments($course->id) }})</h4>
+                                @for ($i = 1; $i <= $average_rating; $i++)
+                                    <img class="m-0" src="{{ asset('assets/frontend/default/images/yellow-star.svg') }}" alt="star">
+                                @endfor
                             </div>
                         </div>
                         <div class="course-prices d-flex align-items-end">

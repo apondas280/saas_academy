@@ -82,7 +82,7 @@
 @font-face {
     font-family: 'Euclid Circular A';
     src: url('../fonts/euclid-circular/EuclidCircularA-Regular.woff2') format('woff2'),
-         url('../fonts/euclid-circular/EuclidCircularA-Regular.woff') format('woff');
+        url('../fonts/euclid-circular/EuclidCircularA-Regular.woff') format('woff');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -91,7 +91,7 @@
 @font-face {
     font-family: 'Euclid Circular A';
     src: url('../fonts/euclid-circular/EuclidCircularA-Bold.woff2') format('woff2'),
-         url('../fonts/euclid-circular/EuclidCircularA-Bold.woff') format('woff');
+        url('../fonts/euclid-circular/EuclidCircularA-Bold.woff') format('woff');
     font-weight: 700;
     font-style: normal;
     font-display: swap;
@@ -100,7 +100,7 @@
 @font-face {
     font-family: 'Euclid Circular A';
     src: url('../fonts/euclid-circular/EuclidCircularA-Italic.woff2') format('woff2'),
-         url('../fonts/euclid-circular/EuclidCircularA-Italic.woff') format('woff');
+        url('../fonts/euclid-circular/EuclidCircularA-Italic.woff') format('woff');
     font-weight: 400;
     font-style: italic;
     font-display: swap;
@@ -109,7 +109,7 @@
 @font-face {
     font-family: 'Euclid Circular A';
     src: url('../fonts/euclid-circular/EuclidCircularA-BoldItalic.woff2') format('woff2'),
-         url('../fonts/euclid-circular/EuclidCircularA-BoldItalic.woff') format('woff');
+        url('../fonts/euclid-circular/EuclidCircularA-BoldItalic.woff') format('woff');
     font-weight: 700;
     font-style: italic;
     font-display: swap;
@@ -118,7 +118,7 @@
 @font-face {
     font-family: 'Euclid Circular A';
     src: url('../fonts/euclid-circular/EuclidCircularA-Light.woff2') format('woff2'),
-         url('../fonts/euclid-circular/EuclidCircularA-Light.woff') format('woff');
+        url('../fonts/euclid-circular/EuclidCircularA-Light.woff') format('woff');
     font-weight: 300;
     font-style: normal;
     font-display: swap;
@@ -127,7 +127,7 @@
 @font-face {
     font-family: 'Euclid Circular A';
     src: url('../fonts/euclid-circular/EuclidCircularA-LightItalic.woff2') format('woff2'),
-         url('../fonts/euclid-circular/EuclidCircularA-LightItalic.woff') format('woff');
+        url('../fonts/euclid-circular/EuclidCircularA-LightItalic.woff') format('woff');
     font-weight: 300;
     font-style: italic;
     font-display: swap;
@@ -136,7 +136,7 @@
 @font-face {
     font-family: 'Euclid Circular A';
     src: url('../fonts/euclid-circular/EuclidCircularA-Medium.woff2') format('woff2'),
-         url('../fonts/euclid-circular/EuclidCircularA-Medium.woff') format('woff');
+        url('../fonts/euclid-circular/EuclidCircularA-Medium.woff') format('woff');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -145,7 +145,7 @@
 @font-face {
     font-family: 'Euclid Circular A';
     src: url('../fonts/euclid-circular/EuclidCircularA-MediumItalic.woff2') format('woff2'),
-         url('../fonts/euclid-circular/EuclidCircularA-MediumItalic.woff') format('woff');
+        url('../fonts/euclid-circular/EuclidCircularA-MediumItalic.woff') format('woff');
     font-weight: 500;
     font-style: italic;
     font-display: swap;
@@ -154,7 +154,7 @@
 @font-face {
     font-family: 'Euclid Circular A';
     src: url('../fonts/euclid-circular/EuclidCircularA-SemiBold.woff2') format('woff2'),
-         url('../fonts/euclid-circular/EuclidCircularA-SemiBold.woff') format('woff');
+        url('../fonts/euclid-circular/EuclidCircularA-SemiBold.woff') format('woff');
     font-weight: 600;
     font-style: normal;
     font-display: swap;
@@ -163,7 +163,7 @@
 @font-face {
     font-family: 'Euclid Circular A';
     src: url('../fonts/euclid-circular/EuclidCircularA-SemiBoldItalic.woff2') format('woff2'),
-         url('../fonts/euclid-circular/EuclidCircularA-SemiBoldItalic.woff') format('woff');
+        url('../fonts/euclid-circular/EuclidCircularA-SemiBoldItalic.woff') format('woff');
     font-weight: 600;
     font-style: italic;
     font-display: swap;
@@ -172,7 +172,7 @@
 @font-face {
     font-family: 'Euclid Circular A';
     src: url('../fonts/euclid-circular/EuclidCircularA-ExtraBold.woff2') format('woff2'),
-         url('../fonts/euclid-circular/EuclidCircularA-ExtraBold.woff') format('woff');
+        url('../fonts/euclid-circular/EuclidCircularA-ExtraBold.woff') format('woff');
     font-weight: 800;
     font-style: normal;
     font-display: swap;
@@ -181,7 +181,7 @@
 @font-face {
     font-family: 'Euclid Circular A';
     src: url('../fonts/euclid-circular/EuclidCircularA-Black.woff2') format('woff2'),
-         url('../fonts/euclid-circular/EuclidCircularA-Black.woff') format('woff');
+        url('../fonts/euclid-circular/EuclidCircularA-Black.woff') format('woff');
     font-weight: 900;
     font-style: normal;
     font-display: swap;
@@ -219,6 +219,10 @@ body {
     font-style: normal;
     font-weight: 500;
     line-height: 25px;
+}
+
+i {
+    display: inline-flex;
 }
 
 ul,
@@ -1380,6 +1384,25 @@ img {
     z-index: 2;
 }
 
+.mobile-nav-menu .menu-dropdown,
+.mobile-nav-menu .dropdown-submenu,
+.edu-offcanvas:not(.show) .accordion-menu .menu-nav-item a>i {
+    display: none;
+}
+
+.accordion-menu li {
+    width: auto;
+}
+
+.edu-offcanvas.show .accordion-menu li {
+    width: 100%;
+}
+
+
+.edu-offcanvas.show {
+    display: inline-flex;
+}
+
 .nav-area nav>ul li:hover .menu-dropdown {
     top: calc(100% + 16px);
     visibility: visible;
@@ -1634,20 +1657,30 @@ img {
 .header-wrap .mobile-menu {
     border: none;
     padding: 8px 6px;
-    background: var(--blueColor);
+    background: transparent;
     display: block;
     border-radius: 5px;
     transition: .3s;
     margin-left: 10px;
-    min-width: 29px;
+    min-width: 30px;
 }
 
 .header-wrap .mobile-menu:hover {
-    background: var(--deepBlue);
+    /* background: var(--deepBlue); */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .header-wrap .mobile-menu img {
     display: block;
+    filter: invert(1) grayscale(1);
 }
 
 /* Off Canvas Css End */
@@ -3974,10 +4007,10 @@ img {
     top: 0;
 }
 
-.list-course-img{
+.list-course-img {
     flex: 0 0 242px;
     aspect-ratio: 242 / 184;
-  }
+}
 
 .list-course-img img {
     border-radius: 10px;
@@ -5074,15 +5107,15 @@ img {
     border-radius: 20px;
 }
 
-.my-courses-btn{
+.my-courses-btn {
     color: #E7E6E6;
 }
 
-.playing-video-title p{
+.playing-video-title p {
     color: #E7E6E6;
 }
 
-.video-zoom-btn{
+.video-zoom-btn {
     background: var(--deepBlue);
     display: inline-flex;
     justify-content: center;
@@ -6119,7 +6152,7 @@ img {
     background: #FFF;
     box-shadow: 0px 8px 38px 0px rgba(16, 16, 16, 0.08);
     padding: 20px;
-    height: 730px;
+    min-height: 730px;
 }
 
 .sml-icontext1 {
@@ -6680,11 +6713,12 @@ textarea.lms1-form-control {
     background: #edf0f787;
 }
 
-.user-message-listitem{
+.user-message-listitem {
     padding: 8px;
     border-radius: 8px;
     transition: .3s;
 }
+
 .user-message-listitem:hover,
 .user-message-listitem.active {
     background: #f4f7fd !important;
@@ -6720,10 +6754,11 @@ textarea.lms1-form-control {
     width: fit-content;
 }
 
-.message-upload-image{
+.message-upload-image {
     width: 400px;
 }
-.message-upload-image img{
+
+.message-upload-image img {
     width: 100%;
 }
 
@@ -6902,17 +6937,19 @@ textarea.lms1-form-control {
     background: #FFF;
 }
 
-.lms2-card a{
+.lms2-card a {
     display: block;
 }
 
-.lms2-card-img,.course-img {
+.lms2-card-img,
+.course-img {
     width: 100%;
     height: 150px;
     overflow: hidden;
 }
 
-.lms2-card-img>img,.course-img img {
+.lms2-card-img>img,
+.course-img img {
     border-radius: 10px 10px 0px 0px;
     width: 100%;
     height: 100%;
@@ -6966,7 +7003,8 @@ textarea.lms1-form-control {
 .lms3-table-borderless td:first-child {
     padding-left: 0;
 }
-.cart-items .table>:not(caption)>*>*{
+
+.cart-items .table>:not(caption)>*>* {
     padding: 0;
 }
 
@@ -6998,11 +7036,11 @@ textarea.lms1-form-control {
     object-position: center;
 }
 
-.cart-item{
+.cart-item {
     margin-bottom: 16px;
 }
 
-.course-header-bar{
+.course-header-bar {
     background: #041123;
     padding: 12px 0;
 }
@@ -7854,31 +7892,32 @@ team training end
     margin: 20px 0px;
 }
 
-.max-w-100{
+.max-w-100 {
     max-width: 100% !important;
 }
 
-.form-control:focus{
+.form-control:focus {
     box-shadow: none !important;
 }
 
-.write-review textarea{
+.write-review textarea {
     font-weight: 500;
     color: var(--grayColor) !important;
     padding: 12px;
 }
 
-.review-actions{
+.review-actions {
     display: none;
     transition: .3s;
 }
 
-.review-actions button{
+.review-actions button {
     color: var(--grayColor);
 }
 
-.single-feedback-review:hover .review-actions{
+.single-feedback-review:hover .review-actions {
     display: block;
 }
+
 /* Buttons Css End ***
 *********************/

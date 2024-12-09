@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\frontend\HomeController;
 use App\Http\Controllers\frontend\LanguageController;
+use App\Http\Controllers\MobileViewController;
 use App\Http\Controllers\student\BecomeInstructorController;
 use App\Http\Controllers\student\BlogCommentController;
 use App\Http\Controllers\student\BlogController;
@@ -144,5 +145,14 @@ Route::prefix('{company}')->group(function () {
 
     // select language
     Route::get('select/language/', [LanguageController::class, 'select_lng'])->name('select.lng');
+
+    //mobile quiz routes
+    Route::controller(MobileViewController::class)->group(function () {
+        Route::get('mobile_quiz', 'index')->name('mobile_quiz');
+
+        Route::post('quiz/submit/mobile/{id}', 'quiz_submit_mobile')->name('quiz.submit.mobile');
+        Route::get('load/quiz/results/mobile', 'load_result_mobile')->name('load.quiz.results.mobile');
+        Route::get('load/quiz/questions/mobile', 'load_questions_mobile')->name('load.quiz.questions.mobile');
+    });
 
 });

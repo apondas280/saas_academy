@@ -11,6 +11,7 @@ class VideoProcessingService
 {
     public static function convertToMp4($file, $output, $file_name)
     {
+        return null;
         $path    = "{$output}/{$file_name}";
         $convert = FFMpeg::fromDisk('public')
             ->open($file)
@@ -24,6 +25,7 @@ class VideoProcessingService
 
     public static function watermark($video, $path, $file_name)
     {
+        return null;
         $output         = "{$path}/{$file_name}";
         $watermark_data = self::getWatermarkData();
 
@@ -57,6 +59,7 @@ class VideoProcessingService
 
     public static function makeTempWatermark($logo)
     {
+        return null;
         $temp_img_name = File::name($logo) . '.png';
         $path          = company_path() . 'temp';
         $temp_path     = public_path($path);

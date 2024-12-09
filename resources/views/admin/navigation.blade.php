@@ -126,25 +126,8 @@
 
 
             <!-- private training -->
-            @if (has_permission('admin.team.packages') ||
-                    has_permission('admin.team.packages.create') ||
-                    has_permission('admin.team.packages.edit') ||
-                    has_permission('admin.team.packages.purchase.history') ||
-                    has_permission('admin.team.packages.purchase.invoice') ||
-                    has_permission('admin.groups') ||
-                    has_permission('admin.groups.create') ||
-                    has_permission('admin.groups.edit') ||
-                    has_permission('admin.groups.training'))
-                <li class="sidebar-first-li first-li-have-sub @if (
-                    $current_route == 'admin.team.packages' ||
-                        $current_route == 'admin.team.packages.create' ||
-                        $current_route == 'admin.team.packages.edit' ||
-                        $current_route == 'admin.team.packages.purchase.history' ||
-                        $current_route == 'admin.team.packages.purchase.invoice' ||
-                        $current_route == 'admin.groups' ||
-                        $current_route == 'admin.groups.create' ||
-                        $current_route == 'admin.groups.edit' ||
-                        $current_route == 'admin.groups.training') active showMenu @endif">
+            @if (has_permission('admin.team.packages') || has_permission('admin.team.packages.create') || has_permission('admin.team.packages.edit') || has_permission('admin.team.packages.purchase.history') || has_permission('admin.team.packages.purchase.invoice'))
+                <li class="sidebar-first-li first-li-have-sub @if ($current_route == 'admin.team.packages' || $current_route == 'admin.team.packages.create' || $current_route == 'admin.team.packages.edit' || $current_route == 'admin.team.packages.purchase.history' || $current_route == 'admin.team.packages.purchase.invoice') active showMenu @endif">
                     <a href="javascript:void(0);">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M14.125 16.6666H5.875C5.62186 16.6666 5.41665 16.48 5.41666 16.2499C5.41671 14.6391 6.85315 13.3333 8.62506 13.3333H11.3751C13.147 13.3333 14.5834 14.6391 14.5833 16.2499C14.5833 16.48 14.3781 16.6666 14.125 16.6666Z" />
@@ -156,53 +139,23 @@
                                 <path d="M14.9106 8.22066C15.928 7.90393 16.6666 6.95484 16.6666 5.83325C16.6666 4.45254 15.5473 3.33325 14.1666 3.33325C13.2413 3.33325 12.4334 3.83594 12.0011 4.58312C13.4879 5.23316 14.5975 6.58545 14.9106 8.22066Z" />
                             </g>
                         </svg>
-                        <div class="text"><span>{{ get_phrase('Private Training') }}</span></div>
+                        <div class="text"><span>{{ get_phrase('Team Training') }}</span></div>
                     </a>
 
                     <ul class="first-sub-menu">
-                        <li class="first-sub-menu-title fs-14px mb-18px">{{ get_phrase('Manage Teams') }}</li>
+                        <li class="first-sub-menu-title fs-14px mb-18px">{{ get_phrase(' Teams') }}</li>
 
                         <!-- course menus -->
-                        <li class="sidebar-second-li second-li-have-sub @if ($current_route == 'admin.team.packages' || $current_route == 'admin.team.packages.create' || $current_route == 'admin.team.packages.edit' || $current_route == 'admin.team.packages.purchase.history' || $current_route == 'admin.team.packages.purchase.invoice') active @endif">
-                            <a href="javascript:void(0);">{{ get_phrase('Manage Teams') }}</a>
-                            <ul class="second-sub-menu">
-                                <li class="sidebar-third-li @if ($current_route == 'admin.team.packages' || $current_route == 'admin.team.packages.edit') active @endif">
-                                    <a href="{{ route('admin.team.packages') }}">{{ get_phrase('All Packages') }}</a>
-                                </li>
-
-                                <li class="sidebar-third-li @if ($current_route == 'admin.team.packages.create') active @endif">
-                                    <a href="{{ route('admin.team.packages.create') }}">{{ get_phrase('Add New') }}</a>
-                                </li>
-
-                                <li class="sidebar-third-li {{ $current_route == 'admin.team.packages.purchase.history' || $current_route == 'admin.team.packages.purchase.invoice' ? 'active' : '' }}">
-                                    <a href="{{ route('admin.team.packages.purchase.history') }}">{{ get_phrase('Purchase History') }}</a>
-                                </li>
-                            </ul>
+                        <li class="sidebar-second-li @if ($current_route == 'admin.team.packages' || $current_route == 'admin.team.packages.edit') active @endif">
+                            <a href="{{ route('admin.team.packages') }}">{{ get_phrase('All Packages') }}</a>
                         </li>
 
+                        <li class="sidebar-second-li @if ($current_route == 'admin.team.packages.create') active @endif">
+                            <a href="{{ route('admin.team.packages.create') }}">{{ get_phrase('Add New') }}</a>
+                        </li>
 
-                        <!-- private group menus -->
-                        <li class="sidebar-second-li second-li-have-sub @if ($current_route == 'admin.groups' || $current_route == 'admin.groups.create' || $current_route == 'admin.groups.edit' || $current_route == 'admin.groups.training') active @endif">
-                            <a href="javascript:void(0);">{{ get_phrase('Manage Groups') }}</a>
-                            <ul class="second-sub-menu">
-                                @if (has_permission('admin.groups'))
-                                    <li class="sidebar-third-li {{ $current_route == 'admin.groups' || $current_route == 'admin.groups.edit' ? 'active' : '' }}">
-                                        <a href="{{ route('admin.groups') }}">{{ get_phrase('All Groups') }}</a>
-                                    </li>
-                                @endif
-
-                                @if (has_permission('admin.groups.create'))
-                                    <li class="sidebar-third-li {{ $current_route == 'admin.groups.create' ? 'active' : '' }}">
-                                        <a href="{{ route('admin.groups.create') }}">{{ get_phrase('Add New') }}</a>
-                                    </li>
-                                @endif
-
-                                @if (has_permission('admin.groups.training'))
-                                    <li class="sidebar-third-li {{ $current_route == 'admin.groups.training' ? 'active' : '' }}">
-                                        <a href="{{ route('admin.groups.training') }}">{{ get_phrase('Training Session') }}</a>
-                                    </li>
-                                @endif
-                            </ul>
+                        <li class="sidebar-second-li {{ $current_route == 'admin.team.packages.purchase.history' || $current_route == 'admin.team.packages.purchase.invoice' ? 'active' : '' }}">
+                            <a href="{{ route('admin.team.packages.purchase.history') }}">{{ get_phrase('Purchase History') }}</a>
                         </li>
                     </ul>
                 </li>
