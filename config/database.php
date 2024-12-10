@@ -7,10 +7,10 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-$db_user = 'root';
-$db_pass = '';
 $db_host = 'localhost';
-$db_name = 'creativeitem';
+$db_name = env('PARENT_DATABASE_NAME');
+$db_user = env('PARENT_DATABASE_USER');
+$db_pass = env('PARENT_DATABASE_PASSWORD');
 
 $app_variable = str_replace('index.php', '', $_SERVER['SCRIPT_NAME']);
 $app_variable = str_replace($app_variable, '', $_SERVER['REQUEST_URI']);
